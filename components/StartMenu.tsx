@@ -120,7 +120,7 @@ function MenuItem({
           ? () => {
               setActiveWindows((prev) => ({
                 ...prev,
-                [text]: !prev[text],
+                [text.replace(" ", "_")]: !prev[text.replace(" ", "_")],
               }));
             }
           : handleClick
