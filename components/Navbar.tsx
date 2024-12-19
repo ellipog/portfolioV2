@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import StartMenu from "./StartMenu";
 import { windows } from "data/windows";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Navbar({
   activeWindows,
@@ -11,12 +12,31 @@ export default function Navbar({
 }) {
   const [time, setTime] = useState(new Date().toLocaleTimeString("no"));
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
+  const [startMenuClippy, setStartMenuClippy] = useState(0);
 
   useEffect(() => {
     setInterval(() => {
       setTime(new Date().toLocaleTimeString("no"));
     }, 1000);
   }, []);
+
+  useEffect(() => {
+    if (isStartMenuOpen) {
+      setStartMenuClippy(2);
+    }
+  }, [isStartMenuOpen]);
+
+  useEffect(() => {
+    if (startMenuClippy === 0) {
+      const timer = setTimeout(() => {
+        setStartMenuClippy(1);
+      }, 4000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [startMenuClippy]);
 
   return (
     <>
@@ -36,6 +56,28 @@ export default function Navbar({
             start
           </span>
         </button>
+
+        <AnimatePresence>
+          {startMenuClippy === 1 && (
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -100, opacity: 0 }}
+              className="fixed bottom-16 left-2 z-50 flex flex-col items-start"
+            >
+              <img
+                src="clippy.png"
+                alt="Clippy"
+                className="relative w-20 h-20 top-5 scale-x-[-1]"
+              />
+              <div className="p-4 bg-white border-2 border-gray-400 rounded-lg shadow-lg">
+                <p className="text-sm text-black -my-2">
+                  ↓ Click the start button
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         {/* ICON BAR */}
         <div className="flex w-full gap-2 h-12 ml-4 justify-start items-center rounded-l-xl text-white font-bold text-shadow">
           {windows.map((window) => (

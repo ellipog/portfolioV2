@@ -18,30 +18,37 @@ export default function Education({
       className={`${show ? "flex" : "hidden"}`}
       title={education.title}
       icon={education.icon}
-      width={750}
+      width={600}
       setActiveWindows={setActiveWindows}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
-      pos={{ x: 230, y: 50 }}
+      pos={{ x: 230, y: 40 }}
     >
-      <div className="text-black grid grid-cols-2 gap-3">
-        {education.education.map((edu) => (
-          <div
-            key={edu.name}
-            className="bg-white p-3 rounded border border-gray-300 hover:bg-gray-50 transition-colors duration-200 flex flex-col gap-2"
-          >
-            <div className="flex justify-between items-start">
-              <h3 className="text-base font-bold">{edu.name}</h3>
-              <span className="text-xs text-gray-600 border border-gray-300 px-2 py-0.5 rounded">
-                {edu.year}
-              </span>
+      <div className="text-black relative max-w-[560px]">
+        <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-blue-800" />
+
+        <div className="flex flex-col gap-8">
+          {education.education.map((edu) => (
+            <div key={edu.name} className="flex items-start relative">
+              <div className="absolute left-2 top-3 w-8 h-0.5 bg-blue-800" />
+              <div className="pl-12 text-start">
+                <span className="text-xs font-bold text-blue-800">
+                  {edu.year}
+                </span>
+                <div className="text-md font-bold">
+                  {edu.name}
+                  <span className="text-gray-600 font-normal">
+                    {" "}
+                    - {edu.school}
+                  </span>
+                </div>
+                <div className="text-xs text-gray-600 mt-1 whitespace-pre-line text-start">
+                  {edu.description}
+                </div>
+              </div>
             </div>
-            <div className="text-sm font-medium text-gray-700">
-              {edu.school}
-            </div>
-            <p className="text-xs text-gray-600">{edu.description}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </Window>
   );

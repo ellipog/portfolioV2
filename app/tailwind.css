@@ -34,3 +34,38 @@ body {
   min-width: 22px;
   min-height: 22px;
 }
+
+.winxp-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #1c66cc #fff;
+}
+
+.winxp-scrollbar::-webkit-scrollbar {
+  width: 16px;
+}
+
+.winxp-scrollbar::-webkit-scrollbar-track {
+  background: #fff;
+  border-left: 1px solid #dee2e6;
+}
+
+.winxp-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #2980ff 0%, #2069e0 100%);
+  border: 1px solid #1c66cc;
+  border-radius: 3px;
+  box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.3);
+}
+
+.winxp-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to right, #3990ff 0%, #2574e9 100%);
+}
+
+.winxp-scrollbar::-webkit-scrollbar-button {
+  display: block;
+  height: 16px;
+  width: 16px;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  background-position: center;
+  background-repeat: no-repeat;
+}

@@ -170,12 +170,12 @@ export default function Clippy() {
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 100, opacity: 0 }}
-          className="fixed bottom-[4.7rem] right-4 z-50 flex flex-col items-end"
+          className="fixed bottom-16 right-2 z-50 flex flex-col items-end"
         >
           <img
             src="clippy.png"
             alt="Clippy"
-            className="relative w-60 h-60 top-14 left-10"
+            className="relative w-60 h-60 top-14 left-94"
           />
           <div className="p-4 bg-white border-2 border-gray-400 rounded-lg shadow-lg">
             <p className="text-sm text-black mb-4">{message}</p>

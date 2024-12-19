@@ -20,25 +20,35 @@ export default function WorkExperience({
       icon={workExperience.icon}
       width={600}
       setActiveWindows={setActiveWindows}
-      pos={{ x: 770, y: 440 }}
+      pos={{ x: 770, y: 400 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
     >
-      <div className="text-black flex flex-col gap-4">
-        {workExperience.workExperience.map((work) => (
-          <div key={work.name}>
-            <span className="text-xs text-gray-500 h-6 -mt-2 flex items-end">
-              {work.year}
-            </span>
-            <div className="text-lg flex gap-2">
-              {work.name}
-              <span className="text-gray-500">- {work.role}</span>
+      <div className="text-black relative max-w-[560px]">
+        <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-blue-800" />
+
+        <div className="flex flex-col gap-8">
+          {workExperience.workExperience.map((work) => (
+            <div key={work.name} className="flex items-start relative">
+              <div className="absolute left-2 top-3 w-8 h-0.5 bg-blue-800" />
+              <div className="pl-12 text-start">
+                <span className="text-xs font-bold text-blue-800">
+                  {work.year}
+                </span>
+                <div className="text-md font-bold">
+                  {work.name}
+                  <span className="text-gray-600 font-normal">
+                    {" "}
+                    - {work.role}
+                  </span>
+                </div>
+                <div className="text-xs text-gray-600 mt-1 whitespace-pre-line text-start">
+                  {work.description}
+                </div>
+              </div>
             </div>
-            <div className="w-[540px] text-xs text-start whitespace-pre-line overflow-x-hidden">
-              {work.description}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </Window>
   );

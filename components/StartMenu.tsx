@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { personal, windows } from "data/windows";
 import { Dispatch, SetStateAction, useState } from "react";
+import { Clipboard } from "lucide-react";
 
 interface StartMenuProps {
   isOpen: boolean;
@@ -141,6 +142,13 @@ function MenuItem({
         }`}
       >
         Copied!
+      </span>
+      <span
+        className={`absolute right-[0.25rem] text-sm flex justify-end text-blue-500 group-hover:text-white transition-all ease-in-out ${
+          copy && !isCopied ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <Clipboard className="w-3 h-3" />
       </span>
     </button>
   );

@@ -17,11 +17,11 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   const [activeWindows, setActiveWindows] = useState<Record<string, boolean>>({
-    Skills: true,
-    Projects: true,
-    Work_Experience: true,
-    Minesweeper: true,
-    Education: true,
+    Skills: false,
+    Projects: false,
+    Work_Experience: false,
+    Minesweeper: false,
+    Education: false,
   });
 
   const [windowOrder, setWindowOrder] = useState<string[]>([
