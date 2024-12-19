@@ -1,0 +1,291 @@
+import Minesweeper from "components/windows/Minesweeper";
+
+export const windows = [
+  {
+    title: "Skills",
+    icon: "skills.png",
+  },
+  {
+    title: "Projects",
+    icon: "projects.png",
+  },
+  {
+    title: "Work_Experience",
+    icon: "work_experience.png",
+  },
+  {
+    title: "Minesweeper",
+    icon: "minesweeper.png",
+    component: Minesweeper,
+    defaultSize: { width: 340, height: 400 },
+    defaultPosition: { x: 1200, y: 200 },
+    resizable: false,
+  },
+  {
+    title: "Education",
+    icon: "education.png",
+  },
+];
+
+export const personal = {
+  title: "Personal",
+  icon: "start_logo.png",
+  name: "Elliot Strand Aaen",
+  age: `Age: ${(() => {
+    const birthday = new Date(2005, 8, 8);
+    const today = new Date();
+    let age = today.getFullYear() - birthday.getFullYear();
+    const m = today.getMonth() - birthday.getMonth();
+    const day = today.getDate() - birthday.getDate();
+    if (m < 0 || (m === 0 && day < 0)) {
+      age--;
+    }
+    return age;
+  })()}`,
+  email: "elliot@aaenz.com",
+  phone: "+47 46472369",
+  profession: "Software Developer",
+  linkedin: "https://www.linkedin.com/in/elliot-strand-aaen/",
+};
+
+export const skills = {
+  title: "Skills",
+  icon: "skills.png",
+  skills: [
+    {
+      name: "JavaScript",
+      icon: "javascript.png",
+      link: "https://www.javascript.com/",
+    },
+    {
+      name: "TypeScript",
+      icon: "typescript.png",
+      link: "https://www.typescriptlang.org/",
+    },
+    {
+      name: "React",
+      icon: "react.png",
+      link: "https://react.dev/",
+    },
+    {
+      name: "Next.js",
+      icon: "nextjs.png",
+      link: "https://nextjs.org/",
+    },
+    {
+      name: "Java",
+      icon: "java.png",
+      link: "https://www.java.com/",
+    },
+    {
+      name: "Kotlin",
+      icon: "kotlin.png",
+      link: "https://kotlinlang.org/",
+    },
+    {
+      name: "Tailwind CSS",
+      icon: "tailwind.png",
+      link: "https://tailwindcss.com/",
+    },
+    {
+      name: "Node.js",
+      icon: "nodejs.png",
+      link: "https://nodejs.org/",
+    },
+    {
+      name: "Python",
+      icon: "python.png",
+      link: "https://www.python.org/",
+    },
+    {
+      name: "SQL",
+      icon: "sql.png",
+      link: "https://www.postgresql.org/",
+    },
+    {
+      name: "GIT",
+      icon: "git.png",
+      link: "https://git-scm.com/",
+    },
+    {
+      name: "Lua",
+      icon: "lua.png",
+      link: "https://www.lua.org/",
+    },
+    {
+      name: "C#",
+      icon: "csharp.png",
+      link: "https://docs.microsoft.com/en-us/dotnet/csharp/",
+    },
+    {
+      name: "Verse",
+      icon: "verse.png",
+      link: "https://dev.epicgames.com/documentation/en-us/uefn/verse-language-reference",
+    },
+    {
+      name: "GML",
+      icon: "gml.png",
+      link: "https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/GML_Overview.htm",
+    },
+    {
+      name: "MongoDB",
+      icon: "mongodb.png",
+      link: "https://www.mongodb.com/",
+    },
+  ],
+};
+
+export const projects = {
+  title: "Projects",
+  icon: "projects.png",
+  projects: [
+    {
+      name: "Skatteetaten",
+      link: "https://skatteetaten.no/",
+      image: "skatteetaten.jpeg",
+      year: "2023 - NOW",
+      description: `Employed. Internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more.`,
+      languages: [
+        "JavaScript",
+        "TypeScript",
+        "React",
+        "Tailwind CSS",
+        "Java",
+        "SQL",
+      ],
+    },
+    {
+      name: "Portfolio V2",
+      link: "https://github.com/Ellipog/portfolioV2",
+      image: "github.png",
+      year: "2024",
+      description: `Upgraded portfolio. Made to look like Windows XP.`,
+      languages: ["TypeScript", "Remix", "TailwindCSS", "Bun"],
+    },
+    {
+      name: "Forsinka",
+      link: "https://github.com/Ellipog/Forsinka",
+      image: "github.png",
+      year: "2023",
+      description: `Forsinka is a web application that displays all 
+      delayed arrivals to Ski Stasjon. 
+      The app was made to as a school project. 
+      And mainly to explore how API's work. And how to use ReactJS.`,
+      languages: [
+        "JavaScript",
+        "React",
+        "Node.js",
+        "Firebase",
+        "MongoDB",
+        "enturAPI",
+      ],
+    },
+    {
+      name: "Post Creator",
+      link: "https://github.com/Ellipog/post-creator",
+      image: "github.png",
+      year: "2024",
+      description: `An interactive blog post builder. 
+      Made for fun to learn how to use components better. `,
+      languages: ["TypeScript", "NextJS", "TailwindCSS", "Bun"],
+    },
+    {
+      name: "CC Create FarmInfo",
+      link: "https://github.com/Ellipog/CC-Create-FarmInfo",
+      image: "github.png",
+      year: "2023",
+      description: `A tool built for a Minecraft server. A computer inside the 
+      game will collect data then send that data to a node.js server which then saves it to a database. 
+      The frontend will then display said data to the user depending on what username they log in as. `,
+      languages: ["JavaScript", "Lua", "Node.js"],
+    },
+    {
+      name: "EX2023",
+      link: "https://github.com/Ellipog/EX2023",
+      image: "github.png",
+      year: "2023",
+      description: `2023 Exam project, 6/6. A mock web store. Custom made authentication system. Learning TypeScript, NextJS, encryption, databases, state management, etc.
+      More in github README.md`,
+      languages: [
+        "TypeScript",
+        "NextJS",
+        "TailwindCSS",
+        "Postman",
+        "MongoDB",
+        "BCrypt",
+        "Redux",
+      ],
+    },
+    {
+      name: "dmToolbox",
+      link: "https://github.com/Ellipog/dmToolbox",
+      image: "github.png",
+      year: "2024",
+      description: `Toolbox for the board game Dungeons & Dragons. It has information about monsters. A battle manager with damage, effects, turns, etc. And more. `,
+      languages: ["TypeScript", "NextJS", "dnd5eapi", "react-hot-toast"],
+    },
+  ],
+};
+
+export const workExperience = {
+  title: "Work_Experience",
+  icon: "work_experience.png",
+  workExperience: [
+    {
+      name: "Skatteetaten",
+      role: "Software Developer",
+      year: "2023 AUG - NOW",
+      description: `Working on internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more. 
+      Working in a scrum team with 9 people.`,
+    },
+    {
+      name: "Intility",
+      role: "Technical Support: Setup",
+      year: "2023 FEB - 2023 MAR",
+      description: `Setup computers, install software, and more.`,
+    },
+    {
+      name: "Greverud Sykehjem",
+      role: "Caretaker",
+      year: "2022 DEC",
+      description: `Wash clothes, collect trash, and deliver ingredients to the kitchen.`,
+    },
+    {
+      name: "Intility",
+      role: "Technical Support: Setup",
+      year: "2022 OKT - 2022 NOV",
+      description: `Setup computers, install software, and more.`,
+    },
+    {
+      name: "Greverud Sykehjem",
+      role: "Caretaker",
+      year: "2022 JUL - 2022 AUG",
+      description: `Wash clothes, collect trash, and deliver ingredients to the kitchen.`,
+    },
+  ],
+};
+
+export const education = {
+  title: "Education",
+  icon: "education.png",
+  education: [
+    {
+      name: "Apprenticeship",
+      school: "Skatteetaten",
+      year: "2023 - NOW",
+      description: `Software Developer`,
+    },
+    {
+      name: "Year 2 VGS",
+      school: "Drømtorp VGS",
+      year: "2022 AUG - 2023 JUN",
+      description: `Information Technology`,
+    },
+    {
+      name: "Year 1 VGS",
+      school: "Drømtorp VGS",
+      year: "2021 AUG - 2022 JUN",
+      description: `Information Technology & Media`,
+    },
+  ],
+};

@@ -22,3 +22,15 @@ body {
   padding: 0;
   font-family: Pixel;
 }
+
+.text-shadow {
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.window-button {
+  font-family: "Segoe UI", system-ui;
+  line-height: 1;
+  font-size: 14px;
+  min-width: 22px;
+  min-height: 22px;
+}
