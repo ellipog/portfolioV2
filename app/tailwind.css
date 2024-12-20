@@ -10,6 +10,10 @@
 html,
 body {
   @apply bg-white dark:bg-gray-950;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
