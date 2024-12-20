@@ -73,74 +73,84 @@ export default function Index() {
     };
   }, []);
 
-  return loading === LoadingState.Boot1 ? (
-    <div className="flex p-0 m-0 bg-black h-screen">
-      <img
-        src="boot.gif"
-        alt="loading"
-        className={`w-full h-screen ${
-          imageLoaded ? "opacity-100" : "opacity-0"
-        }`}
-        onLoad={() => setImageLoaded(true)}
-        style={{ transition: "opacity 0.2s ease-in-out" }}
-      />
-    </div>
-  ) : loading === LoadingState.Boot2 ? (
-    <div className="flex p-0 m-0 bg-black h-screen">
-      <img
-        src="boot.gif"
-        alt="loading"
-        className={`w-full h-screen ${
-          imageLoaded ? "opacity-100" : "opacity-0"
-        }`}
-        onLoad={() => setImageLoaded(true)}
-        style={{ transition: "opacity 0.2s ease-in-out" }}
-      />
-    </div>
-  ) : loading === LoadingState.Black ? (
-    <div className="flex p-0 m-0 bg-black h-screen"></div>
-  ) : loading === LoadingState.Desktop ? (
-    <div className="flex p-0 m-0">
-      <img
-        src="desktop_bg.png"
-        alt="bg"
-        className="absolute w-full h-screen object-cover"
-      />
-      <Skills
-        show={activeWindows.Skills}
-        setActiveWindows={setActiveWindows}
-        windowOrder={windowOrder}
-        bringToFront={() => bringWindowToFront("Skills")}
-      />
-      <Projects
-        show={activeWindows.Projects}
-        setActiveWindows={setActiveWindows}
-        windowOrder={windowOrder}
-        bringToFront={() => bringWindowToFront("Projects")}
-      />
-      <WorkExperience
-        show={activeWindows.Work_Experience}
-        setActiveWindows={setActiveWindows}
-        windowOrder={windowOrder}
-        bringToFront={() => bringWindowToFront("Work_Experience")}
-      />
-      <Minesweeper
-        show={activeWindows.Minesweeper}
-        setActiveWindows={setActiveWindows}
-        windowOrder={windowOrder}
-        bringToFront={() => bringWindowToFront("Minesweeper")}
-      />
-      <Education
-        show={activeWindows.Education}
-        setActiveWindows={setActiveWindows}
-        windowOrder={windowOrder}
-        bringToFront={() => bringWindowToFront("Education")}
-      />
-      <Navbar
-        activeWindows={activeWindows}
-        setActiveWindows={setActiveWindows}
-      />
-      <Clippy />
-    </div>
-  ) : null;
+  return (
+    <>
+      {/* Desktop Content - Always rendered but hidden during loading */}
+      <div
+        className={loading !== LoadingState.Desktop ? "hidden" : "flex p-0 m-0"}
+      >
+        <img
+          src="desktop_bg.png"
+          alt="bg"
+          className="absolute w-full h-screen object-cover"
+        />
+        <Skills
+          show={activeWindows.Skills}
+          setActiveWindows={setActiveWindows}
+          windowOrder={windowOrder}
+          bringToFront={() => bringWindowToFront("Skills")}
+        />
+        <Projects
+          show={activeWindows.Projects}
+          setActiveWindows={setActiveWindows}
+          windowOrder={windowOrder}
+          bringToFront={() => bringWindowToFront("Projects")}
+        />
+        <WorkExperience
+          show={activeWindows.Work_Experience}
+          setActiveWindows={setActiveWindows}
+          windowOrder={windowOrder}
+          bringToFront={() => bringWindowToFront("Work_Experience")}
+        />
+        <Minesweeper
+          show={activeWindows.Minesweeper}
+          setActiveWindows={setActiveWindows}
+          windowOrder={windowOrder}
+          bringToFront={() => bringWindowToFront("Minesweeper")}
+        />
+        <Education
+          show={activeWindows.Education}
+          setActiveWindows={setActiveWindows}
+          windowOrder={windowOrder}
+          bringToFront={() => bringWindowToFront("Education")}
+        />
+        <Navbar
+          activeWindows={activeWindows}
+          setActiveWindows={setActiveWindows}
+        />
+        <Clippy />
+      </div>
+
+      {/* Loading Screens */}
+      {loading === LoadingState.Boot1 && (
+        <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen">
+          <img
+            src="boot.gif"
+            alt="loading"
+            className={`w-full h-screen ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            style={{ transition: "opacity 0.2s ease-in-out" }}
+          />
+        </div>
+      )}
+      {loading === LoadingState.Boot2 && (
+        <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen">
+          <img
+            src="boot.gif"
+            alt="loading"
+            className={`w-full h-screen ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            style={{ transition: "opacity 0.2s ease-in-out" }}
+          />
+        </div>
+      )}
+      {loading === LoadingState.Black && (
+        <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen" />
+      )}
+    </>
+  );
 }
