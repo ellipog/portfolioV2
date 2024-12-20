@@ -1,6 +1,20 @@
 import Minesweeper from "components/windows/Minesweeper";
+import { Dispatch, SetStateAction } from "react";
+interface Window {
+  title: string;
+  icon: string;
+  component?: React.ComponentType<{
+    show: boolean;
+    setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
+    windowOrder: string[];
+    bringToFront: () => void;
+  }>;
+  defaultSize?: { width: number; height: number };
+  defaultPosition?: { x: number; y: number };
+  resizable?: boolean;
+}
 
-export const windows = [
+export const windows: Window[] = [
   {
     title: "Skills",
     icon: "skills.png",

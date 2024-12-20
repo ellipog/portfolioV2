@@ -86,19 +86,15 @@ export default function StartMenu({
   );
 }
 
-function MenuItem({
-  icon,
-  text,
-  copy,
-  type,
-  setActiveWindows,
-}: {
+interface MenuItemProps {
   icon: string;
   text: string;
   copy: boolean;
   type: "app" | "text" | "link";
   setActiveWindows?: Dispatch<SetStateAction<Record<string, boolean>>>;
-}) {
+}
+
+function MenuItem({ icon, text, copy, type, setActiveWindows }: MenuItemProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleClick = () => {
