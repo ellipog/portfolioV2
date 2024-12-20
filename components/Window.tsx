@@ -1,7 +1,7 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { X } from "lucide-react";
 import Draggable from "react-draggable";
 import { motion } from "framer-motion";
-import { SetStateAction, Dispatch, useEffect, useState } from "react";
-import { X } from "lucide-react";
 
 export default function Window({
   children,

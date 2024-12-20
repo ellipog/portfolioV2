@@ -8,12 +8,19 @@ declare global {
   }
 }
 
+type WindowTitles =
+  | "Skills"
+  | "Projects"
+  | "Work_Experience"
+  | "Minesweeper"
+  | "Education";
+
 export default function Clippy() {
   const [isVisible, setIsVisible] = useState(true);
   const [message, setMessage] = useState("");
   const [windowsClicked, setWindowsClicked] = useState<Set<string>>(new Set());
 
-  const windowMessages = useMemo(
+  const windowMessages: Record<WindowTitles, string[]> = useMemo(
     () => ({
       Skills: [
         "Want to know what technologies I'm proficient in?",
@@ -49,7 +56,7 @@ export default function Clippy() {
     []
   );
 
-  const windowResponses = useMemo(
+  const windowResponses: Record<WindowTitles, string[]> = useMemo(
     () => ({
       Skills: [
         "Whatever, show me what you know",

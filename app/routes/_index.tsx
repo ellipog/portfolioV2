@@ -16,6 +16,14 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+enum LoadingState {
+  Initial = 0,
+  Boot1 = 1,
+  Boot2 = 2,
+  Black = 3,
+  Desktop = 4,
+}
+
 export default function Index() {
   const [activeWindows, setActiveWindows] = useState<Record<string, boolean>>({
     Skills: false,
@@ -40,21 +48,21 @@ export default function Index() {
     });
   };
 
-  const [loading, setLoading] = useState(0);
+  const [loading, setLoading] = useState<LoadingState>(LoadingState.Initial);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(1);
+      setLoading(LoadingState.Boot1);
     }, 500);
     const timer2 = setTimeout(() => {
-      setLoading(2);
+      setLoading(LoadingState.Boot2);
     }, 1500);
     const timer3 = setTimeout(() => {
-      setLoading(3);
+      setLoading(LoadingState.Black);
     }, 2100);
     const timer4 = setTimeout(() => {
-      setLoading(4);
+      setLoading(LoadingState.Desktop);
     }, 2400);
 
     return () => {
@@ -65,7 +73,7 @@ export default function Index() {
     };
   }, []);
 
-  return loading === 1 ? (
+  return loading === LoadingState.Boot1 ? (
     <div className="flex p-0 m-0 bg-black h-screen">
       <img
         src="boot.gif"
@@ -77,7 +85,7 @@ export default function Index() {
         style={{ transition: "opacity 0.2s ease-in-out" }}
       />
     </div>
-  ) : loading === 2 ? (
+  ) : loading === LoadingState.Boot2 ? (
     <div className="flex p-0 m-0 bg-black h-screen">
       <img
         src="boot.gif"
@@ -89,9 +97,9 @@ export default function Index() {
         style={{ transition: "opacity 0.2s ease-in-out" }}
       />
     </div>
-  ) : loading === 3 ? (
+  ) : loading === LoadingState.Black ? (
     <div className="flex p-0 m-0 bg-black h-screen"></div>
-  ) : loading === 4 ? (
+  ) : loading === LoadingState.Desktop ? (
     <div className="flex p-0 m-0">
       <img
         src="desktop_bg.png"

@@ -15,9 +15,11 @@ export default function Navbar({
   const [startMenuClippy, setStartMenuClippy] = useState(0);
 
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString("no"));
     }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
