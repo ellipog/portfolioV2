@@ -42,7 +42,7 @@ export default function BlueMarker() {
   return (
     <button
       onMouseDown={handleMouseDown}
-      className="fixed inset-0 z-[1]"
+      className="fixed inset-0 z-[1] cursor-default"
       style={{ pointerEvents: isDrawing ? "none" : "auto" }}
     >
       {isDrawing && startPos && currentPos && (
