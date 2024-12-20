@@ -44,7 +44,7 @@ export const windows: Window[] = [
 export const personal = {
   title: "Personal",
   icon: "start_logo.png",
-  name: "Elliot Strand Aaen",
+  name: "Elliot",
   age: `Age: ${(() => {
     const birthday = new Date(2005, 8, 8);
     const today = new Date();
@@ -57,9 +57,10 @@ export const personal = {
     return age;
   })()}`,
   email: "elliot@aaenz.com",
-  phone: "+47 46472369",
+  phone: "+47 TEMP NONE",
   profession: "Software Developer",
-  linkedin: "https://www.linkedin.com/in/elliot-strand-aaen/",
+  // linkedin: "https://www.linkedin.com/in/elliot-strand-aaen/",
+  linkedin: "https://www.linkedin.com/in/",
 };
 
 export const skills = {
