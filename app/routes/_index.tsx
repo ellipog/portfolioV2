@@ -220,26 +220,22 @@ export default function Index() {
         <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen" />
       )}
       {loading === LoadingState.Boot1 && (
-        <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
           <img
             src="boot.gif"
             alt="loading"
-            className={`w-full h-screen ${
-              imageLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            className={`${imageLoaded ? "opacity-100" : "opacity-0"}`}
             onLoad={() => setImageLoaded(true)}
             style={{ transition: "opacity 0.2s ease-in-out" }}
           />
         </div>
       )}
       {loading === LoadingState.Boot2 && (
-        <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
           <img
             src="boot.gif"
             alt="loading"
-            className={`w-full h-screen ${
-              imageLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            className={`${imageLoaded ? "opacity-100" : "opacity-0"}`}
             onLoad={() => setImageLoaded(true)}
             style={{ transition: "opacity 0.2s ease-in-out" }}
           />
