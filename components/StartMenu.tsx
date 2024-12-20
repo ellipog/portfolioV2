@@ -23,7 +23,7 @@ export default function StartMenu({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-12 left-0 w-80 bg-blue-100 border-2 border-blue-800 rounded-tr-xl z-50 shadow-xl"
+            className="start-menu fixed bottom-12 left-0 w-80 bg-blue-100 border-2 border-blue-800 rounded-tr-xl z-50 shadow-xl"
           >
             {/* User Info Section */}
             <div className="flex items-center gap-3 p-2 bg-gradient-to-b from-blue-600 to-blue-800 text-white rounded-tr-lg">

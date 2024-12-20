@@ -47,7 +47,7 @@ export default function Navbar({
         onClose={() => setIsStartMenuOpen(false)}
         setActiveWindows={setActiveWindows}
       />
-      <div className="fixed w-full h-14 bottom-0 flex justify-between items-center bg-gradient-to-b from-blue-400 to-blue-700 z-50">
+      <div className="navbar fixed w-full h-14 bottom-0 flex justify-between items-center bg-gradient-to-b from-blue-400 to-blue-700 z-50">
         {/* START BAR */}
         <button
           onClick={() => setIsStartMenuOpen(!isStartMenuOpen)}

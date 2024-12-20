@@ -50,7 +50,7 @@ export default function Window({
       bounds="parent"
     >
       <motion.div
-        className={`absolute hover:cursor-default shadow-xl ${className} flex flex-col`}
+        className={`window fixed hover:cursor-default shadow-xl ${className} flex flex-col`}
         style={{ zIndex }}
         onClick={handleInteraction}
         onTouchStart={handleInteraction}

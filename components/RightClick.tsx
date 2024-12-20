@@ -52,15 +52,40 @@ export default function RightClick({
 
   useEffect(() => {
     const handleClick = () => setShowMenu(false);
+    const handleGlobalContextMenu = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      // Check if we're inside a window by looking for window-specific elements
+      const isWindow =
+        target.closest('[role="window"]') ||
+        target.closest('[role="dialog"]') ||
+        target.closest('[role="window"]') ||
+        target.closest(".window-title-bar");
+
+      // Check for start menu and navbar
+      const isStartMenu = target.closest('[data-component="start-menu"]');
+      const isNavbar = target.closest('[data-component="navbar"]');
+
+      if (isWindow || isStartMenu || isNavbar) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
     window.addEventListener("click", handleClick);
-    return () => window.removeEventListener("click", handleClick);
+    window.addEventListener("contextmenu", handleGlobalContextMenu, true);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+      window.removeEventListener("contextmenu", handleGlobalContextMenu, true);
+    };
   }, []);
 
   const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
     const target = e.target as HTMLElement;
-    const desktopIcon = target.closest(".app-icon");
 
+    e.preventDefault();
+    const desktopIcon = target.closest(".app-icon");
     const x = e.clientX;
     const y = e.clientY;
 
@@ -89,6 +114,15 @@ export default function RightClick({
         y: adjustedY,
         context: "desktop",
       });
+    }
+
+    const windowPresent = target.closest(".window");
+    const startMenuPresent = target.closest(".start-menu");
+    const navbarPresent = target.closest(".navbar");
+
+    if (windowPresent || startMenuPresent || navbarPresent) {
+      setShowMenu(false);
+      return;
     }
 
     setShowMenu(true);
