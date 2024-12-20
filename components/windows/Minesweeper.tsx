@@ -268,27 +268,27 @@ export default function Minesweeper({
       bringToFront={bringToFront}
     >
       <div className="w-full h-full flex flex-col bg-[#c0c0c0] text-black">
-        <div className="p-2 w-full flex justify-between items-center border border-[#808080]">
-          <button
-            onClick={() => {
-              initializeGrid();
-            }}
-            className="px-3 py-1 bg-[#e6e6e6] hover:bg-[#f3f3f3] border-2 border-[#404040] active:border-[#ffffff] text-sm cursor-pointer"
-          >
-            New Game
-          </button>
-          <div className="flex items-center">
-            <div className="bg-black text-red-500 px-2 py-1 font-digital text-xl">
-              {String(time).padStart(3, "0")}
-            </div>
-            <div className="text-sm font-bold ml-2">
+        <div className="p-2 w-full flex justify-between items-center border-b-2 border-[#808080]">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                initializeGrid();
+              }}
+              className="px-3 py-1 bg-[#e6e6e6] hover:bg-[#f3f3f3] border border-[#808080] active:border-[#404040] text-sm cursor-pointer shadow-[1px_1px_0px_0px_rgba(255,255,255,0.5)_inset,-1px_-1px_0px_0px_rgba(0,0,0,0.25)_inset]"
+            >
+              New Game
+            </button>
+            <div className="text-sm font-bold">
               {gameOver && "Game Over!"}
               {gameWon && "You Won!"}
             </div>
           </div>
+          <div className="bg-black text-red-500 px-2 py-1 font-digital text-xl border-2 border-[#808080]">
+            {String(time).padStart(3, "0")}
+          </div>
         </div>
         <div className="flex-1 p-4 flex items-center justify-center bg-[#c0c0c0]">
-          <div className="inline-block border-2 border-[#ffffff] p-1 bg-[#c0c0c0]">
+          <div className="inline-block border-t-2 border-l-2 border-[#ffffff] border-r-2 border-r-[#808080] border-b-2 border-b-[#808080] p-1 bg-[#c0c0c0]">
             {grid.map((row, i) => (
               <div key={i} className="flex">
                 {row.map((cell, j) => (
@@ -297,17 +297,17 @@ export default function Minesweeper({
                     onClick={() => revealCell(i, j)}
                     onContextMenu={(e) => toggleFlag(e, i, j)}
                     className={`w-7 h-7 flex items-center justify-center text-sm font-bold
-                    ${
-                      !cell.isRevealed
-                        ? "border-2 border-[#808080] bg-[#c0c0c0] hover:bg-[#d0d0d0]"
-                        : "border border-[#808080] bg-[#e6e6e6]"
-                    } 
-                    ${cell.neighborMines === 1 ? "text-blue-700" : ""}
-                    ${cell.neighborMines === 2 ? "text-green-700" : ""}
-                    ${cell.neighborMines === 3 ? "text-red-700" : ""}
-                    ${cell.neighborMines === 4 ? "text-purple-800" : ""}
-                    ${cell.neighborMines === 5 ? "text-red-800" : ""}
-                    ${cell.neighborMines >= 6 ? "text-teal-800" : ""}`}
+                      ${
+                        !cell.isRevealed
+                          ? "border-t-2 border-l-2 border-[#ffffff] border-r-2 border-r-[#808080] border-b-2 border-b-[#808080] bg-[#c0c0c0] hover:bg-[#d0d0d0]"
+                          : "border border-[#808080] bg-[#e6e6e6]"
+                      } 
+                      ${cell.neighborMines === 1 ? "text-blue-700" : ""}
+                      ${cell.neighborMines === 2 ? "text-green-700" : ""}
+                      ${cell.neighborMines === 3 ? "text-red-700" : ""}
+                      ${cell.neighborMines === 4 ? "text-purple-800" : ""}
+                      ${cell.neighborMines === 5 ? "text-red-800" : ""}
+                      ${cell.neighborMines >= 6 ? "text-teal-800" : ""}`}
                   >
                     {getCellContent(cell)}
                   </button>
