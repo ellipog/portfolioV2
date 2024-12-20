@@ -8,6 +8,7 @@ import WorkExperience from "components/windows/WorkExperience";
 import Clippy from "components/Clippy";
 import Minesweeper from "components/windows/Minesweeper";
 import Education from "components/windows/Education";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Elliot - Portfolio" },
