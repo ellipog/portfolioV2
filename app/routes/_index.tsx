@@ -11,8 +11,27 @@ import Education from "components/windows/Education";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Elliot - Portfolio" },
-    { name: "description", content: "Elliot's portfolio" },
+    { title: "Elliot's Windows XP Portfolio" },
+    {
+      name: "description",
+      content: "Windows XP style portfolio. ",
+    },
+    { name: "theme-color", content: "#245EDC" }, // Windows XP blue
+    { property: "og:title", content: "Elliot's Windows XP Portfolio" },
+    {
+      property: "og:description",
+      content: "Windows XP style portfolio. ",
+    },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: "/desktop_bg.png" }, // Make sure this is a full URL in production
+    { property: "og:url", content: "https://your-domain.com" }, // Replace with your actual domain
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Elliot's Windows XP Portfolio" },
+    {
+      name: "twitter:description",
+      content: "Windows XP style portfolio. ",
+    },
+    { name: "twitter:image", content: "/desktop_bg.png" }, // Make sure this is a full URL in production
   ];
 };
 
