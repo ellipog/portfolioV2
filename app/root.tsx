@@ -1,6 +1,6 @@
 import { Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 
-import "./tailwind.css";
+import styles from "./tailwind.css?url";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +10,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/png" href="/start_logo.png" />
         <link rel="stylesheet" href="/font/PixeloidMono.ttf" />
-        <link rel="stylesheet" href="app/tailwind.css" />
+        <link rel="stylesheet" href={styles} />
         <Meta />
       </head>
       <body className="h-screen w-screen bg-black">
