@@ -254,7 +254,7 @@ export const workExperience = {
       name: "Intility",
       role: "Technical Support: Setup",
       year: "2023 FEB - 2023 MAR",
-      description: `Setup computers, install software, and more.`,
+      description: `Setup computers, install software according to what the customer ordered. Shipping computers to customers. More. `,
     },
     {
       name: "Greverud Sykehjem",
@@ -266,7 +266,7 @@ export const workExperience = {
       name: "Intility",
       role: "Technical Support: Setup",
       year: "2022 OKT - 2022 NOV",
-      description: `Setup computers, install software, and more.`,
+      description: `Setup computers, install software according to what the customer ordered. Shipping computers to customers. More. `,
     },
     {
       name: "Greverud Sykehjem",
