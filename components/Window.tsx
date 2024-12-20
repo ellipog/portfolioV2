@@ -32,11 +32,12 @@ export default function Window({
     setKey((prev) => prev + 1);
   }, []);
 
-  const zIndex = mounted ? windowOrder.indexOf(title.replace(" ", "_")) + 1 : 1;
+  const zIndex = mounted ? windowOrder.indexOf(title.replace(" ", "_")) + 3 : 3;
 
   const handleInteraction = () => {
     bringToFront();
-    window.handleClippyWindowClick?.(title.replace(" ", "_"));
+    const formattedTitle = title.replace(" ", "_");
+    window.handleClippyWindowClick?.(formattedTitle);
   };
 
   return (
@@ -46,6 +47,7 @@ export default function Window({
       defaultPosition={pos}
       onStart={handleInteraction}
       onMouseDown={handleInteraction}
+      bounds="parent"
     >
       <motion.div
         className={`absolute hover:cursor-default shadow-xl ${className} flex flex-col`}

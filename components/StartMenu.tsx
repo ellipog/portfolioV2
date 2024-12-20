@@ -111,7 +111,9 @@ function MenuItem({ icon, text, copy, type, setActiveWindows }: MenuItemProps) {
 
   return (
     <button
-      className="flex items-center gap-2 p-1 hover:text-white cursor-pointer relative w-full hover:bg-blue-600 active:bg-blue-700 transition-colors ease-in-out group"
+      className={`flex items-center gap-2 p-1 hover:text-white cursor-pointer relative w-full hover:bg-blue-600 active:bg-blue-700 transition-colors ease-in-out group ${
+        type === "app" && "app-icon"
+      }`}
       onClick={
         type === "app" && setActiveWindows
           ? () => {

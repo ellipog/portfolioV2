@@ -1,4 +1,3 @@
-import Minesweeper from "components/windows/Minesweeper";
 import { Dispatch, SetStateAction } from "react";
 interface Window {
   title: string;
@@ -30,7 +29,6 @@ export const windows: Window[] = [
   {
     title: "Minesweeper",
     icon: "minesweeper.png",
-    component: Minesweeper,
     defaultSize: { width: 340, height: 400 },
     defaultPosition: { x: 1200, y: 200 },
     resizable: false,

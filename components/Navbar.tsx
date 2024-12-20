@@ -85,7 +85,7 @@ export default function Navbar({
           {windows.map((window) => (
             <button
               key={window.title}
-              className={`flex flex-col items-center justify-center h-10 w-10 rounded-lg transition-all duration-200 ease-in-out ${
+              className={`app-icon flex flex-col items-center justify-center h-10 w-10 rounded-lg transition-all duration-200 ease-in-out ${
                 activeWindows[window.title] ? "bg-white/50" : "bg-white/10"
               }`}
               onClick={() => {

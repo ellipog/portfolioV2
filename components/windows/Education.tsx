@@ -28,8 +28,8 @@ export default function Education({
         <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-blue-800" />
 
         <div className="flex flex-col gap-8">
-          {education.education.map((edu) => (
-            <div key={edu.name} className="flex items-start relative">
+          {education.education.map((edu, i) => (
+            <div key={i} className="flex items-start relative">
               <div className="absolute left-2 top-3 w-8 h-0.5 bg-blue-800" />
               <div className="pl-12 text-start">
                 <span className="text-xs font-bold text-blue-800">

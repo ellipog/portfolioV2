@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
 // Declare global window interface
 declare global {
@@ -18,7 +18,8 @@ type WindowTitles =
 export default function Clippy() {
   const [isVisible, setIsVisible] = useState(true);
   const [message, setMessage] = useState("");
-  const [windowsClicked, setWindowsClicked] = useState<Set<string>>(new Set());
+  const clickedWindows = useRef<Set<string>>(new Set());
+  const [currentResponseSet, setCurrentResponseSet] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
 
   const windowMessages: Record<WindowTitles, string[]> = useMemo(
@@ -109,12 +110,9 @@ export default function Clippy() {
     []
   );
 
-  const [currentResponseSet, setCurrentResponseSet] = useState<string[]>([]);
-
   useEffect(() => {
     setMounted(true);
 
-    // Only set window property when in browser environment
     if (typeof window !== "undefined") {
       window.handleClippyWindowClick = (windowTitle: string) => {
         handleWindowClick(windowTitle);
@@ -122,7 +120,6 @@ export default function Clippy() {
     }
 
     return () => {
-      // Cleanup
       if (typeof window !== "undefined") {
         delete window.handleClippyWindowClick;
       }
@@ -157,7 +154,7 @@ export default function Clippy() {
   }, [isVisible, defaultQuestions]);
 
   const handleWindowClick = (windowTitle: string) => {
-    if (!windowsClicked.has(windowTitle)) {
+    if (!clickedWindows.current.has(windowTitle)) {
       setIsVisible(false);
       setTimeout(() => {
         const messages =
@@ -165,11 +162,8 @@ export default function Clippy() {
         const responses =
           windowResponses[windowTitle as keyof typeof windowResponses];
 
-        // Randomly select a message
         const randomMessage =
           messages[Math.floor(Math.random() * messages.length)];
-
-        // Randomly select 2 responses without duplicates
         const shuffledResponses = [...responses].sort(
           () => Math.random() - 0.5
         );
@@ -177,17 +171,15 @@ export default function Clippy() {
 
         setMessage(randomMessage);
         setCurrentResponseSet(selectedResponses);
-        setWindowsClicked((prev) => new Set([...prev, windowTitle]));
+        clickedWindows.current.add(windowTitle);
 
-        // Add a delay before showing Clippy again
         setTimeout(() => {
           setIsVisible(true);
-        }, 300); // Adjust this timing to match your exit animation duration
+        }, 300);
       }, 100);
     }
   };
 
-  // Only render client-side content when mounted
   if (!mounted) {
     return null;
   }

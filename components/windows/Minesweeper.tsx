@@ -1,6 +1,5 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Window from "components/Window";
-import { windows } from "data/windows";
 
 interface Cell {
   isMine: boolean;
@@ -244,9 +243,9 @@ export default function Minesweeper({
         className={`${show ? "flex" : "hidden"}`}
         title="Minesweeper"
         icon="/minesweeper.png"
-        width={300}
+        width={340}
         setActiveWindows={setActiveWindows}
-        pos={{ x: 400, y: 100 }}
+        pos={{ x: 1200, y: 200 }}
         windowOrder={windowOrder}
         bringToFront={bringToFront}
       >
@@ -262,19 +261,9 @@ export default function Minesweeper({
       className={`${show ? "flex" : "hidden"}`}
       title="Minesweeper"
       icon="/minesweeper.png"
-      width={
-        windows.find((w) => w.title === "Minesweeper")?.defaultSize?.width ??
-        300
-      }
+      width={340}
       setActiveWindows={setActiveWindows}
-      pos={{
-        x:
-          windows.find((w) => w.title === "Minesweeper")?.defaultPosition?.x ??
-          400,
-        y:
-          windows.find((w) => w.title === "Minesweeper")?.defaultPosition?.y ??
-          100,
-      }}
+      pos={{ x: 1200, y: 200 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
     >
