@@ -122,6 +122,9 @@ export default function Index() {
       </div>
 
       {/* Loading Screens */}
+      {loading === LoadingState.Initial && (
+        <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen" />
+      )}
       {loading === LoadingState.Boot1 && (
         <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen">
           <img
