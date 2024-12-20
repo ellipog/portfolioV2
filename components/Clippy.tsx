@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 // Declare global window interface
 declare global {
   interface Window {
-    handleClippyWindowClick: (windowTitle: string) => void;
+    handleClippyWindowClick?: (windowTitle: string) => void;
   }
 }
 
@@ -19,6 +19,7 @@ export default function Clippy() {
   const [isVisible, setIsVisible] = useState(true);
   const [message, setMessage] = useState("");
   const [windowsClicked, setWindowsClicked] = useState<Set<string>>(new Set());
+  const [mounted, setMounted] = useState(false);
 
   const windowMessages: Record<WindowTitles, string[]> = useMemo(
     () => ({
@@ -111,6 +112,25 @@ export default function Clippy() {
   const [currentResponseSet, setCurrentResponseSet] = useState<string[]>([]);
 
   useEffect(() => {
+    setMounted(true);
+
+    // Only set window property when in browser environment
+    if (typeof window !== "undefined") {
+      window.handleClippyWindowClick = (windowTitle: string) => {
+        handleWindowClick(windowTitle);
+      };
+    }
+
+    return () => {
+      // Cleanup
+      if (typeof window !== "undefined") {
+        delete window.handleClippyWindowClick;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const randomIndex = Math.floor(Math.random() * defaultQuestions.length);
     setMessage(defaultQuestions[randomIndex]);
     setCurrentResponseSet(["I'm good, thanks", "Please leave me alone"]);
@@ -167,8 +187,10 @@ export default function Clippy() {
     }
   };
 
-  // Export the handleWindowClick function to be used by other components
-  window.handleClippyWindowClick = handleWindowClick;
+  // Only render client-side content when mounted
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
