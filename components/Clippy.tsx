@@ -137,7 +137,7 @@ export default function Clippy() {
     let timeoutId: NodeJS.Timeout;
 
     if (!isVisible) {
-      const delay = Math.floor(Math.random() * (180000 - 30000) + 30000);
+      const delay = Math.floor(Math.random() * (900000 - 120000) + 120000);
       timeoutId = setTimeout(() => {
         setIsVisible(true);
         const randomIndex = Math.floor(Math.random() * defaultQuestions.length);

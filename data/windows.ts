@@ -249,30 +249,35 @@ export const workExperience = {
       year: "2023 AUG - NOW",
       description: `Working on internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more. 
       Working in a scrum team with 9 people.`,
+      isMinor: false,
     },
     {
       name: "Intility",
       role: "Technical Support: Setup",
       year: "2023 FEB - 2023 MAR",
       description: `Setup computers, install software according to what the customer ordered. Shipping computers to customers. More. `,
+      isMinor: false,
     },
     {
       name: "Greverud Sykehjem",
       role: "Caretaker",
       year: "2022 DEC",
       description: `Wash clothes, collect trash, and deliver ingredients to the kitchen.`,
+      isMinor: true,
     },
     {
       name: "Intility",
       role: "Technical Support: Setup",
       year: "2022 OKT - 2022 NOV",
       description: `Setup computers, install software according to what the customer ordered. Shipping computers to customers. More. `,
+      isMinor: false,
     },
     {
       name: "Greverud Sykehjem",
       role: "Caretaker",
       year: "2022 JUL - 2022 AUG",
       description: `Wash clothes, collect trash, and deliver ingredients to the kitchen.`,
+      isMinor: true,
     },
   ],
 };
