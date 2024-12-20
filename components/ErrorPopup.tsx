@@ -50,7 +50,7 @@ export default function ErrorPopup({
     <AnimatePresence>
       {isOpen && (
         <Draggable handle=".window-title-bar" defaultPosition={position}>
-          <motion.div className="z-50 flex flex-col shadow-xl absolute">
+          <motion.div className="window z-50 flex flex-col shadow-xl absolute">
             <div
               className="window-title-bar flex justify-between items-center bg-gradient-to-b from-blue-500 to-blue-600 text-white rounded-t-lg border-t-4 border-x-4 border-blue-600 hover:cursor-grab active:cursor-grabbing overflow-x-hidden"
               style={{ width: "500px" }}
