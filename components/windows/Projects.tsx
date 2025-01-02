@@ -1,6 +1,6 @@
-import { SetStateAction, Dispatch } from "react";
+import { Dispatch, SetStateAction } from "react";
 import Window from "components/Window";
-import { projects } from "data/windows";
+import { projects, windows } from "data/windows";
 
 export default function Projects({
   setActiveWindows,
@@ -13,6 +13,8 @@ export default function Projects({
   windowOrder: string[];
   bringToFront: () => void;
 }) {
+  const windowConfig = windows.find((w) => w.title === "Projects");
+
   return (
     <Window
       className={`${show ? "flex" : "hidden"}`}
@@ -20,7 +22,7 @@ export default function Projects({
       icon={projects.icon}
       width={600}
       setActiveWindows={setActiveWindows}
-      pos={{ x: 30, y: 290 }}
+      pos={windowConfig?.defaultPosition || { x: 100, y: 100 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
     >

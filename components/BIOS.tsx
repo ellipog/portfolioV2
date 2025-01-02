@@ -10,7 +10,7 @@ export default function BIOS() {
         transition={{ duration: 0.5 }}
       >
         <h1 className="text-2xl mb-4">Award Modular BIOS v4.51PG</h1>
-        <p>Copyright (C) 2024, Award Software Inc.*</p>
+        <p>Copyright (C) 2025, Aaen Software Inc.*</p>
         <p className="mb-4">Portfolio BIOS Version 1.0</p>
 
         <div className="text-gray-400">

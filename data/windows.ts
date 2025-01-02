@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
+import { generateRandomPosition } from "utils/generateRandomPosition";
+
 interface Window {
   title: string;
   icon: string;
@@ -13,31 +15,48 @@ interface Window {
   resizable?: boolean;
 }
 
+const existingPositions: { x: number; y: number }[] = [];
+
 export const windows: Window[] = [
   {
     title: "Skills",
     icon: "skills.png",
+    defaultSize: { width: 300, height: 400 },
+    defaultPosition: generateRandomPosition(300, 400, 0, existingPositions),
   },
   {
     title: "Projects",
     icon: "projects.png",
+    defaultSize: { width: 600, height: 500 },
+    defaultPosition: generateRandomPosition(600, 500, 1, existingPositions),
   },
   {
     title: "Work_Experience",
     icon: "work_experience.png",
+    defaultSize: { width: 600, height: 400 },
+    defaultPosition: generateRandomPosition(600, 400, 2, existingPositions),
   },
   {
     title: "Minesweeper",
     icon: "minesweeper.png",
     defaultSize: { width: 340, height: 400 },
-    defaultPosition: { x: 1200, y: 200 },
+    defaultPosition: generateRandomPosition(340, 400, 3, existingPositions),
     resizable: false,
   },
   {
     title: "Education",
     icon: "education.png",
+    defaultSize: { width: 600, height: 400 },
+    defaultPosition: generateRandomPosition(600, 400, 4, existingPositions),
   },
 ];
+
+// After each window position is generated, add it to existingPositions
+windows.forEach((window) => {
+  if (window.defaultPosition) {
+    existingPositions.push(window.defaultPosition);
+  }
+});
 
 export const personal = {
   title: "Personal",

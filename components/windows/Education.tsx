@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import Window from "components/Window";
-import { education } from "data/windows";
+import { education, windows } from "data/windows";
 
 export default function Education({
   show,
@@ -13,6 +13,8 @@ export default function Education({
   windowOrder: string[];
   bringToFront: () => void;
 }) {
+  const windowConfig = windows.find((w) => w.title === "Education");
+
   return (
     <Window
       className={`${show ? "flex" : "hidden"}`}
@@ -22,7 +24,7 @@ export default function Education({
       setActiveWindows={setActiveWindows}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
-      pos={{ x: 230, y: 40 }}
+      pos={windowConfig?.defaultPosition || { x: 200, y: 200 }}
     >
       <div className="text-black relative max-w-[560px]">
         <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-blue-800" />

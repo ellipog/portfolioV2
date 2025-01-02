@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import Window from "components/Window";
-import { skills } from "data/windows";
+import { skills, windows } from "data/windows";
 
 export default function Skills({
   setActiveWindows,
@@ -13,6 +13,8 @@ export default function Skills({
   windowOrder: string[];
   bringToFront: () => void;
 }) {
+  const windowConfig = windows.find((w) => w.title === "Skills");
+
   return (
     <Window
       className={`${show ? "flex" : "hidden"}`}
@@ -20,7 +22,7 @@ export default function Skills({
       icon={skills.icon}
       width={300}
       setActiveWindows={setActiveWindows}
-      pos={{ x: 1600, y: 20 }}
+      pos={windowConfig?.defaultPosition || { x: 50, y: 50 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
     >

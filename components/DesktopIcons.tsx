@@ -28,6 +28,7 @@ interface DesktopIconsProps {
   >;
   isEditing?: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
+  bringWindowToFront: (windowTitle: string) => void;
 }
 
 export default function DesktopIcons({
@@ -36,6 +37,7 @@ export default function DesktopIcons({
   setFolders,
   isEditing,
   setIsEditing,
+  bringWindowToFront,
 }: DesktopIconsProps) {
   const getIconPosition = (index: number) => {
     const column = Math.floor(index / ICONS_PER_COLUMN);
@@ -45,6 +47,15 @@ export default function DesktopIcons({
       x: GRID_START_X + column * ICON_WIDTH,
       y: GRID_START_Y + row * ICON_HEIGHT,
     };
+  };
+
+  const handleWindowOpen = (windowTitle: string) => {
+    const formattedTitle = windowTitle.replace(" ", "_");
+    setActiveWindows((prev) => ({
+      ...prev,
+      [formattedTitle]: true,
+    }));
+    bringWindowToFront(formattedTitle);
   };
 
   return (
@@ -59,6 +70,7 @@ export default function DesktopIcons({
           isEditing={false}
           setIsEditing={setIsEditing}
           setFolders={setFolders}
+          onWindowOpen={handleWindowOpen}
         />
       ))}
       {folders.map((folder, index) => (
@@ -72,6 +84,7 @@ export default function DesktopIcons({
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           setFolders={setFolders}
+          onWindowOpen={handleWindowOpen}
           onDragStop={(e, data) => {
             setFolders((prev) => {
               const newFolders = [...prev];
@@ -107,18 +120,18 @@ interface DesktopIconProps {
     >
   >;
   id?: number;
+  onWindowOpen: (title: string) => void;
 }
 
 function DesktopIcon({
   title,
   icon,
   defaultPosition,
-  setActiveWindows,
-  onDragStop,
-  setFolders,
   isEditing,
   setIsEditing,
+  setFolders,
   id,
+  onWindowOpen,
 }: DesktopIconProps) {
   const [editedTitle, setEditedTitle] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -136,10 +149,7 @@ function DesktopIcon({
 
   const handleDoubleClick = () => {
     if (!isEditing) {
-      setActiveWindows((prev) => ({
-        ...prev,
-        [title.replace(" ", "_")]: true,
-      }));
+      onWindowOpen(title);
     }
   };
 
@@ -163,7 +173,6 @@ function DesktopIcon({
   return (
     <Draggable
       defaultPosition={defaultPosition}
-      onStop={onDragStop}
       bounds="parent"
       disabled={isEditing}
       grid={[10, 10]}

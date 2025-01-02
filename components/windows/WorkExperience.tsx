@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import Window from "components/Window";
-import { workExperience } from "data/windows";
+import { workExperience, windows } from "data/windows";
 
 export default function WorkExperience({
   show,
@@ -13,6 +13,8 @@ export default function WorkExperience({
   windowOrder: string[];
   bringToFront: () => void;
 }) {
+  const windowConfig = windows.find((w) => w.title === "Work_Experience");
+
   return (
     <Window
       className={`${show ? "flex" : "hidden"}`}
@@ -20,7 +22,7 @@ export default function WorkExperience({
       icon={workExperience.icon}
       width={600}
       setActiveWindows={setActiveWindows}
-      pos={{ x: 770, y: 400 }}
+      pos={windowConfig?.defaultPosition || { x: 150, y: 150 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
     >

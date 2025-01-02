@@ -131,6 +131,14 @@ export default function Index() {
     setNextErrorId((prev) => prev + 1);
   };
 
+  const handleWindowOpen = (windowTitle: string) => {
+    setActiveWindows((prev) => ({
+      ...prev,
+      [windowTitle]: true,
+    }));
+    bringWindowToFront(windowTitle);
+  };
+
   return (
     <>
       {/* Desktop Content - Always rendered but hidden during loading */}
@@ -154,6 +162,7 @@ export default function Index() {
           />
           <DesktopIcons
             setActiveWindows={setActiveWindows}
+            bringWindowToFront={bringWindowToFront}
             folders={folders}
             setFolders={setFolders}
             isEditing={isEditing}
@@ -192,6 +201,7 @@ export default function Index() {
           <Navbar
             activeWindows={activeWindows}
             setActiveWindows={setActiveWindows}
+            bringWindowToFront={bringWindowToFront}
           />
           <Clippy />
           <BlueMarker />

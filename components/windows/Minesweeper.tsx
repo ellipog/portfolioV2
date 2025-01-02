@@ -1,5 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Window from "components/Window";
+import { windows } from "data/windows";
 
 interface Cell {
   isMine: boolean;
@@ -19,6 +20,7 @@ export default function Minesweeper({
   windowOrder: string[];
   bringToFront: () => void;
 }) {
+  const windowConfig = windows.find((w) => w.title === "Minesweeper");
   const [grid, setGrid] = useState<Cell[][]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
@@ -208,9 +210,11 @@ export default function Minesweeper({
   };
 
   const getCellContent = (cell: Cell) => {
-    if (cell.isFlagged) return "🚩";
+    if (cell.isFlagged)
+      return <img src="/flag.png" alt="Flag" className="w-5 h-5" />;
     if (!cell.isRevealed) return "";
-    if (cell.isMine) return "💣";
+    if (cell.isMine)
+      return <img src="/mine.png" alt="Mine" className="w-5 h-5" />;
     return cell.neighborMines || "";
   };
 
@@ -245,7 +249,7 @@ export default function Minesweeper({
         icon="/minesweeper.png"
         width={340}
         setActiveWindows={setActiveWindows}
-        pos={{ x: 1200, y: 200 }}
+        pos={windowConfig?.defaultPosition || { x: 300, y: 300 }}
         windowOrder={windowOrder}
         bringToFront={bringToFront}
       >
@@ -263,7 +267,7 @@ export default function Minesweeper({
       icon="/minesweeper.png"
       width={340}
       setActiveWindows={setActiveWindows}
-      pos={{ x: 1200, y: 200 }}
+      pos={windowConfig?.defaultPosition || { x: 300, y: 300 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
     >

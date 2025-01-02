@@ -6,9 +6,11 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function Navbar({
   activeWindows,
   setActiveWindows,
+  bringWindowToFront,
 }: {
   activeWindows: Record<string, boolean>;
   setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
+  bringWindowToFront: (windowTitle: string) => void;
 }) {
   const [time, setTime] = useState(new Date().toLocaleTimeString("no"));
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
@@ -40,12 +42,23 @@ export default function Navbar({
     }
   }, [startMenuClippy]);
 
+  const handleWindowClick = (windowTitle: string) => {
+    setActiveWindows((prev) => ({
+      ...prev,
+      [windowTitle]: !prev[windowTitle],
+    }));
+    if (!activeWindows[windowTitle]) {
+      bringWindowToFront(windowTitle);
+    }
+  };
+
   return (
     <>
       <StartMenu
         isOpen={isStartMenuOpen}
         onClose={() => setIsStartMenuOpen(false)}
         setActiveWindows={setActiveWindows}
+        bringWindowToFront={bringWindowToFront}
       />
       <div className="navbar fixed w-full h-14 bottom-0 flex justify-between items-center bg-gradient-to-b from-blue-400 to-blue-700 z-50">
         {/* START BAR */}
@@ -88,12 +101,7 @@ export default function Navbar({
               className={`app-icon flex flex-col items-center justify-center h-10 w-10 rounded-lg transition-all duration-200 ease-in-out ${
                 activeWindows[window.title] ? "bg-white/50" : "bg-white/10"
               }`}
-              onClick={() => {
-                setActiveWindows((prev) => ({
-                  ...prev,
-                  [window.title]: !prev[window.title],
-                }));
-              }}
+              onClick={() => handleWindowClick(window.title)}
             >
               <img src={window.icon} alt={window.title} className="w-7 h-7" />
             </button>

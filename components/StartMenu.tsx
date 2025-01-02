@@ -7,12 +7,14 @@ interface StartMenuProps {
   isOpen: boolean;
   onClose: () => void;
   setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
+  bringWindowToFront: (windowTitle: string) => void;
 }
 
 export default function StartMenu({
   isOpen,
   onClose,
   setActiveWindows,
+  bringWindowToFront,
 }: StartMenuProps) {
   return (
     <AnimatePresence>
@@ -48,6 +50,7 @@ export default function StartMenu({
                   copy={false}
                   type="app"
                   setActiveWindows={setActiveWindows}
+                  bringWindowToFront={bringWindowToFront}
                 />
               ))}
             </div>
@@ -59,24 +62,28 @@ export default function StartMenu({
                 text={personal.email}
                 copy={true}
                 type="text"
+                bringWindowToFront={bringWindowToFront}
               />
               <MenuItem
                 icon="phone.png"
                 text={personal.phone}
                 copy={true}
                 type="text"
+                bringWindowToFront={bringWindowToFront}
               />
               <MenuItem
                 icon="age.png"
                 text={personal.age}
                 copy={false}
                 type="text"
+                bringWindowToFront={bringWindowToFront}
               />
               <MenuItem
                 icon="linkedin.png"
                 text={personal.linkedin}
                 copy={false}
                 type="link"
+                bringWindowToFront={bringWindowToFront}
               />
             </div>
           </motion.div>
@@ -92,21 +99,26 @@ interface MenuItemProps {
   copy: boolean;
   type: "app" | "text" | "link";
   setActiveWindows?: Dispatch<SetStateAction<Record<string, boolean>>>;
+  bringWindowToFront?: (windowTitle: string) => void;
 }
 
-function MenuItem({ icon, text, copy, type, setActiveWindows }: MenuItemProps) {
+function MenuItem({
+  icon,
+  text,
+  copy,
+  type,
+  setActiveWindows,
+  bringWindowToFront,
+}: MenuItemProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleClick = () => {
-    if (type === "link") {
-      window.open(text, "_blank");
-    } else if (copy) {
-      navigator.clipboard.writeText(text);
-      setIsCopied(true);
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 2000);
-    }
+    const windowTitle = text.replace(" ", "_");
+    setActiveWindows?.((prev) => ({
+      ...prev,
+      [windowTitle]: true,
+    }));
+    bringWindowToFront?.(windowTitle);
   };
 
   return (
@@ -114,16 +126,7 @@ function MenuItem({ icon, text, copy, type, setActiveWindows }: MenuItemProps) {
       className={`flex items-center gap-2 p-1 hover:text-white cursor-pointer relative w-full hover:bg-blue-600 active:bg-blue-700 transition-colors ease-in-out group ${
         type === "app" && "app-icon"
       }`}
-      onClick={
-        type === "app" && setActiveWindows
-          ? () => {
-              setActiveWindows((prev) => ({
-                ...prev,
-                [text.replace(" ", "_")]: !prev[text.replace(" ", "_")],
-              }));
-            }
-          : handleClick
-      }
+      onClick={handleClick}
     >
       <img src={icon} alt={text} className="w-6 h-6" />
       <span className="flex-1 text-left">
