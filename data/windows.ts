@@ -13,6 +13,16 @@ interface Window {
   defaultSize?: { width: number; height: number };
   defaultPosition?: { x: number; y: number };
   resizable?: boolean;
+  isClippyExe?: boolean;
+}
+
+export enum LoadingState {
+  BIOS = 0,
+  Initial = 1,
+  Boot1 = 2,
+  Boot2 = 3,
+  Black = 4,
+  Desktop = 5,
 }
 
 const existingPositions: { x: number; y: number }[] = [];
@@ -22,36 +32,42 @@ export const windows: Window[] = [
     title: "Skills",
     icon: "skills.png",
     defaultSize: { width: 300, height: 400 },
-    defaultPosition: generateRandomPosition(300, 400, 0, existingPositions),
+    defaultPosition: generateRandomPosition(300, 400, 1, existingPositions),
   },
   {
     title: "Projects",
     icon: "projects.png",
     defaultSize: { width: 600, height: 500 },
-    defaultPosition: generateRandomPosition(600, 500, 1, existingPositions),
+    defaultPosition: generateRandomPosition(600, 500, 2, existingPositions),
   },
   {
     title: "Work_Experience",
     icon: "work_experience.png",
     defaultSize: { width: 600, height: 400 },
-    defaultPosition: generateRandomPosition(600, 400, 2, existingPositions),
+    defaultPosition: generateRandomPosition(600, 400, 3, existingPositions),
   },
   {
     title: "Minesweeper",
     icon: "minesweeper.png",
     defaultSize: { width: 340, height: 400 },
-    defaultPosition: generateRandomPosition(340, 400, 3, existingPositions),
+    defaultPosition: generateRandomPosition(340, 400, 4, existingPositions),
     resizable: false,
   },
   {
     title: "Education",
     icon: "education.png",
     defaultSize: { width: 600, height: 400 },
-    defaultPosition: generateRandomPosition(600, 400, 4, existingPositions),
+    defaultPosition: generateRandomPosition(600, 400, 5, existingPositions),
+  },
+  {
+    title: "clippy.exe",
+    icon: "clippy_exe.png",
+    defaultSize: { width: 0, height: 0 },
+    defaultPosition: generateRandomPosition(0, 0, 0, existingPositions),
+    isClippyExe: true,
   },
 ];
 
-// After each window position is generated, add it to existingPositions
 windows.forEach((window) => {
   if (window.defaultPosition) {
     existingPositions.push(window.defaultPosition);

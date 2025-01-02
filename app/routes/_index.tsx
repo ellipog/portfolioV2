@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { MetaFunction } from "@remix-run/react";
+import { LoadingState, windows } from "data/windows";
 
 import Navbar from "components/Navbar";
 import Skills from "components/windows/Skills";
@@ -13,6 +14,7 @@ import DesktopIcons from "components/DesktopIcons";
 import RightClick from "components/RightClick";
 import ErrorPopup from "components/ErrorPopup";
 import BlueMarker from "components/BlueMarker";
+import BlueScreen from "components/BlueScreen";
 interface ErrorInstance {
   id: number;
   title: string | undefined;
@@ -44,15 +46,6 @@ export const meta: MetaFunction = () => {
     { name: "twitter:image", content: "/desktop_bg.png" }, // Make sure this is a full URL in production
   ];
 };
-
-enum LoadingState {
-  BIOS = 0,
-  Initial = 1,
-  Boot1 = 2,
-  Boot2 = 3,
-  Black = 4,
-  Desktop = 5,
-}
 
 export default function Index() {
   const [activeWindows, setActiveWindows] = useState<Record<string, boolean>>({
@@ -89,9 +82,13 @@ export default function Index() {
 
   const [loading, setLoading] = useState<LoadingState>(LoadingState.Initial);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [errors, setErrors] = useState<ErrorInstance[]>([]);
+  const [errors, setErrors] = useState<
+    Array<{ id: number; title?: string; isOpen: boolean }>
+  >([]);
   const [nextErrorId, setNextErrorId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
+  const [showAngryClippy, setShowAngryClippy] = useState(false);
+  const [showBlueScreen, setShowBlueScreen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -119,16 +116,46 @@ export default function Index() {
     };
   }, []);
 
-  const handleDelete = (title: string | undefined) => {
-    setErrors((prev) => [
-      ...prev,
-      {
-        id: nextErrorId,
-        title: title,
-        isOpen: true,
-      },
-    ]);
-    setNextErrorId((prev) => prev + 1);
+  const handleDelete = (
+    title: string | undefined,
+    icon?: string | undefined
+  ) => {
+    console.log("Index - handleDelete called with:", { title, icon });
+
+    if (title?.toLowerCase() === "clippy.exe") {
+      console.log("Index - Clippy.exe delete triggered");
+      const clippyElement = document.querySelector(".clippy-normal");
+      if (clippyElement) {
+        clippyElement.remove();
+      }
+      setShowAngryClippy(true);
+      spawnErrorPopups();
+      return;
+    }
+
+    // Handle window deletion
+    const isWindow = windows.some(
+      (window) => window.title.toLowerCase() === title?.toLowerCase()
+    );
+    console.log("Index - Is window?", isWindow);
+
+    if (isWindow) {
+      console.log("Index - Adding error for window:", title);
+      setErrors((prev) => [
+        ...prev,
+        {
+          id: nextErrorId,
+          title: title,
+          isOpen: true,
+        },
+      ]);
+      setNextErrorId((prev) => prev + 1);
+      return;
+    }
+
+    // Handle folder deletion
+    console.log("Index - Deleting folder:", title);
+    setFolders((prev) => prev.filter((folder) => folder.title !== title));
   };
 
   const handleWindowOpen = (windowTitle: string) => {
@@ -137,6 +164,33 @@ export default function Index() {
       [windowTitle]: true,
     }));
     bringWindowToFront(windowTitle);
+  };
+
+  const spawnErrorPopups = () => {
+    let count = 0;
+    const maxErrors = 100;
+
+    const spawnError = () => {
+      if (count >= maxErrors) {
+        setTimeout(() => setShowBlueScreen(true), 1000);
+        return;
+      }
+
+      setErrors((prev) => [
+        ...prev,
+        {
+          id: Date.now() + Math.random(),
+          title: "Critical Error",
+          isOpen: true,
+        },
+      ]);
+
+      count++;
+      const nextDelay = Math.max(25, 200 * Math.pow(0.8, count));
+      setTimeout(spawnError, nextDelay);
+    };
+
+    spawnError();
   };
 
   return (
@@ -167,6 +221,8 @@ export default function Index() {
             setFolders={setFolders}
             isEditing={isEditing}
             setIsEditing={setIsEditing}
+            setLoading={setLoading}
+            onDelete={handleDelete}
           />
           <Skills
             show={activeWindows.Skills}
@@ -253,6 +309,18 @@ export default function Index() {
       )}
       {loading === LoadingState.Black && (
         <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen" />
+      )}
+      {showBlueScreen && (
+        <BlueScreen
+          onRestart={() => {
+            setShowBlueScreen(false);
+            setShowAngryClippy(false);
+            setErrors([]);
+            setActiveWindows({});
+            setLoading(LoadingState.Initial);
+            setTimeout(() => setLoading(LoadingState.Desktop), 3900);
+          }}
+        />
       )}
     </>
   );

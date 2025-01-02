@@ -1,6 +1,11 @@
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { windows } from "data/windows";
+import { LoadingState, windows } from "data/windows";
+import { errorMessages } from "data/clippyMessages";
+import ErrorPopup from "./ErrorPopup";
+import Clippy from "./Clippy";
+import BlueScreen from "./BlueScreen";
+import RightClick from "./RightClick";
 
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 100;
@@ -29,6 +34,8 @@ interface DesktopIconsProps {
   isEditing?: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   bringWindowToFront: (windowTitle: string) => void;
+  setLoading: Dispatch<SetStateAction<LoadingState>>;
+  onDelete: (title: string | undefined, icon?: string | undefined) => void;
 }
 
 export default function DesktopIcons({
@@ -38,7 +45,102 @@ export default function DesktopIcons({
   isEditing,
   setIsEditing,
   bringWindowToFront,
+  setLoading,
+  onDelete,
 }: DesktopIconsProps) {
+  const [showBlueScreen, setShowBlueScreen] = useState(false);
+  const [showAngryClippy, setShowAngryClippy] = useState(false);
+  const [errorPopups, setErrorPopups] = useState<
+    Array<{ id: number; message: string }>
+  >([]);
+
+  const spawnErrorPopups = () => {
+    let count = 0;
+    const maxErrors = 100;
+
+    const spawnError = () => {
+      if (count >= maxErrors) {
+        setTimeout(() => setShowBlueScreen(true), 1000);
+        return;
+      }
+
+      setErrorPopups((prev) => [
+        ...prev,
+        {
+          id: Date.now() + Math.random(),
+          message:
+            errorMessages[Math.floor(Math.random() * errorMessages.length)],
+        },
+      ]);
+
+      count++;
+
+      let nextDelay;
+      if (count <= 3) {
+        nextDelay = 800 - count * 200;
+      } else {
+        nextDelay = Math.max(25, 200 * Math.pow(0.8, count - 3));
+      }
+
+      setTimeout(spawnError, nextDelay);
+    };
+
+    spawnError();
+  };
+
+  const handleRestart = () => {
+    setActiveWindows({});
+    setErrorPopups([]);
+    setShowBlueScreen(false);
+    setShowAngryClippy(false);
+
+    const clippyElement = document.querySelector(".clippy-normal");
+    if (clippyElement) {
+      clippyElement.remove();
+    }
+
+    setLoading(LoadingState.Initial);
+    setTimeout(() => setLoading(LoadingState.BIOS), 500);
+    setTimeout(() => setLoading(LoadingState.Boot1), 2000);
+    setTimeout(() => setLoading(LoadingState.Boot2), 3000);
+    setTimeout(() => setLoading(LoadingState.Black), 3600);
+    setTimeout(() => setLoading(LoadingState.Desktop), 3900);
+  };
+
+  const handleDelete = (title: string | undefined) => {
+    console.log("DesktopIcons - handleDelete called with:", title);
+
+    if (title === "Clippy.exe") {
+      console.log("DesktopIcons - Clippy.exe delete triggered");
+      const clippyElement = document.querySelector(".clippy-normal");
+      if (clippyElement) {
+        clippyElement.remove();
+      }
+      setShowAngryClippy(true);
+      spawnErrorPopups();
+    } else {
+      const isWindow = windows.some((window) => window.title === title);
+      console.log("DesktopIcons - Is window?", isWindow);
+
+      if (isWindow) {
+        console.log("DesktopIcons - Deleting window:", title);
+        setActiveWindows((prev) => {
+          const newState = { ...prev };
+          delete newState[title?.replace(" ", "_") || ""];
+          console.log("DesktopIcons - New active windows state:", newState);
+          return newState;
+        });
+      } else {
+        console.log("DesktopIcons - Deleting folder:", title);
+        setFolders((prev) => {
+          const newFolders = prev.filter((folder) => folder.title !== title);
+          console.log("DesktopIcons - New folders state:", newFolders);
+          return newFolders;
+        });
+      }
+    }
+  };
+
   const getIconPosition = (index: number) => {
     const column = Math.floor(index / ICONS_PER_COLUMN);
     const row = index % ICONS_PER_COLUMN;
@@ -59,68 +161,90 @@ export default function DesktopIcons({
   };
 
   return (
-    <div className="absolute bottom-0 left-0 w-screen h-screen">
-      {windows.map((window, index) => (
-        <DesktopIcon
-          key={window.title}
-          setActiveWindows={setActiveWindows}
-          title={window.title}
-          icon={window.icon}
-          defaultPosition={getIconPosition(index)}
-          isEditing={false}
-          setIsEditing={setIsEditing}
-          setFolders={setFolders}
-          onWindowOpen={handleWindowOpen}
-        />
-      ))}
-      {folders.map((folder, index) => (
-        <DesktopIcon
-          key={folder.title}
-          setActiveWindows={setActiveWindows}
-          title={folder.title}
-          icon={folder.icon}
-          id={folder.id}
-          defaultPosition={folder.pos}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          setFolders={setFolders}
-          onWindowOpen={handleWindowOpen}
-          onDragStop={(e, data) => {
-            setFolders((prev) => {
-              const newFolders = [...prev];
-              newFolders[index] = {
-                ...folder,
-                pos: { x: data.x, y: data.y },
-              };
-              return newFolders;
-            });
-          }}
-        />
-      ))}
-    </div>
+    <RightClick
+      setActiveWindows={setActiveWindows}
+      onDelete={handleDelete}
+      setFolders={setFolders}
+      setIsEditing={setIsEditing}
+    >
+      <>
+        <div className="absolute bottom-0 left-0 w-screen h-screen">
+          {windows.map((window, index) => (
+            <DesktopIcon
+              key={window.title}
+              setActiveWindows={setActiveWindows}
+              title={window.title}
+              icon={window.icon}
+              defaultPosition={getIconPosition(index)}
+              isEditing={false}
+              setIsEditing={setIsEditing}
+              setFolders={setFolders}
+              onWindowOpen={handleWindowOpen}
+              onDelete={onDelete}
+            />
+          ))}
+          {folders.map((folder, index) => (
+            <DesktopIcon
+              key={folder.title}
+              setActiveWindows={setActiveWindows}
+              title={folder.title}
+              icon={folder.icon}
+              id={folder.id}
+              defaultPosition={folder.pos}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              setFolders={setFolders}
+              onWindowOpen={handleWindowOpen}
+              onDelete={onDelete}
+              onDragStop={(e, data) => {
+                setFolders((prev) => {
+                  const newFolders = [...prev];
+                  newFolders[index] = {
+                    ...folder,
+                    pos: { x: data.x, y: data.y },
+                  };
+                  return newFolders;
+                });
+              }}
+            />
+          ))}
+        </div>
+        {showAngryClippy && (
+          <div className="fixed inset-0 z-[9998] pointer-events-none">
+            <Clippy isAngry={true} />
+          </div>
+        )}
+        {errorPopups.map((error) => (
+          <ErrorPopup
+            key={error.id}
+            message={error.message}
+            isOpen={true}
+            onClose={() => {
+              setErrorPopups((prev) =>
+                prev.filter((popup) => popup.id !== error.id)
+              );
+            }}
+            type="error"
+          />
+        ))}
+        {showBlueScreen && <BlueScreen onRestart={handleRestart} />}
+      </>
+    </RightClick>
   );
 }
 
 interface DesktopIconProps {
+  setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
   title: string;
   icon: string;
-  defaultPosition: { x: number; y: number };
-  setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
-  onDragStop?: (e: DraggableEvent, data: DraggableData) => void;
-  isEditing?: boolean;
-  setIsEditing: Dispatch<SetStateAction<boolean>>;
-  setFolders: Dispatch<
-    SetStateAction<
-      {
-        title: string;
-        pos: { x: number; y: number };
-        icon: string;
-        id: number;
-      }[]
-    >
-  >;
   id?: number;
+  defaultPosition: { x: number; y: number };
+  isEditing: boolean;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
+  setFolders: Dispatch<SetStateAction<typeof folders>>;
   onWindowOpen: (title: string) => void;
+  onDelete: (title: string | undefined, icon?: string | undefined) => void;
+  onDragStop?: (e: DraggableEvent, data: DraggableData) => void;
 }
 
 function DesktopIcon({
@@ -132,6 +256,7 @@ function DesktopIcon({
   setFolders,
   id,
   onWindowOpen,
+  onDelete,
 }: DesktopIconProps) {
   const [editedTitle, setEditedTitle] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);
