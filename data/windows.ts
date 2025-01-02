@@ -60,7 +60,7 @@ export const windows: Window[] = [
     defaultPosition: generateRandomPosition(600, 400, 5, existingPositions),
   },
   {
-    title: "clippy.exe",
+    title: "Clippy.exe",
     icon: "clippy_exe.png",
     defaultSize: { width: 0, height: 0 },
     defaultPosition: generateRandomPosition(0, 0, 0, existingPositions),
@@ -75,24 +75,12 @@ windows.forEach((window) => {
 });
 
 export const personal = {
-  title: "Personal",
-  icon: "start_logo.png",
-  name: "Elliot Strand Aaen",
-  age: `Age: ${(() => {
-    const birthday = new Date(2005, 8, 8);
-    const today = new Date();
-    let age = today.getFullYear() - birthday.getFullYear();
-    const m = today.getMonth() - birthday.getMonth();
-    const day = today.getDate() - birthday.getDate();
-    if (m < 0 || (m === 0 && day < 0)) {
-      age--;
-    }
-    return age;
-  })()}`,
-  email: "elliot@aaenz.com",
-  phone: "+47 46472369",
-  profession: "Software Developer",
-  linkedin: "https://www.linkedin.com/in/elliot-strand-aaen/",
+  name: "Elliot",
+  profession: "Full Stack Developer",
+  age: "19 years old",
+  email: "elliot@aaenics.com",
+  phone: "+47 476 89 595",
+  linkedin: "linkedin.com/in/elliot-aaen",
 };
 
 export const skills = {

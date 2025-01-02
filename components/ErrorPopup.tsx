@@ -1,82 +1,64 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
-import Draggable from "react-draggable";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface ErrorPopupProps {
-  title?: string;
   message: string;
   isOpen: boolean;
   onClose: () => void;
-  type?: "error" | "warning" | "info";
+  type: "error" | "warning" | "info";
 }
 
 export default function ErrorPopup({
-  title,
   message,
   isOpen,
   onClose,
-  type = "error",
+  type,
 }: ErrorPopupProps) {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const randomX = Math.random() * (window.innerWidth - 300);
+  const randomY = Math.random() * (window.innerHeight - 200);
 
-  useEffect(() => {
-    if (isOpen) {
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-      const popupWidth = 500;
-      const popupHeight = 200;
+  if (!isOpen) return null;
 
-      // Generate random position within screen bounds
-      const randomX = Math.random() * (screenWidth - popupWidth);
-      const randomY = Math.random() * (screenHeight - popupHeight);
-
-      setPosition({
-        x: randomX,
-        y: randomY,
-      });
-    }
-  }, [isOpen]);
-
-  const icons = Object.freeze({
-    error: "error.png",
-    warning: "warning.png",
-    info: "info.png",
-  });
-
-  console.log(position);
-
-  return position.x !== 0 && position.y !== 0 ? (
-    <AnimatePresence>
-      {isOpen && (
-        <Draggable handle=".window-title-bar" defaultPosition={position}>
-          <motion.div className="window z-50 flex flex-col shadow-xl absolute">
-            <div
-              className="window-title-bar flex justify-between items-center bg-gradient-to-b from-blue-500 to-blue-600 text-white rounded-t-lg border-t-4 border-x-4 border-blue-600 hover:cursor-grab active:cursor-grabbing overflow-x-hidden"
-              style={{ width: "500px" }}
-            >
-              <div className="flex gap-1.5 justify-start items-center ml-2 my-1">
-                <img src={icons[type]} alt={type} className="w-6 h-6" />
-                <div className="text-md">{title || "Windows"}</div>
-              </div>
-              <button
-                className="window-button bg-red-600 hover:bg-red-700 active:bg-red-800 rounded text-lg mr-1 my-1 border border-white flex items-center justify-center"
-                onClick={onClose}
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="bg-blue-50 border-4 border-blue-600">
-              <div className="p-4 flex gap-4 items-center">
-                <img src={icons[type]} alt={type} className="w-12 h-12" />
-                <p className="text-sm text-black max-w-[390px] overflow-x-hidden">
-                  {message}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </Draggable>
-      )}
-    </AnimatePresence>
-  ) : null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      className="fixed z-[9997]"
+      style={{ left: randomX, top: randomY }}
+    >
+      <div className="bg-white border-2 border-gray-300 shadow-lg w-[300px] overflow-hidden">
+        <div className="bg-[#000082] text-white px-2 py-1 flex justify-between items-center">
+          <span>Windows</span>
+          <button
+            onClick={onClose}
+            className="text-white hover:bg-red-500 px-2 py-0.5"
+          >
+            ×
+          </button>
+        </div>
+        <div className="p-4 flex gap-4">
+          <img
+            src={
+              type === "error"
+                ? "error.png"
+                : type === "warning"
+                ? "warning.png"
+                : "info.png"
+            }
+            alt={type}
+            className="w-10 h-10"
+          />
+          <p className="text-sm">{message}</p>
+        </div>
+        <div className="bg-gray-100 p-2 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-1 bg-[#000082] text-white hover:bg-[#0000a8] active:bg-[#00006f]"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
 }

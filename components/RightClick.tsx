@@ -9,7 +9,7 @@ interface ChildProps {
 interface RightClickProps {
   children: React.ReactElement<ChildProps>;
   setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
-  onDelete: (title: string | undefined, icon?: string | undefined) => void;
+  onDelete: (title: string | undefined) => void;
   setFolders: Dispatch<
     SetStateAction<
       {
@@ -54,10 +54,15 @@ export default function RightClick({
     const handleClick = () => setShowMenu(false);
     const handleGlobalContextMenu = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+
+      // Check if we're inside a window by looking for window-specific elements
       const isWindow =
         target.closest('[role="window"]') ||
         target.closest('[role="dialog"]') ||
+        target.closest('[role="window"]') ||
         target.closest(".window-title-bar");
+
+      // Check for start menu and navbar
       const isStartMenu = target.closest('[data-component="start-menu"]');
       const isNavbar = target.closest('[data-component="navbar"]');
 
@@ -134,53 +139,24 @@ export default function RightClick({
     });
   };
 
-  const handleDelete = () => {
-    console.log("RightClick - Delete clicked", {
-      context: position.context,
-      title: position.data?.title,
-      icon: position.data?.icon,
-    });
-
-    if (position.context === "icon" && position.data?.title) {
-      console.log(
-        "RightClick - Calling onDelete with:",
-        position.data.title,
-        position.data.icon
-      );
-      onDelete(position.data.title, position.data.icon);
-      setShowMenu(false);
-    }
-  };
-
-  const handleDelete = () => {
-    setShowMenu(false);
-    onDelete(position.data?.title);
-  };
-
   const getMenuItems = () => {
     if (position.context === "icon" && position.data) {
       const isFolder = position.data.icon?.includes("folder.png");
-      const isClippy = position.data.title === "Clippy.exe";
       return (
         <>
           <MenuItem
             text="Open"
             onClick={() => {
-              const windowTitle = position.data?.title?.replace(" ", "_") || "";
               setActiveWindows((prev) => ({
                 ...prev,
-                [windowTitle]: true,
+                [position.data?.title?.replace(" ", "_") || ""]: true,
               }));
               setShowMenu(false);
             }}
           />
           <div className="h-[1px] bg-gray-200 mx-1" />
           <MenuItem text="Create Shortcut" disabled />
-          <MenuItem
-            text="Delete"
-            onClick={handleDelete}
-            className={isClippy ? "text-red-600 hover:text-red-800" : ""}
-          />
+          <MenuItem text="Delete" onClick={handleDelete} />
           <div className="h-[1px] bg-gray-200 mx-1" />
           <MenuItem
             text="Rename"
@@ -225,6 +201,11 @@ export default function RightClick({
     );
   };
 
+  const handleDelete = () => {
+    setShowMenu(false);
+    onDelete(position.data?.title);
+  };
+
   return (
     <div onContextMenu={handleContextMenu} className="h-full w-full">
       {children}
@@ -252,15 +233,9 @@ interface MenuItemProps {
   text: string;
   onClick?: () => void;
   disabled?: boolean;
-  className?: string;
 }
 
-function MenuItem({
-  text,
-  onClick,
-  disabled = false,
-  className = "",
-}: MenuItemProps) {
+function MenuItem({ text, onClick, disabled = false }: MenuItemProps) {
   return (
     <button
       onClick={(e) => {
@@ -271,7 +246,7 @@ function MenuItem({
       className={`w-full text-left px-4 py-1.5 text-sm ${
         disabled
           ? "text-gray-400 cursor-default"
-          : `text-black hover:bg-blue-100 cursor-pointer ${className}`
+          : "text-black hover:bg-blue-100 cursor-pointer"
       }`}
     >
       {text}

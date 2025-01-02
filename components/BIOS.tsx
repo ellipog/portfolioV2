@@ -1,4 +1,4 @@
-import { personal } from "data/windows";
+import { personal } from "../data/windows";
 import { motion } from "framer-motion";
 
 export default function BIOS() {

@@ -1,69 +1,22 @@
-import { useEffect, useState } from "react";
-import { MetaFunction } from "@remix-run/react";
-import { LoadingState, windows } from "data/windows";
-
-import Navbar from "components/Navbar";
-import Skills from "components/windows/Skills";
-import Projects from "components/windows/Projects";
-import WorkExperience from "components/windows/WorkExperience";
-import Clippy from "components/Clippy";
-import Minesweeper from "components/windows/Minesweeper";
-import Education from "components/windows/Education";
-import BIOS from "components/BIOS";
-import DesktopIcons from "components/DesktopIcons";
-import RightClick from "components/RightClick";
-import ErrorPopup from "components/ErrorPopup";
-import BlueMarker from "components/BlueMarker";
-import BlueScreen from "components/BlueScreen";
-interface ErrorInstance {
-  id: number;
-  title: string | undefined;
-  isOpen: boolean;
-}
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Elliot's Windows XP Portfolio" },
-    {
-      name: "description",
-      content: "Windows XP style portfolio. ",
-    },
-    { name: "theme-color", content: "#245EDC" }, // Windows XP blue
-    { property: "og:title", content: "Elliot's Windows XP Portfolio" },
-    {
-      property: "og:description",
-      content: "Windows XP style portfolio. ",
-    },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: "/desktop_bg.png" }, // Make sure this is a full URL in production
-    { property: "og:url", content: "https://your-domain.com" }, // Replace with your actual domain
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: "Elliot's Windows XP Portfolio" },
-    {
-      name: "twitter:description",
-      content: "Windows XP style portfolio. ",
-    },
-    { name: "twitter:image", content: "/desktop_bg.png" }, // Make sure this is a full URL in production
-  ];
-};
+import { useState, useEffect } from "react";
+import { LoadingState } from "../../data/windows";
+import DesktopIcons from "../../components/DesktopIcons";
+import RightClick from "../../components/RightClick";
+import Skills from "../../components/windows/Skills";
+import Projects from "../../components/windows/Projects";
+import WorkExperience from "../../components/windows/WorkExperience";
+import Education from "../../components/windows/Education";
+import Minesweeper from "../../components/windows/Minesweeper";
+import Navbar from "../../components/Navbar";
+import Clippy from "../../components/Clippy";
+import BIOS from "../../components/BIOS";
 
 export default function Index() {
-  const [activeWindows, setActiveWindows] = useState<Record<string, boolean>>({
-    Skills: false,
-    Projects: false,
-    Work_Experience: false,
-    Minesweeper: false,
-    Education: false,
-  });
-
-  const [windowOrder, setWindowOrder] = useState<string[]>([
-    "Skills",
-    "Projects",
-    "Work_Experience",
-    "Minesweeper",
-    "Education",
-  ]);
-
+  const [loading, setLoading] = useState<LoadingState>(LoadingState.Initial);
+  const [activeWindows, setActiveWindows] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [windowOrder, setWindowOrder] = useState<string[]>([]);
   const [folders, setFolders] = useState<
     {
       title: string;
@@ -72,6 +25,17 @@ export default function Index() {
       id: number;
     }[]
   >([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [showStartMenu, setShowStartMenu] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(LoadingState.BIOS), 500);
+    setTimeout(() => setLoading(LoadingState.Boot1), 2000);
+    setTimeout(() => setLoading(LoadingState.Boot2), 3000);
+    setTimeout(() => setLoading(LoadingState.Black), 3600);
+    setTimeout(() => setLoading(LoadingState.Desktop), 3900);
+  }, []);
 
   const bringWindowToFront = (windowTitle: string) => {
     setWindowOrder((prev) => {
@@ -80,139 +44,12 @@ export default function Index() {
     });
   };
 
-  const [loading, setLoading] = useState<LoadingState>(LoadingState.Initial);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [errors, setErrors] = useState<
-    Array<{ id: number; title?: string; isOpen: boolean }>
-  >([]);
-  const [nextErrorId, setNextErrorId] = useState(0);
-  const [isEditing, setIsEditing] = useState(false);
-  const [showBlueScreen, setShowBlueScreen] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(LoadingState.BIOS);
-    }, 500); // Show BIOS for 2 seconds
-    const timer2 = setTimeout(() => {
-      setLoading(LoadingState.Boot1);
-    }, 2000);
-    const timer3 = setTimeout(() => {
-      setLoading(LoadingState.Boot2);
-    }, 3000);
-    const timer4 = setTimeout(() => {
-      setLoading(LoadingState.Black);
-    }, 3600);
-    const timer5 = setTimeout(() => {
-      setLoading(LoadingState.Desktop);
-    }, 3900);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-      clearTimeout(timer5);
-    };
-  }, []);
-
-  const handleDelete = (
-    title: string | undefined,
-    icon?: string | undefined
-  ) => {
-    setErrors((prev) => [
-      ...prev,
-      {
-        id: nextErrorId,
-        title: title,
-        isOpen: true,
-      },
-    ]);
-    setNextErrorId((prev) => prev + 1);
+  const handleDelete = (title: string | undefined) => {
+    // Handle delete logic here
   };
 
   return (
     <>
-      <RightClick
-        setActiveWindows={setActiveWindows}
-        onDelete={handleDelete}
-        setFolders={setFolders}
-        setIsEditing={setIsEditing}
-      >
-        <div
-          className={
-            loading !== LoadingState.Desktop
-              ? "hidden"
-              : "flex p-0 m-0 h-[calc(100vh-56px)] w-full"
-          }
-        >
-          <img
-            src="desktop_bg.png"
-            alt="bg"
-            className="absolute w-full h-screen object-cover"
-          />
-          <DesktopIcons
-            setActiveWindows={setActiveWindows}
-            bringWindowToFront={bringWindowToFront}
-            folders={folders}
-            setFolders={setFolders}
-            isEditing={isEditing}
-            setIsEditing={setIsEditing}
-            setLoading={setLoading}
-            onDelete={handleDelete}
-          />
-          <Skills
-            show={activeWindows.Skills}
-            setActiveWindows={setActiveWindows}
-            windowOrder={windowOrder}
-            bringToFront={() => bringWindowToFront("Skills")}
-          />
-          <Projects
-            show={activeWindows.Projects}
-            setActiveWindows={setActiveWindows}
-            windowOrder={windowOrder}
-            bringToFront={() => bringWindowToFront("Projects")}
-          />
-          <WorkExperience
-            show={activeWindows.Work_Experience}
-            setActiveWindows={setActiveWindows}
-            windowOrder={windowOrder}
-            bringToFront={() => bringWindowToFront("Work_Experience")}
-          />
-          <Minesweeper
-            show={activeWindows.Minesweeper}
-            setActiveWindows={setActiveWindows}
-            windowOrder={windowOrder}
-            bringToFront={() => bringWindowToFront("Minesweeper")}
-          />
-          <Education
-            show={activeWindows.Education}
-            setActiveWindows={setActiveWindows}
-            windowOrder={windowOrder}
-            bringToFront={() => bringWindowToFront("Education")}
-          />
-          <Navbar
-            activeWindows={activeWindows}
-            setActiveWindows={setActiveWindows}
-            bringWindowToFront={bringWindowToFront}
-          />
-          <Clippy />
-          <BlueMarker />
-          {errors.map((error) => (
-            <ErrorPopup
-              key={error.id}
-              isOpen={error.isOpen}
-              onClose={() => {
-                setErrors((prev) => prev.filter((e) => e.id !== error.id));
-              }}
-              title="Windows"
-              message={`Cannot delete '${error.title}'. This action is not allowed in the portfolio demo.`}
-              type="error"
-            />
-          ))}
-        </div>
-      </RightClick>
-
-      {/* Loading Screens */}
       {loading === LoadingState.BIOS && (
         <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen text-white font-mono">
           <BIOS />
@@ -246,16 +83,77 @@ export default function Index() {
       {loading === LoadingState.Black && (
         <div className="fixed inset-0 z-50 flex p-0 m-0 bg-black h-screen" />
       )}
-      {showBlueScreen && (
-        <BlueScreen
-          onRestart={() => {
-            setShowBlueScreen(false);
-            setErrors([]);
-            setActiveWindows({});
-            setLoading(LoadingState.Initial);
-            setTimeout(() => setLoading(LoadingState.Desktop), 3900);
-          }}
-        />
+      {loading === LoadingState.Desktop && (
+        <>
+          <RightClick
+            setActiveWindows={setActiveWindows}
+            onDelete={handleDelete}
+            setFolders={setFolders}
+            setIsEditing={setIsEditing}
+          >
+            <div
+              className={
+                loading !== LoadingState.Desktop
+                  ? "hidden"
+                  : "flex p-0 m-0 h-[calc(100vh-56px)] w-full"
+              }
+            >
+              <img
+                src="desktop_bg.png"
+                alt="bg"
+                className="absolute w-full h-screen object-cover"
+              />
+              <DesktopIcons
+                setActiveWindows={setActiveWindows}
+                bringWindowToFront={bringWindowToFront}
+                folders={folders}
+                setFolders={setFolders}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                setLoading={setLoading}
+                onDelete={handleDelete}
+              />
+              <Skills
+                show={activeWindows.Skills}
+                setActiveWindows={setActiveWindows}
+                windowOrder={windowOrder}
+                bringToFront={() => bringWindowToFront("Skills")}
+              />
+              <Projects
+                show={activeWindows.Projects}
+                setActiveWindows={setActiveWindows}
+                windowOrder={windowOrder}
+                bringToFront={() => bringWindowToFront("Projects")}
+              />
+              <WorkExperience
+                show={activeWindows.Work_Experience}
+                setActiveWindows={setActiveWindows}
+                windowOrder={windowOrder}
+                bringToFront={() => bringWindowToFront("Work_Experience")}
+              />
+              <Education
+                show={activeWindows.Education}
+                setActiveWindows={setActiveWindows}
+                windowOrder={windowOrder}
+                bringToFront={() => bringWindowToFront("Education")}
+              />
+              <Minesweeper
+                show={activeWindows.Minesweeper}
+                setActiveWindows={setActiveWindows}
+                windowOrder={windowOrder}
+                bringToFront={() => bringWindowToFront("Minesweeper")}
+              />
+            </div>
+          </RightClick>
+          <Navbar
+            showStartMenu={showStartMenu}
+            setShowStartMenu={setShowStartMenu}
+            activeWindows={activeWindows}
+            setActiveWindows={setActiveWindows}
+            bringWindowToFront={bringWindowToFront}
+          />
+          <Clippy />
+        </>
       )}
     </>
   );

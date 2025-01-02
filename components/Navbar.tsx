@@ -3,17 +3,22 @@ import StartMenu from "./StartMenu";
 import { windows } from "data/windows";
 import { AnimatePresence, motion } from "framer-motion";
 
+interface NavbarProps {
+  activeWindows: Record<string, boolean>;
+  setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
+  bringWindowToFront: (windowTitle: string) => void;
+  showStartMenu: boolean;
+  setShowStartMenu: Dispatch<SetStateAction<boolean>>;
+}
+
 export default function Navbar({
   activeWindows,
   setActiveWindows,
   bringWindowToFront,
-}: {
-  activeWindows: Record<string, boolean>;
-  setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
-  bringWindowToFront: (windowTitle: string) => void;
-}) {
+  showStartMenu,
+  setShowStartMenu,
+}: NavbarProps) {
   const [time, setTime] = useState(new Date().toLocaleTimeString("no"));
-  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
   const [startMenuClippy, setStartMenuClippy] = useState(0);
 
   useEffect(() => {
@@ -25,10 +30,10 @@ export default function Navbar({
   }, []);
 
   useEffect(() => {
-    if (isStartMenuOpen) {
+    if (showStartMenu) {
       setStartMenuClippy(2);
     }
-  }, [isStartMenuOpen]);
+  }, [showStartMenu]);
 
   useEffect(() => {
     if (startMenuClippy === 0) {
@@ -55,15 +60,15 @@ export default function Navbar({
   return (
     <>
       <StartMenu
-        isOpen={isStartMenuOpen}
-        onClose={() => setIsStartMenuOpen(false)}
+        isOpen={showStartMenu}
+        onClose={() => setShowStartMenu(false)}
         setActiveWindows={setActiveWindows}
         bringWindowToFront={bringWindowToFront}
       />
       <div className="navbar fixed w-full h-14 bottom-0 flex justify-between items-center bg-gradient-to-b from-blue-400 to-blue-700 z-50">
         {/* START BAR */}
         <button
-          onClick={() => setIsStartMenuOpen(!isStartMenuOpen)}
+          onClick={() => setShowStartMenu(!showStartMenu)}
           className="flex w-[164px] gap-2 pl-4 pr-6 bg-gradient-to-b from-green-400 to-green-700 hover:from-green-500 hover:to-green-800 active:from-green-600 active:to-green-900 h-14 justify-center items-center rounded-r-xl text-white text-shadow cursor-pointer transition-colors ease-in-out"
         >
           <img src="start_logo.png" alt="start" className="w-9 h-8" />
