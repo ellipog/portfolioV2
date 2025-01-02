@@ -87,7 +87,6 @@ export default function Index() {
   >([]);
   const [nextErrorId, setNextErrorId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
-  const [showAngryClippy, setShowAngryClippy] = useState(false);
   const [showBlueScreen, setShowBlueScreen] = useState(false);
 
   useEffect(() => {
@@ -120,82 +119,19 @@ export default function Index() {
     title: string | undefined,
     icon?: string | undefined
   ) => {
-    console.log("Index - handleDelete called with:", { title, icon });
-
-    if (title?.toLowerCase() === "clippy.exe") {
-      console.log("Index - Clippy.exe delete triggered");
-      const clippyElement = document.querySelector(".clippy-normal");
-      if (clippyElement) {
-        clippyElement.remove();
-      }
-      setShowAngryClippy(true);
-      spawnErrorPopups();
-      return;
-    }
-
-    // Handle window deletion
-    const isWindow = windows.some(
-      (window) => window.title.toLowerCase() === title?.toLowerCase()
-    );
-    console.log("Index - Is window?", isWindow);
-
-    if (isWindow) {
-      console.log("Index - Adding error for window:", title);
-      setErrors((prev) => [
-        ...prev,
-        {
-          id: nextErrorId,
-          title: title,
-          isOpen: true,
-        },
-      ]);
-      setNextErrorId((prev) => prev + 1);
-      return;
-    }
-
-    // Handle folder deletion
-    console.log("Index - Deleting folder:", title);
-    setFolders((prev) => prev.filter((folder) => folder.title !== title));
-  };
-
-  const handleWindowOpen = (windowTitle: string) => {
-    setActiveWindows((prev) => ({
+    setErrors((prev) => [
       ...prev,
-      [windowTitle]: true,
-    }));
-    bringWindowToFront(windowTitle);
-  };
-
-  const spawnErrorPopups = () => {
-    let count = 0;
-    const maxErrors = 100;
-
-    const spawnError = () => {
-      if (count >= maxErrors) {
-        setTimeout(() => setShowBlueScreen(true), 1000);
-        return;
-      }
-
-      setErrors((prev) => [
-        ...prev,
-        {
-          id: Date.now() + Math.random(),
-          title: "Critical Error",
-          isOpen: true,
-        },
-      ]);
-
-      count++;
-      const nextDelay = Math.max(25, 200 * Math.pow(0.8, count));
-      setTimeout(spawnError, nextDelay);
-    };
-
-    spawnError();
+      {
+        id: nextErrorId,
+        title: title,
+        isOpen: true,
+      },
+    ]);
+    setNextErrorId((prev) => prev + 1);
   };
 
   return (
     <>
-      {/* Desktop Content - Always rendered but hidden during loading */}
       <RightClick
         setActiveWindows={setActiveWindows}
         onDelete={handleDelete}
@@ -314,7 +250,6 @@ export default function Index() {
         <BlueScreen
           onRestart={() => {
             setShowBlueScreen(false);
-            setShowAngryClippy(false);
             setErrors([]);
             setActiveWindows({});
             setLoading(LoadingState.Initial);

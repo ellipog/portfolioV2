@@ -191,7 +191,7 @@ export default function DesktopIcons({
               icon={folder.icon}
               id={folder.id}
               defaultPosition={folder.pos}
-              isEditing={isEditing}
+              isEditing={isEditing || false}
               setIsEditing={setIsEditing}
               setFolders={setFolders}
               onWindowOpen={handleWindowOpen}
@@ -241,7 +241,19 @@ interface DesktopIconProps {
   defaultPosition: { x: number; y: number };
   isEditing: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
-  setFolders: Dispatch<SetStateAction<typeof folders>>;
+  setFolders: Dispatch<
+    SetStateAction<
+      {
+        title: string;
+        pos: {
+          x: number;
+          y: number;
+        };
+        icon: string;
+        id: number;
+      }[]
+    >
+  >;
   onWindowOpen: (title: string) => void;
   onDelete: (title: string | undefined, icon?: string | undefined) => void;
   onDragStop?: (e: DraggableEvent, data: DraggableData) => void;

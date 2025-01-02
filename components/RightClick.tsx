@@ -152,6 +152,11 @@ export default function RightClick({
     }
   };
 
+  const handleDelete = () => {
+    setShowMenu(false);
+    onDelete(position.data?.title);
+  };
+
   const getMenuItems = () => {
     if (position.context === "icon" && position.data) {
       const isFolder = position.data.icon?.includes("folder.png");
