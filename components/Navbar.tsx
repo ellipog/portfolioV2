@@ -95,17 +95,19 @@ export default function Navbar({
         </AnimatePresence>
         {/* ICON BAR */}
         <div className="flex w-full gap-2 h-12 ml-4 justify-start items-center rounded-l-xl text-white font-bold text-shadow">
-          {windows.map((window) => (
-            <button
-              key={window.title}
-              className={`app-icon flex flex-col items-center justify-center h-10 w-10 rounded-lg transition-all duration-200 ease-in-out ${
-                activeWindows[window.title] ? "bg-white/50" : "bg-white/10"
-              }`}
-              onClick={() => handleWindowClick(window.title)}
-            >
-              <img src={window.icon} alt={window.title} className="w-7 h-7" />
-            </button>
-          ))}
+          {windows
+            .filter((window) => !window.isClippyExe)
+            .map((window) => (
+              <button
+                key={window.title}
+                className={`app-icon flex flex-col items-center justify-center h-10 w-10 rounded-lg transition-all duration-200 ease-in-out ${
+                  activeWindows[window.title] ? "bg-white/50" : "bg-white/10"
+                }`}
+                onClick={() => handleWindowClick(window.title)}
+              >
+                <img src={window.icon} alt={window.title} className="w-7 h-7" />
+              </button>
+            ))}
         </div>
         {/* END BAR */}
         <div className="flex gap-2 pr-4 pl-6 bg-gradient-to-b from-cyan-400 to-cyan-700 h-14 justify-center items-center rounded-l-xl text-white text-shadow">

@@ -43,17 +43,19 @@ export default function StartMenu({
 
             {/* Menu Items */}
             <div className="p-2 space-y-1 text-black">
-              {windows.map((window) => (
-                <MenuItem
-                  key={window.title}
-                  icon={window.icon}
-                  text={window.title.replace("_", " ")}
-                  copy={false}
-                  type="app"
-                  setActiveWindows={setActiveWindows}
-                  bringWindowToFront={bringWindowToFront}
-                />
-              ))}
+              {windows
+                .filter((window) => !window.isClippyExe)
+                .map((window) => (
+                  <MenuItem
+                    key={window.title}
+                    icon={window.icon}
+                    text={window.title.replace("_", " ")}
+                    copy={false}
+                    type="app"
+                    setActiveWindows={setActiveWindows}
+                    bringWindowToFront={bringWindowToFront}
+                  />
+                ))}
             </div>
 
             {/* Bottom Section */}
