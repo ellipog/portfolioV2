@@ -279,10 +279,10 @@ export const workExperience = {
   icon: "work_experience.png",
   workExperience: [
     {
-      name: "Skatteetaten",
+      name: "Skatteetaten (Innovasjon/Folkeregisteret)",
       role: "Software Developer",
       year: "2023 AUG - NOW",
-      description: `Working on internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more. 
+      description: `Working on internal tools, Bikube, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more. 
       Working in a scrum team with 9 people.`,
       isMinor: false,
     },
