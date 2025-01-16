@@ -213,7 +213,7 @@ export const projects = {
       name: "My Awesome Cool Website",
       link: "https://myawesomecoolwebsite.aaenz.no",
       image: "myawesomecoolwebsite.png",
-      year: "2024",
+      year: "2025",
       description: `A fun website thats made to look like a early 2000's personal page. `,
       languages: ["TypeScript", "NextJS", "TailwindCSS", "Bun", "MongoDB"],
     },
