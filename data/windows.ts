@@ -205,7 +205,7 @@ export const projects = {
       name: "Portfolio V2",
       link: "https://github.com/Ellipog/portfolioV2",
       image: "github.png",
-      year: "2024",
+      year: "2025",
       description: `Upgraded portfolio. Made to look like Windows XP.`,
       languages: ["TypeScript", "Remix", "TailwindCSS", "Bun"],
     },
