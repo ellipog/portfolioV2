@@ -210,6 +210,14 @@ export const projects = {
       languages: ["TypeScript", "Remix", "TailwindCSS", "Bun"],
     },
     {
+      name: "My Awesome Cool Website",
+      link: "https://myawesomecoolwebsite.aaenz.no",
+      image: "myawesomecoolwebsite.png",
+      year: "2024",
+      description: `A fun website thats made to look like a early 2000's personal page. `,
+      languages: ["TypeScript", "NextJS", "TailwindCSS", "Bun", "MongoDB"],
+    },
+    {
       name: "Forsinka",
       link: "https://github.com/Ellipog/Forsinka",
       image: "github.png",
