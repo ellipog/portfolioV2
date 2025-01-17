@@ -1,40 +1,102 @@
-# Welcome to Remix!
+# Windows XP Portfolio Website
 
-- 📖 [Remix docs](https://remix.run/docs)
+A nostalgic Windows XP-themed portfolio website built with React, Remix, and TypeScript. Experience the classic Windows XP interface with modern web technologies.
 
-## Development
+![Desktop Preview](public/desktop_bg.png)
 
-Run the dev server:
+## 🖥️ Features
 
-```shellscript
-npm run dev
+- **Authentic Windows XP Experience**
+
+  - Classic boot sequence with BIOS screen
+  - Windows XP-style desktop interface
+  - Interactive start menu and taskbar
+  - Draggable and resizable windows
+  - Right-click context menu
+  - System sounds and effects
+
+- **Interactive Elements**
+
+  - Clippy assistant with dynamic messages
+  - Minesweeper game
+  - Desktop icons
+  - Error popups
+  - Blue screen of death (BSOD)
+  - Window management system
+
+- **Portfolio Sections**
+  - Skills
+  - Projects
+  - Work Experience
+  - Education
+  - Contact Information
+
+## 🛠️ Tech Stack
+
+- React
+- Remix
+- TypeScript
+- Tailwind CSS
+- Bun
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/portfolioV2.git
+cd portfolioV2
 ```
 
-## Deployment
+2. Install dependencies:
 
-First, build your app for production:
-
-```sh
-npm run build
+```bash
+bun install
 ```
 
-Then run the app in production mode:
+3. Run the development server:
 
-```sh
-npm start
+```bash
+bun run dev
 ```
 
-Now you'll need to pick a host to deploy it to.
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### DIY
+## 🎮 Usage
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
+- Click on desktop icons to open corresponding windows
+- Use the Start Menu to navigate between different sections
+- Right-click anywhere for the context menu
+- Interact with Clippy for assistance (don't try to delete him!)
+- Play Minesweeper for fun
+- Drag windows to rearrange them
+- Minimize, maximize, or close windows using the window controls
 
-Make sure to deploy the output of `npm run build`
+## 📁 Project Structure
 
-- `build/server`
-- `build/client`
+```
+portfolioV2/
+├── app/
+│   ├── routes/         # Route components
+│   └── tailwind.css    # Tailwind styles
+├── components/         # React components
+│   ├── windows/        # Window components
+│   ├── StartMenu.tsx   # Start menu component
+│   ├── Navbar.tsx     # Taskbar component
+│   └── ...
+├── data/              # Static data and configurations
+├── public/            # Static assets
+│   ├── audio/         # System sounds
+│   ├── skills/        # Skill icons
+│   └── ...
+└── utils/             # Utility functions
+```
 
-## Styling
+## 🎨 Customization
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+The website can be customized by modifying:
+
+- `data/windows.ts` - Window configurations and content
+- `data/clippyMessages.ts` - Clippy's messages
+- `public/` - Images and audio files
+- `tailwind.css` - Styling customizations
