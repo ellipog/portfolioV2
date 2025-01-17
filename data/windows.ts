@@ -210,6 +210,14 @@ export const projects = {
       languages: ["TypeScript", "Remix", "TailwindCSS", "Bun"],
     },
     {
+      name: "My Recipes",
+      link: "https://recipes.aaenz.no",
+      image: "myrecipes.png",
+      year: "2025",
+      description: `A website utilizing AI to generate recipes based on ingredients, utilities, allergies, etc. `,
+      languages: ["TypeScript", "NextJS", "TailwindCSS", "MongoDB", "OpenAI"],
+    },
+    {
       name: "My Awesome Cool Website",
       link: "https://myawesomecoolwebsite.aaenz.no",
       image: "myawesomecoolwebsite.png",
