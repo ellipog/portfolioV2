@@ -226,6 +226,14 @@ export const projects = {
       languages: ["TypeScript", "NextJS", "TailwindCSS", "Bun", "MongoDB"],
     },
     {
+      name: "Wordle ∞",
+      link: "https://wordle.aaenz.no",
+      image: "wordle.png",
+      year: "2025",
+      description: `A wordle clone, but without the daily limit. `,
+      languages: ["TypeScript", "NextJS", "TailwindCSS", "Bun"],
+    },
+    {
       name: "Forsinka",
       link: "https://github.com/Ellipog/Forsinka",
       image: "github.png",
