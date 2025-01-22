@@ -228,7 +228,7 @@ export const projects = {
     {
       name: "Wordle ∞",
       link: "https://wordle.aaenz.no",
-      image: "wordle.png",
+      image: "wordle.jpeg",
       year: "2025",
       description: `A wordle clone, but without the daily limit. `,
       languages: ["TypeScript", "NextJS", "TailwindCSS", "Bun"],
