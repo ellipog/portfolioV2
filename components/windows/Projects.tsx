@@ -28,7 +28,7 @@ export default function Projects({
     >
       <div className="relative">
         <div
-          className="text-black flex flex-col gap-4 max-w-[560px] max-h-[500px] overflow-y-scroll p-2 winxp-scrollbar"
+          className="text-black flex flex-col gap-4 max-w-[560px] max-h-[730px] overflow-y-scroll p-2 winxp-scrollbar"
           onScroll={(e) => {
             const target = e.target as HTMLDivElement;
             const isAtBottom =

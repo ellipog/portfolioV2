@@ -37,8 +37,8 @@ export const windows: Window[] = [
   {
     title: "Projects",
     icon: "projects.png",
-    defaultSize: { width: 600, height: 500 },
-    defaultPosition: generateRandomPosition(600, 500, 2, existingPositions),
+    defaultSize: { width: 600, height: 730 },
+    defaultPosition: generateRandomPosition(600, 730, 2, existingPositions),
   },
   {
     title: "Work_Experience",
@@ -191,7 +191,7 @@ export const projects = {
       link: "https://skatteetaten.no/",
       image: "skatteetaten.jpeg",
       year: "2023 - NOW",
-      description: `Employed. Internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more.`,
+      description: `Employed. Internal tools, Innflyttingsportalen, Utflyttingsportalen, Bikube, Bananflue, and more.`,
       languages: [
         "JavaScript",
         "TypeScript",
@@ -208,6 +208,14 @@ export const projects = {
       year: "2025",
       description: `Upgraded portfolio. Made to look like Windows XP.`,
       languages: ["TypeScript", "Remix", "TailwindCSS", "Bun"],
+    },
+    {
+      name: "Web Portal",
+      link: "https://aaenz.no",
+      image: "webportal.png",
+      year: "2025",
+      description: `A subdomain scraper that displays all the websites on the domain aaenz.no.`,
+      languages: ["TypeScript", "NextJS", "TailwindCSS"],
     },
     {
       name: "My Recipes",

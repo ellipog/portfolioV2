@@ -17,12 +17,6 @@ import BlueMarker from "components/BlueMarker";
 import BlueScreen from "components/BlueScreen";
 import { playSound } from "utils/playSound";
 
-interface ErrorInstance {
-  id: number;
-  title: string | undefined;
-  isOpen: boolean;
-}
-
 export const meta: MetaFunction = () => {
   return [
     { title: "Elliot's Windows XP Portfolio" },
@@ -174,14 +168,6 @@ export default function Index() {
     );
   };
 
-  const handleWindowOpen = (windowTitle: string) => {
-    setActiveWindows((prev) => ({
-      ...prev,
-      [windowTitle]: true,
-    }));
-    bringWindowToFront(windowTitle);
-  };
-
   const spawnErrorPopups = () => {
     let count = 0;
     const maxErrors = 120;
@@ -242,7 +228,6 @@ export default function Index() {
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             bringWindowToFront={bringWindowToFront}
-            onDelete={handleDelete}
             showAngryClippy={showAngryClippy}
             setShowAngryClippy={setShowAngryClippy}
           />
