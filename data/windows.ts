@@ -218,6 +218,22 @@ export const projects = {
       languages: ["TypeScript", "NextJS", "TailwindCSS"],
     },
     {
+      name: "Chat",
+      link: "https://chat.aaenz.no",
+      image: "chat_icon.png",
+      year: "2025",
+      description: `AI chatbot that remembers info about you, conversation history, and more. `,
+      languages: [
+        "TypeScript",
+        "NextJS",
+        "TailwindCSS",
+        "MongoDB",
+        "OpenAI",
+        "BCrypt",
+        "JWT",
+      ],
+    },
+    {
       name: "My Recipes",
       link: "https://recipes.aaenz.no",
       image: "myrecipes.png",
@@ -240,6 +256,14 @@ export const projects = {
       year: "2025",
       description: `A wordle clone, but without the daily limit. `,
       languages: ["TypeScript", "NextJS", "TailwindCSS", "Bun"],
+    },
+    {
+      name: "ccGPT",
+      link: "https://github.com/Ellipog/ccGPT",
+      image: "github.png",
+      year: "2025",
+      description: `ComputerCraft AI chatbot, chat with gpt from inside Minecraft. `,
+      languages: ["Lua", "ExpressJS", "OpenAI", "Node.js"],
     },
     {
       name: "Forsinka",
