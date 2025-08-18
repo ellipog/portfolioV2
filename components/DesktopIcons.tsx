@@ -32,7 +32,6 @@ interface DesktopIconsProps {
   isEditing?: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   bringWindowToFront: (windowTitle: string) => void;
-  onDelete: (title: string | undefined, icon?: string | undefined) => void;
   showAngryClippy: boolean;
   setShowAngryClippy: Dispatch<SetStateAction<boolean>>;
 }
@@ -44,7 +43,6 @@ export default function DesktopIcons({
   isEditing,
   setIsEditing,
   bringWindowToFront,
-  onDelete,
   showAngryClippy,
   setShowAngryClippy,
 }: DesktopIconsProps) {
@@ -98,7 +96,6 @@ export default function DesktopIcons({
             setIsEditing={setIsEditing}
             setFolders={setFolders}
             onWindowOpen={handleWindowOpen}
-            onDelete={onDelete}
           />
         ))}
         {folders.map((folder, index) => (
@@ -113,7 +110,6 @@ export default function DesktopIcons({
             setIsEditing={setIsEditing}
             setFolders={setFolders}
             onWindowOpen={handleWindowOpen}
-            onDelete={onDelete}
             onDragStop={(e, data) => {
               setFolders((prev) => {
                 const newFolders = [...prev];
@@ -169,7 +165,6 @@ interface DesktopIconProps {
     >
   >;
   onWindowOpen: (title: string) => void;
-  onDelete: (title: string | undefined, icon?: string | undefined) => void;
   onDragStop?: (e: DraggableEvent, data: DraggableData) => void;
 }
 
@@ -182,7 +177,6 @@ function DesktopIcon({
   setFolders,
   id,
   onWindowOpen,
-  onDelete,
 }: DesktopIconProps) {
   const [editedTitle, setEditedTitle] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);

@@ -100,3 +100,9 @@ The website can be customized by modifying:
 - `data/clippyMessages.ts` - Clippy's messages
 - `public/` - Images and audio files
 - `tailwind.css` - Styling customizations
+
+---
+
+<div align="center">
+by Elliot
+</div>
