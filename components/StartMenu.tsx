@@ -84,7 +84,7 @@ export default function StartMenu({
               <MenuItem
                 icon="linkedin.png"
                 text={personal.linkedin}
-                copy={false}
+                copy={true}
                 type="link"
                 bringWindowToFront={bringWindowToFront}
               />
@@ -116,6 +116,19 @@ function MenuItem({
   const [isCopied, setIsCopied] = useState(false);
 
   const handleClick = () => {
+    if (type === "link") {
+      window.open(text, "_blank");
+      return;
+    }
+
+    if (copy) {
+      navigator.clipboard.writeText(text);
+      setIsCopied(true);
+      playSound("click");
+      setTimeout(() => setIsCopied(false), 2000);
+      return;
+    }
+
     const windowTitle = text.replace(" ", "_");
     setActiveWindows?.((prev) => ({
       ...prev,

@@ -190,7 +190,7 @@ export const projects = {
       name: "Skatteetaten",
       link: "https://skatteetaten.no/",
       image: "skatteetaten.jpeg",
-      year: "2023 - NOW",
+      year: "2023 - 2025",
       description: `Employed. Internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more.`,
       languages: [
         "JavaScript",
@@ -297,7 +297,7 @@ export const workExperience = {
     {
       name: "Skatteetaten",
       role: "Software Developer",
-      year: "2023 AUG - NOW",
+      year: "2023 AUG - 2025 AUG",
       description: `[Innovasjon / Folkeregisteret] Working on internal tools, Bikube, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more. 
       Working in a scrum team with 9 people.`,
       isMinor: false,
@@ -338,9 +338,15 @@ export const education = {
   icon: "education.png",
   education: [
     {
+      name: "Year 4 VGS",
+      school: "Drømtorp VGS",
+      year: "2025 AUG - 2026 JUN",
+      description: `A fourth year of upper secondary education to gain general university admissions certification.`,
+    },
+    {
       name: "Apprenticeship",
       school: "Skatteetaten",
-      year: "2023 - NOW",
+      year: "2023 AUG - 2025 AUG",
       description: `Software Developer`,
     },
     {

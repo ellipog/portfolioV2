@@ -16,6 +16,7 @@ import ErrorPopup from "components/ErrorPopup";
 import BlueMarker from "components/BlueMarker";
 import BlueScreen from "components/BlueScreen";
 import { playSound } from "utils/playSound";
+import { useIsMobile } from "utils/isMobile";
 
 interface ErrorInstance {
   id: number;
@@ -91,6 +92,8 @@ export default function Index() {
   const [isEditing, setIsEditing] = useState(false);
   const [showAngryClippy, setShowAngryClippy] = useState(false);
   const [showBlueScreen, setShowBlueScreen] = useState(false);
+  const isMobile = useIsMobile();
+  const [proceedAnyway, setProceedAnyway] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -213,6 +216,29 @@ export default function Index() {
 
     spawnError();
   };
+
+  if (isMobile && !proceedAnyway) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen mx-8">
+        <h1 className="text-2xl font-bold text-center mb-4 font-mono text-white">
+          This site is viewed best on desktop.
+        </h1>
+        <p className="text-sm text-center mb-4 font-mono text-white">
+          Please view this site on a desktop computer to get the full
+          experience.
+        </p>
+
+        <button
+          className="text-sm text-center mb-4 font-mono text-white"
+          onClick={() => {
+            setProceedAnyway(true);
+          }}
+        >
+          view anyways
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
