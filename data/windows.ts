@@ -191,7 +191,7 @@ export const projects = {
       link: "https://skatteetaten.no/",
       image: "skatteetaten.jpeg",
       year: "2023 - 2025",
-      description: `Employed. Internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more.`,
+      description: `Was employed. Internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more.`,
       languages: [
         "JavaScript",
         "TypeScript",
