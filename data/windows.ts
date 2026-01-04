@@ -187,21 +187,6 @@ export const projects = {
   icon: "projects.png",
   projects: [
     {
-      name: "Skatteetaten",
-      link: "https://skatteetaten.no/",
-      image: "skatteetaten.jpeg",
-      year: "2023 - 2025",
-      description: `Was employed. Internal tools, Innflyttingsportalen, Utflyttingsportalen, MinSide, OnlineOppslag, and more.`,
-      languages: [
-        "JavaScript",
-        "TypeScript",
-        "React",
-        "Tailwind CSS",
-        "Java",
-        "SQL",
-      ],
-    },
-    {
       name: "Portfolio V2",
       link: "https://github.com/Ellipog/portfolioV2",
       image: "github.png",
