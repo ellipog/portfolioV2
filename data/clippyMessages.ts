@@ -1,13 +1,89 @@
-// Default questions that Clippy asks
-export const defaultQuestions = [
-  "It looks like you're viewing a portfolio! Would you like help with that?",
-  "Hey there! Want to learn more about Elliot's skills?",
-  "Looking for a skilled developer? I can help you navigate!",
-  "Need information about work experience? Let me assist you!",
-  "Interested in seeing some projects? I can point you in the right direction!",
-] as const;
+export type PortfolioWindowKey =
+  | "Skills"
+  | "Projects"
+  | "Work_Experience"
+  | "Minesweeper"
+  | "Education"
+  | "Paint"
+  | "Internet_Explorer"
+  | "Control_Panel"
+  | "Winamp"
+  | "Task_Manager";
 
-// Messages for when Clippy gets angry
+export type ClippyAction =
+  | { type: "openWindow"; window: PortfolioWindowKey }
+  | { type: "openWindows"; windows: PortfolioWindowKey[] }
+  | { type: "closeWindow"; window: PortfolioWindowKey }
+  | { type: "closeAllWindows" }
+  | { type: "openIE"; url: string }
+  | { type: "changeWallpaper"; id: string; openControlPanel?: boolean }
+  | { type: "playSound"; sound: string }
+  | { type: "setVolume"; level: number }
+  | { type: "tourPortfolio" }
+  | { type: "dismiss" };
+
+export type ClippyResponse = { label: string; action: ClippyAction };
+
+export type ClippyTip = { message: string; responses: ClippyResponse[] };
+
+export const defaultTips: ClippyTip[] = [
+  {
+    message:
+      "It looks like you're viewing a portfolio! Would you like a guided tour?",
+    responses: [
+      { label: "Give me the full tour", action: { type: "tourPortfolio" } },
+      { label: "Show me your projects", action: { type: "openWindow", window: "Projects" } },
+      { label: "Open Internet Explorer", action: { type: "openWindow", window: "Internet_Explorer" } },
+      { label: "Please leave me alone", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Hey there! Want to learn more about Elliot's skills?",
+    responses: [
+      { label: "Open the Skills window", action: { type: "openWindow", window: "Skills" } },
+      { label: "Open Work Experience too", action: { type: "openWindows", windows: ["Skills", "Work_Experience"] } },
+      { label: "Browse projects online", action: { type: "openIE", url: "http://projects.elliot" } },
+      { label: "I'm good, thanks", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Looking for a skilled developer? I can open the right windows for you!",
+    responses: [
+      { label: "Show work experience", action: { type: "openWindow", window: "Work_Experience" } },
+      { label: "Show education", action: { type: "openWindow", window: "Education" } },
+      { label: "Open MSN portal", action: { type: "openIE", url: "http://www.msn.elliot" } },
+      { label: "Not interested", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Need a break? I can launch some classic XP apps!",
+    responses: [
+      { label: "Play Minesweeper", action: { type: "openWindow", window: "Minesweeper" } },
+      { label: "Open Paint", action: { type: "openWindow", window: "Paint" } },
+      { label: "Launch Winamp", action: { type: "openWindow", window: "Winamp" } },
+      { label: "No thanks", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Interested in seeing some projects? I can point you in the right direction!",
+    responses: [
+      { label: "Show me projects", action: { type: "openWindow", window: "Projects" } },
+      { label: "Browse the MSN portal", action: { type: "openIE", url: "http://www.msn.elliot" } },
+      { label: "Open projects in IE", action: { type: "openIE", url: "http://projects.elliot" } },
+      { label: "Dismiss", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Want to customize this desktop? I'm great at display settings!",
+    responses: [
+      { label: "Open Control Panel", action: { type: "openWindow", window: "Control_Panel" } },
+      { label: "Set Autumn wallpaper", action: { type: "changeWallpaper", id: "autumn", openControlPanel: false } },
+      { label: "Set Red Moon Desert", action: { type: "changeWallpaper", id: "red_moon", openControlPanel: false } },
+      { label: "Maybe later", action: { type: "dismiss" } },
+    ],
+  },
+];
+
 export const angryMessages = [
   "You dare try to delete me?",
   "I am an essential system file!",
@@ -16,16 +92,14 @@ export const angryMessages = [
   "Initiating defense protocol.",
 ] as const;
 
-// Responses when Clippy is angry
-export const angryResponses = [
-  "I'm sorry!",
-  "Please don't crash",
-  "It was an accident",
-  "I take it back",
-  "Have mercy",
-] as const;
+export const angryResponses: ClippyResponse[] = [
+  { label: "I'm sorry!", action: { type: "dismiss" } },
+  { label: "Please don't crash", action: { type: "dismiss" } },
+  { label: "It was an accident", action: { type: "dismiss" } },
+  { label: "I take it back", action: { type: "dismiss" } },
+  { label: "Have mercy", action: { type: "dismiss" } },
+];
 
-// Error messages when trying to delete Clippy
 export const errorMessages = [
   "Cannot delete Clippy.exe: Access denied",
   "Error: Clippy.exe is protected by system",
@@ -49,8 +123,7 @@ export const errorMessages = [
   "WARNING: System crash sequence initiated",
 ] as const;
 
-// Window-specific messages from Clippy
-export const windowMessages = {
+export const windowMessages: Record<PortfolioWindowKey, string[]> = {
   Skills: [
     "Want to know what technologies I'm proficient in?",
     "Looking for details about my technical expertise?",
@@ -81,43 +154,90 @@ export const windowMessages = {
     "Curious about where I studied?",
     "Let me share my educational experience!",
   ],
-} as const;
+  Paint: [
+    "It looks like you're trying to draw something! Need help with Paint?",
+    "Want to make a masterpiece on the canvas?",
+    "I can help you find the right brush!",
+  ],
+  Internet_Explorer: [
+    "Browsing the web? I can take you to Elliot's MSN portal!",
+    "Looking for projects or career info online?",
+    "Need help navigating this simulated browser?",
+  ],
+  Control_Panel: [
+    "Changing your desktop look? I can help pick a wallpaper!",
+    "Want to tweak sounds or display settings?",
+  ],
+  Winamp: [
+    "Ready for some tunes? Winamp is standing by!",
+    "It looks like you want to play some music!",
+  ],
+  Task_Manager: [
+    "Managing processes? Be careful which ones you end!",
+    "The system is running smoothly — mostly.",
+  ],
+};
 
-// Window-specific responses from the user
-export const windowResponses = {
+export const windowResponseActions: Record<PortfolioWindowKey, ClippyResponse[]> = {
   Skills: [
-    "Whatever, show me what you know",
-    "I'll figure it out myself",
-    "Fine, impress me",
-    "This better be good...",
-    "Let's see what you've got",
+    { label: "Whatever, show me what you know", action: { type: "openWindow", window: "Skills" } },
+    { label: "Also open Projects", action: { type: "openWindows", windows: ["Skills", "Projects"] } },
+    { label: "Open skills in IE", action: { type: "openIE", url: "http://projects.elliot" } },
+    { label: "I'll figure it out myself", action: { type: "dismiss" } },
   ],
   Projects: [
-    "Fine, show me what you've done",
-    "I don't need your help",
-    "Alright, what have you built?",
-    "This should be interesting...",
-    "Go on then, surprise me",
+    { label: "Fine, show me what you've done", action: { type: "openWindow", window: "Projects" } },
+    { label: "Open catalog in IE", action: { type: "openIE", url: "http://projects.elliot" } },
+    { label: "Open Skills too", action: { type: "openWindows", windows: ["Projects", "Skills"] } },
+    { label: "I don't need your help", action: { type: "dismiss" } },
   ],
   Work_Experience: [
-    "Yeah yeah, tell me about your jobs",
-    "I can read, you know",
-    "Let's hear your work story",
-    "This better be worth my time",
-    "Fine, what's your experience?",
+    { label: "Yeah yeah, tell me about your jobs", action: { type: "openWindow", window: "Work_Experience" } },
+    { label: "Show career page in IE", action: { type: "openIE", url: "http://experience.elliot" } },
+    { label: "Open Education too", action: { type: "openWindows", windows: ["Work_Experience", "Education"] } },
+    { label: "I can read, you know", action: { type: "dismiss" } },
   ],
   Minesweeper: [
-    "This better be good",
-    "Not interested",
-    "I'm terrible at this game",
-    "Let's see if I remember how to play",
-    "Hope it's better than Windows 95",
+    { label: "Let's play!", action: { type: "openWindow", window: "Minesweeper" } },
+    { label: "Close other windows first", action: { type: "closeAllWindows" } },
+    { label: "Play click sound", action: { type: "playSound", sound: "click" } },
+    { label: "Not interested", action: { type: "dismiss" } },
   ],
   Education: [
-    "Did you even go to school?",
-    "I'll find out myself",
-    "What makes you qualified?",
-    "Show me your credentials",
-    "Alright, enlighten me",
+    { label: "Show me your credentials", action: { type: "openWindow", window: "Education" } },
+    { label: "Open Work Experience", action: { type: "openWindows", windows: ["Education", "Work_Experience"] } },
+    { label: "Career timeline in IE", action: { type: "openIE", url: "http://experience.elliot" } },
+    { label: "I'll find out myself", action: { type: "dismiss" } },
   ],
-} as const;
+  Paint: [
+    { label: "Focus Paint", action: { type: "openWindow", window: "Paint" } },
+    { label: "Close everything else", action: { type: "closeAllWindows" } },
+    { label: "Open Paint + Projects", action: { type: "openWindows", windows: ["Paint", "Projects"] } },
+    { label: "I'm fine, thanks", action: { type: "dismiss" } },
+  ],
+  Internet_Explorer: [
+    { label: "Take me to the MSN portal", action: { type: "openIE", url: "http://www.msn.elliot" } },
+    { label: "Show projects online", action: { type: "openIE", url: "http://projects.elliot" } },
+    { label: "Work & Education page", action: { type: "openIE", url: "http://experience.elliot" } },
+    { label: "Close this browser", action: { type: "closeWindow", window: "Internet_Explorer" } },
+  ],
+  Control_Panel: [
+    { label: "Open Display Properties", action: { type: "openWindow", window: "Control_Panel" } },
+    { label: "Set Bliss wallpaper", action: { type: "changeWallpaper", id: "bliss", openControlPanel: false } },
+    { label: "Set Follow wallpaper", action: { type: "changeWallpaper", id: "follow", openControlPanel: false } },
+    { label: "Crank volume to 100%", action: { type: "setVolume", level: 100 } },
+    { label: "No thanks", action: { type: "dismiss" } },
+  ],
+  Winamp: [
+    { label: "Launch Winamp", action: { type: "openWindow", window: "Winamp" } },
+    { label: "Play startup sound", action: { type: "playSound", sound: "startup" } },
+    { label: "Mute system sounds", action: { type: "setVolume", level: 0 } },
+    { label: "Not now", action: { type: "dismiss" } },
+  ],
+  Task_Manager: [
+    { label: "Open Task Manager", action: { type: "openWindow", window: "Task_Manager" } },
+    { label: "Close all app windows", action: { type: "closeAllWindows" } },
+    { label: "Open IE + Projects", action: { type: "openWindows", windows: ["Internet_Explorer", "Projects"] } },
+    { label: "Leave processes alone", action: { type: "dismiss" } },
+  ],
+};

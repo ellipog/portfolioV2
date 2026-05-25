@@ -33,6 +33,8 @@ export default function BlueMarker() {
   }, [isDrawing]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return; // Only left click
+    e.preventDefault(); // Prevent default text selection or image dragging
     const pos = { x: e.clientX, y: e.clientY };
     setIsDrawing(true);
     setStartPos(pos);
@@ -40,10 +42,9 @@ export default function BlueMarker() {
   };
 
   return (
-    <button
+    <div
       onMouseDown={handleMouseDown}
-      className="fixed inset-0 z-[1] cursor-default"
-      style={{ pointerEvents: isDrawing ? "none" : "auto" }}
+      className="fixed inset-0 z-[1] cursor-default pointer-events-auto"
     >
       {isDrawing && startPos && currentPos && (
         <div
@@ -56,6 +57,6 @@ export default function BlueMarker() {
           }}
         />
       )}
-    </button>
+    </div>
   );
 }

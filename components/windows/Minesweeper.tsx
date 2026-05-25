@@ -9,6 +9,16 @@ interface Cell {
   neighborMines: number;
 }
 
+const ROWS = 9;
+const COLS = 9;
+const MINES = 10;
+const CELL_PX = 20;
+/** Grid + sunken frame (2px bevel × 2 + 4px padding) */
+const GRID_FRAME_PX = 12;
+const HEADER_PX = 34;
+const WINDOW_WIDTH = COLS * CELL_PX + GRID_FRAME_PX + 8;
+const WINDOW_MIN_HEIGHT = HEADER_PX + ROWS * CELL_PX + GRID_FRAME_PX + 8;
+
 export default function Minesweeper({
   show,
   setActiveWindows,
@@ -30,9 +40,6 @@ export default function Minesweeper({
   const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(
     null
   );
-  const rows = 9;
-  const cols = 9;
-  const mines = 10;
 
   useEffect(() => {
     setMounted(true);
@@ -47,10 +54,10 @@ export default function Minesweeper({
   }, [timerInterval]);
 
   const createEmptyGrid = () => {
-    return Array(rows)
+    return Array(ROWS)
       .fill(null)
       .map(() =>
-        Array(cols)
+        Array(COLS)
           .fill(null)
           .map(() => ({
             isMine: false,
@@ -78,31 +85,28 @@ export default function Minesweeper({
     const newGrid = createEmptyGrid();
     let minesPlaced = 0;
 
-    // Create a safe zone around the first click
     const safeZone = [];
     for (let di = -1; di <= 1; di++) {
       for (let dj = -1; dj <= 1; dj++) {
         const ni = firstRow + di;
         const nj = firstCol + dj;
-        if (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
+        if (ni >= 0 && ni < ROWS && nj >= 0 && nj < COLS) {
           safeZone.push(`${ni}-${nj}`);
         }
       }
     }
 
-    // Place mines avoiding safe zone
-    while (minesPlaced < mines) {
-      const row = Math.floor(Math.random() * rows);
-      const col = Math.floor(Math.random() * cols);
+    while (minesPlaced < MINES) {
+      const row = Math.floor(Math.random() * ROWS);
+      const col = Math.floor(Math.random() * COLS);
       if (!newGrid[row][col].isMine && !safeZone.includes(`${row}-${col}`)) {
         newGrid[row][col].isMine = true;
         minesPlaced++;
       }
     }
 
-    // Calculate neighbor mines
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
+    for (let i = 0; i < ROWS; i++) {
+      for (let j = 0; j < COLS; j++) {
         if (!newGrid[i][j].isMine) {
           let count = 0;
           for (let di = -1; di <= 1; di++) {
@@ -111,9 +115,9 @@ export default function Minesweeper({
               const nj = j + dj;
               if (
                 ni >= 0 &&
-                ni < rows &&
+                ni < ROWS &&
                 nj >= 0 &&
-                nj < cols &&
+                nj < COLS &&
                 newGrid[ni][nj].isMine
               ) {
                 count++;
@@ -136,11 +140,10 @@ export default function Minesweeper({
       const newGrid = placeMinesAfterFirstClick(row, col);
       setGrid(newGrid);
       setIsFirstClick(false);
-      // Reveal the clicked cell immediately
       const updatedGrid = [...newGrid];
       floodFill(updatedGrid, row, col);
       setGrid(updatedGrid);
-      checkWinCondition();
+      checkWinCondition(updatedGrid);
       return;
     }
 
@@ -154,15 +157,15 @@ export default function Minesweeper({
 
     floodFill(newGrid, row, col);
     setGrid(newGrid);
-    checkWinCondition();
+    checkWinCondition(newGrid);
   };
 
   const floodFill = (grid: Cell[][], row: number, col: number) => {
     if (
       row < 0 ||
-      row >= rows ||
+      row >= ROWS ||
       col < 0 ||
-      col >= cols ||
+      col >= COLS ||
       grid[row][col].isRevealed ||
       grid[row][col].isFlagged
     ) {
@@ -199,8 +202,8 @@ export default function Minesweeper({
     setGrid(newGrid);
   };
 
-  const checkWinCondition = () => {
-    const won = grid.every((row) =>
+  const checkWinCondition = (gridToCheck: Cell[][]) => {
+    const won = gridToCheck.every((row) =>
       row.every(
         (cell) =>
           (cell.isMine && !cell.isRevealed) || (!cell.isMine && cell.isRevealed)
@@ -211,11 +214,28 @@ export default function Minesweeper({
 
   const getCellContent = (cell: Cell) => {
     if (cell.isFlagged)
-      return <img src="/flag.png" alt="Flag" className="w-5 h-5" />;
-    if (!cell.isRevealed) return "";
+      return (
+        <img
+          src="/flag.png"
+          alt="Flag"
+          className="w-3.5 h-3.5 object-contain pointer-events-none"
+          draggable={false}
+        />
+      );
+    if (!cell.isRevealed) return null;
     if (cell.isMine)
-      return <img src="/mine.png" alt="Mine" className="w-5 h-5" />;
-    return cell.neighborMines || "";
+      return (
+        <img
+          src="/mine.png"
+          alt="Mine"
+          className="w-3.5 h-3.5 object-contain pointer-events-none"
+          draggable={false}
+        />
+      );
+    if (cell.neighborMines === 0) return null;
+    return (
+      <span className="text-[11px] font-bold leading-none">{cell.neighborMines}</span>
+    );
   };
 
   const startTimer = () => {
@@ -241,86 +261,107 @@ export default function Minesweeper({
     }
   };
 
+  const minesBodyClass =
+    "window-body minesweeper-app m-0 p-0 overflow-hidden flex flex-col shrink-0 bg-[#c0c0c0] font-sans";
+
+  const gameContent = (
+    <div
+      className="flex flex-col bg-[#c0c0c0] text-black font-sans shrink-0"
+      style={{ width: WINDOW_WIDTH, minHeight: WINDOW_MIN_HEIGHT }}
+    >
+      <div className="flex items-center justify-between gap-2 px-1.5 py-1 border-b border-[#808080] shrink-0 h-[34px] box-border">
+        <div className="flex items-center gap-2 min-w-0">
+          <button
+            type="button"
+            onClick={() => initializeGrid()}
+            className="xp-btn-reset window-button px-2 py-0.5 text-[11px] bg-[#e6e6e6] hover:bg-[#f3f3f3] border border-t-white border-l-white border-r-[#808080] border-b-[#808080] cursor-pointer shrink-0"
+          >
+            🙂
+          </button>
+          <span className="text-[11px] font-bold truncate">
+            {gameOver && "Game Over!"}
+            {gameWon && "You Won!"}
+            {!gameOver && !gameWon && "Minesweeper"}
+          </span>
+        </div>
+        <div
+          className="bg-black text-red-500 px-1.5 py-0.5 font-mono text-base leading-none border-2 border-t-[#808080] border-l-[#808080] border-r-white border-b-white shrink-0 tabular-nums"
+          style={{ minWidth: 42 }}
+        >
+          {String(Math.min(time, 999)).padStart(3, "0")}
+        </div>
+      </div>
+
+      <div className="p-1 flex justify-center shrink-0">
+        <div
+          className="inline-block border-2 border-t-[#808080] border-l-[#808080] border-r-white border-b-white p-0.5 bg-[#c0c0c0]"
+          style={{
+            width: COLS * CELL_PX + 4,
+            height: ROWS * CELL_PX + 4,
+          }}
+        >
+          {grid.map((row, i) => (
+            <div key={i} className="flex" style={{ height: CELL_PX }}>
+              {row.map((cell, j) => (
+                <button
+                  key={`${i}-${j}`}
+                  type="button"
+                  onClick={() => revealCell(i, j)}
+                  onContextMenu={(e) => toggleFlag(e, i, j)}
+                  className={`minesweeper-cell flex items-center justify-center font-bold p-0
+                    ${
+                      !cell.isRevealed
+                        ? "border border-t-white border-l-white border-r-[#808080] border-b-[#808080] bg-[#c0c0c0] hover:bg-[#d0d0d0]"
+                        : "border border-[#bdbdbd] bg-[#e6e6e6]"
+                    }
+                    ${cell.neighborMines === 1 && cell.isRevealed ? "text-blue-700" : ""}
+                    ${cell.neighborMines === 2 && cell.isRevealed ? "text-green-700" : ""}
+                    ${cell.neighborMines === 3 && cell.isRevealed ? "text-red-700" : ""}
+                    ${cell.neighborMines === 4 && cell.isRevealed ? "text-purple-800" : ""}
+                    ${cell.neighborMines === 5 && cell.isRevealed ? "text-red-800" : ""}
+                    ${cell.neighborMines >= 6 && cell.isRevealed ? "text-teal-800" : ""}`}
+                >
+                  {getCellContent(cell)}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   if (!mounted) {
     return (
       <Window
         className={`${show ? "flex" : "hidden"}`}
         title="Minesweeper"
         icon="/minesweeper.png"
-        width={340}
+        width={WINDOW_WIDTH}
         setActiveWindows={setActiveWindows}
         pos={windowConfig?.defaultPosition || { x: 300, y: 300 }}
         windowOrder={windowOrder}
         bringToFront={bringToFront}
+        bodyClassName={minesBodyClass}
       >
-        <div className="w-full h-full flex items-center justify-center bg-[#c0c0c0] text-black">
-          Loading...
-        </div>
+        <div className="flex items-center justify-center text-[11px] p-2">Loading...</div>
       </Window>
     );
   }
 
   return (
     <Window
-      className={`${show ? "flex" : "hidden"}`}
+      className={`${show ? "flex" : "hidden"} !w-auto`}
       title="Minesweeper"
       icon="/minesweeper.png"
-      width={340}
+      width={WINDOW_WIDTH}
       setActiveWindows={setActiveWindows}
       pos={windowConfig?.defaultPosition || { x: 300, y: 300 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
+      bodyClassName={minesBodyClass}
     >
-      <div className="w-full h-full flex flex-col bg-[#c0c0c0] text-black">
-        <div className="p-2 w-full flex justify-between items-center border-b-2 border-[#808080]">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => {
-                initializeGrid();
-              }}
-              className="px-3 py-1 bg-[#e6e6e6] hover:bg-[#f3f3f3] border border-[#808080] active:border-[#404040] text-sm cursor-pointer shadow-[1px_1px_0px_0px_rgba(255,255,255,0.5)_inset,-1px_-1px_0px_0px_rgba(0,0,0,0.25)_inset]"
-            >
-              New Game
-            </button>
-            <div className="text-sm font-bold">
-              {gameOver && "Game Over!"}
-              {gameWon && "You Won!"}
-            </div>
-          </div>
-          <div className="bg-black text-red-500 px-2 py-1 font-digital text-xl border-2 border-[#808080]">
-            {String(time).padStart(3, "0")}
-          </div>
-        </div>
-        <div className="flex-1 p-4 flex items-center justify-center bg-[#c0c0c0]">
-          <div className="inline-block border-t-2 border-l-2 border-[#ffffff] border-r-2 border-r-[#808080] border-b-2 border-b-[#808080] p-1 bg-[#c0c0c0]">
-            {grid.map((row, i) => (
-              <div key={i} className="flex">
-                {row.map((cell, j) => (
-                  <button
-                    key={`${i}-${j}`}
-                    onClick={() => revealCell(i, j)}
-                    onContextMenu={(e) => toggleFlag(e, i, j)}
-                    className={`w-7 h-7 flex items-center justify-center text-sm font-bold
-                      ${
-                        !cell.isRevealed
-                          ? "border-t-2 border-l-2 border-[#ffffff] border-r-2 border-r-[#808080] border-b-2 border-b-[#808080] bg-[#c0c0c0] hover:bg-[#d0d0d0]"
-                          : "border border-[#808080] bg-[#e6e6e6]"
-                      } 
-                      ${cell.neighborMines === 1 ? "text-blue-700" : ""}
-                      ${cell.neighborMines === 2 ? "text-green-700" : ""}
-                      ${cell.neighborMines === 3 ? "text-red-700" : ""}
-                      ${cell.neighborMines === 4 ? "text-purple-800" : ""}
-                      ${cell.neighborMines === 5 ? "text-red-800" : ""}
-                      ${cell.neighborMines >= 6 ? "text-teal-800" : ""}`}
-                  >
-                    {getCellContent(cell)}
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {gameContent}
     </Window>
   );
 }

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Define gradients for retro XP look -->
+  <defs>
+    <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2E7ED" />
+      <stop offset="50%" stop-color="#C2CCD8" />
+      <stop offset="100%" stop-color="#95A4B7" />
+    </linearGradient>
+    <linearGradient id="sliderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="30%" stop-color="#3A82F6" />
+      <stop offset="70%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    <linearGradient id="gearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#80A5D6" />
+      <stop offset="100%" stop-color="#4A75B5" />
+    </linearGradient>
+  </defs>
+
+  <!-- Folder/Applet Body -->
+  <path d="M4,8 C4,6.9 4.9,6 6,6 H18 L22,11 H42 C43.1,11 44,11.9 44,13 V40 C44,41.1 43.1,42 42,42 H6 C4.9,42 4,41.1 4,40 Z" fill="url(#folderGrad)" stroke="#6B7A8D" stroke-width="1.5" />
+  
+  <!-- Folder Inner/Front Panel flap -->
+  <path d="M4,15 L22,15 L25,18 L44,18 V40 C44,41.1 43.1,42 42,42 H6 C4.9,42 4,41.1 4,40 Z" fill="#E6ECF4" stroke="#8DA0B6" stroke-width="1" />
+  
+  <!-- Applet Screen / Header inside the panel -->
+  <rect x="8" y="20" width="32" height="6" rx="1" fill="url(#headerGrad)" stroke="#3B629B" stroke-width="1" />
+  <rect x="11" y="22" width="4" height="2" fill="#E0F2FE" opacity="0.8" />
+  <rect x="17" y="22" width="20" height="2" fill="#FFFFFF" opacity="0.9" />
+
+  <!-- Sliders Group -->
+  <!-- Track 1 -->
+  <line x1="14" y1="28" x2="14" y2="39" stroke="#7E8E9F" stroke-width="2" stroke-linecap="round" />
+  <line x1="14" y1="28" x2="14" y2="39" stroke="#FFFFFF" stroke-width="0.5" stroke-linecap="round" />
+  <!-- Knob 1 -->
+  <rect x="11" y="32" width="6" height="4" rx="1" fill="url(#sliderGrad)" stroke="#1E3A8A" stroke-width="0.5" />
+  <line x1="12" y1="34" x2="16" y2="34" stroke="#FFFFFF" stroke-width="0.5" opacity="0.6" />
+
+  <!-- Track 2 -->
+  <line x1="22" y1="28" x2="22" y2="39" stroke="#7E8E9F" stroke-width="2" stroke-linecap="round" />
+  <line x1="22" y1="28" x2="22" y2="39" stroke="#FFFFFF" stroke-width="0.5" stroke-linecap="round" />
+  <!-- Knob 2 -->
+  <rect x="19" y="29" width="6" height="4" rx="1" fill="url(#sliderGrad)" stroke="#1E3A8A" stroke-width="0.5" />
+  <line x1="20" y1="31" x2="24" y2="31" stroke="#FFFFFF" stroke-width="0.5" opacity="0.6" />
+
+  <!-- Track 3 -->
+  <line x1="30" y1="28" x2="30" y2="39" stroke="#7E8E9F" stroke-width="2" stroke-linecap="round" />
+  <line x1="30" y1="28" x2="30" y2="39" stroke="#FFFFFF" stroke-width="0.5" stroke-linecap="round" />
+  <!-- Knob 3 -->
+  <rect x="27" y="35" width="6" height="4" rx="1" fill="url(#sliderGrad)" stroke="#1E3A8A" stroke-width="0.5" />
+  <line x1="28" y1="37" x2="32" y2="37" stroke="#FFFFFF" stroke-width="0.5" opacity="0.6" />
+
+  <!-- Tiny Gold Gear in bottom-right -->
+  <circle cx="38" cy="35" r="4" fill="url(#gearGrad)" stroke="#78350F" stroke-width="0.75" />
+  <!-- Gear Teeth -->
+  <path d="M38,30 L38,32 M38,38 L38,40 M33,35 L35,35 M41,35 L43,35 M34.5,31.5 L36,33 M40,37 L41.5,38.5 M34.5,38.5 L36,37 M40,33 L41.5,31.5" stroke="url(#gearGrad)" stroke-width="1.5" stroke-linecap="round" />
+  <circle cx="38" cy="35" r="1.5" fill="#E6ECF4" stroke="#78350F" stroke-width="0.5" />
+</svg>

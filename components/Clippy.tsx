@@ -1,17 +1,34 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   angryMessages,
   angryResponses,
-  defaultQuestions,
+  defaultTips,
   windowMessages,
-  windowResponses,
+  windowResponseActions,
+  type ClippyAction,
+  type ClippyResponse,
+  type PortfolioWindowKey,
 } from "data/clippyMessages";
 import { playSound } from "utils/playSound";
+
+const WALLPAPER_MAP: Record<string, { url: string; color: string }> = {
+  bliss: { url: "/desktop_bg.png", color: "#245EDC" },
+  autumn: { url: "/autumn.jpg", color: "#5c3317" },
+  red_moon: { url: "/red_moon_desert.jpg", color: "#a52a2a" },
+  follow: { url: "/follow.jpg", color: "#4a6741" },
+  classic_blue: { url: "", color: "#3b6ea5" },
+};
 
 declare global {
   interface Window {
     handleClippyWindowClick?: (windowTitle: string) => void;
+    openPortfolioWindow?: (key: string) => void;
+    closePortfolioWindow?: (key: string) => void;
+    closeAllPortfolioWindows?: () => void;
+    navigateIE?: (url: string) => void;
+    changeWallpaper?: (id: string, url?: string, color?: string) => void;
+    setSoundVolume?: (level: number) => void;
   }
 }
 
@@ -19,12 +36,70 @@ interface ClippyProps {
   isAngry?: boolean;
 }
 
+function executeClippyAction(action: ClippyAction) {
+  if (typeof window === "undefined") return;
+
+  switch (action.type) {
+    case "openWindow":
+      window.openPortfolioWindow?.(action.window);
+      break;
+    case "openWindows":
+      action.windows.forEach((w) => window.openPortfolioWindow?.(w));
+      if (action.windows.length > 0) {
+        window.openPortfolioWindow?.(action.windows[action.windows.length - 1]);
+      }
+      break;
+    case "closeWindow":
+      window.closePortfolioWindow?.(action.window);
+      break;
+    case "closeAllWindows":
+      window.closeAllPortfolioWindows?.();
+      break;
+    case "openIE":
+      window.openPortfolioWindow?.("Internet_Explorer");
+      window.navigateIE?.(action.url);
+      break;
+    case "changeWallpaper": {
+      const wp = WALLPAPER_MAP[action.id];
+      if (wp) {
+        window.changeWallpaper?.(action.id, wp.url, wp.color);
+      } else {
+        window.changeWallpaper?.(action.id);
+      }
+      if (action.openControlPanel !== false) {
+        window.openPortfolioWindow?.("Control_Panel");
+      }
+      break;
+    }
+    case "playSound":
+      playSound(action.sound);
+      break;
+    case "setVolume":
+      window.setSoundVolume?.(action.level);
+      break;
+    case "tourPortfolio":
+      window.openPortfolioWindow?.("Internet_Explorer");
+      window.navigateIE?.("http://www.msn.elliot");
+      window.openPortfolioWindow?.("Projects");
+      window.openPortfolioWindow?.("Skills");
+      break;
+    case "dismiss":
+      break;
+  }
+}
+
 export default function Clippy({ isAngry = false }: ClippyProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [message, setMessage] = useState("");
   const clickedWindows = useRef<Set<string>>(new Set());
-  const [currentResponseSet, setCurrentResponseSet] = useState<string[]>([]);
+  const [currentResponses, setCurrentResponses] = useState<ClippyResponse[]>([]);
   const [mounted, setMounted] = useState(false);
+
+  const pickRandomTip = useCallback(() => {
+    const tip = defaultTips[Math.floor(Math.random() * defaultTips.length)];
+    setMessage(tip.message);
+    setCurrentResponses(tip.responses);
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -46,14 +121,12 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
     if (isAngry) {
       const randomIndex = Math.floor(Math.random() * angryMessages.length);
       setMessage(angryMessages[randomIndex]);
-      setCurrentResponseSet([...angryResponses]);
+      setCurrentResponses([...angryResponses]);
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * defaultQuestions.length);
-    setMessage(defaultQuestions[randomIndex]);
-    setCurrentResponseSet(["I'm good, thanks", "Please leave me alone"]);
-  }, [defaultQuestions, isAngry]);
+    pickRandomTip();
+  }, [isAngry, pickRandomTip]);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -62,9 +135,7 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
       const delay = Math.floor(Math.random() * (900000 - 120000) + 120000);
       timeoutId = setTimeout(() => {
         setIsVisible(true);
-        const randomIndex = Math.floor(Math.random() * defaultQuestions.length);
-        setMessage(defaultQuestions[randomIndex]);
-        setCurrentResponseSet(["I'm good, thanks", "Please leave me alone"]);
+        pickRandomTip();
       }, delay);
     }
 
@@ -73,7 +144,7 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
         clearTimeout(timeoutId);
       }
     };
-  }, [isVisible, defaultQuestions, isAngry]);
+  }, [isVisible, isAngry, pickRandomTip]);
 
   useEffect(() => {
     if (isAngry) {
@@ -87,26 +158,35 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
     if (!clickedWindows.current.has(windowTitle)) {
       setIsVisible(false);
       setTimeout(() => {
-        const messages =
-          windowMessages[windowTitle as keyof typeof windowMessages];
-        const responses =
-          windowResponses[windowTitle as keyof typeof windowResponses];
+        const key = windowTitle as PortfolioWindowKey;
+        const messages = windowMessages[key];
+        const responses = windowResponseActions[key];
+
+        if (!messages || !responses) return;
 
         const randomMessage =
           messages[Math.floor(Math.random() * messages.length)];
         const shuffledResponses = [...responses].sort(
           () => Math.random() - 0.5
         );
-        const selectedResponses = shuffledResponses.slice(0, 2);
+        const selectedResponses = shuffledResponses.slice(0, 3);
 
         setMessage(randomMessage);
-        setCurrentResponseSet(selectedResponses);
+        setCurrentResponses(selectedResponses);
         clickedWindows.current.add(windowTitle);
 
         setTimeout(() => {
           setIsVisible(true);
         }, 300);
       }, 100);
+    }
+  };
+
+  const handleResponseClick = (action: ClippyAction) => {
+    if (!isAngry) {
+      playSound("click");
+      executeClippyAction(action);
+      setIsVisible(false);
     }
   };
 
@@ -121,7 +201,7 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 100, opacity: 0 }}
-          className={`fixed bottom-16 right-2 z-50 flex flex-col items-end ${
+          className={`fixed bottom-16 right-2 z-50 flex flex-col items-end max-w-xs ${
             !isAngry ? "clippy-normal" : ""
           }`}
         >
@@ -140,7 +220,7 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
             }
           />
           <div
-            className={`p-4 bg-white border-2 rounded-lg shadow-lg ${
+            className={`p-4 bg-white border-2 rounded-lg shadow-lg max-w-xs ${
               isAngry ? "border-red-600 animate-pulse" : "border-gray-400"
             }`}
           >
@@ -152,17 +232,21 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
               {message}
             </p>
             <div className="flex flex-col gap-2">
-              {currentResponseSet.map((response, index) => (
+              {currentResponses.map((response, index) => (
                 <button
                   key={index}
-                  onClick={() => !isAngry && setIsVisible(false)}
+                  onClick={() =>
+                    isAngry
+                      ? setIsVisible(false)
+                      : handleResponseClick(response.action)
+                  }
                   className={`text-left text-sm ${
                     isAngry
                       ? "text-red-600 hover:text-red-800"
                       : "text-blue-600 hover:text-blue-800"
                   } hover:underline`}
                 >
-                  {response}
+                  {response.label}
                 </button>
               ))}
             </div>

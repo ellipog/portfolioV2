@@ -1,108 +1,58 @@
-# Windows XP Portfolio Website
+# 🖥️ Windows XP Portfolio V2
 
-A nostalgic Windows XP-themed portfolio website built with React, Remix, and TypeScript. Experience the classic Windows XP interface with modern web technologies.
-
-![Desktop Preview](public/desktop_bg.png)
-
-## 🖥️ Features
-
-- **Authentic Windows XP Experience**
-
-  - Classic boot sequence with BIOS screen
-  - Windows XP-style desktop interface
-  - Interactive start menu and taskbar
-  - Draggable and resizable windows
-  - Right-click context menu
-  - System sounds and effects
-
-- **Interactive Elements**
-
-  - Clippy assistant with dynamic messages
-  - Minesweeper game
-  - Desktop icons
-  - Error popups
-  - Blue screen of death (BSOD)
-  - Window management system
-
-- **Portfolio Sections**
-  - Skills
-  - Projects
-  - Work Experience
-  - Education
-  - Contact Information
-
-## 🛠️ Tech Stack
-
-- React
-- Remix
-- TypeScript
-- Tailwind CSS
-- Bun
-
-## 🚀 Getting Started
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/yourusername/portfolioV2.git
-cd portfolioV2
-```
-
-2. Install dependencies:
-
-```bash
-bun install
-```
-
-3. Run the development server:
-
-```bash
-bun run dev
-```
-
-4. Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-## 🎮 Usage
-
-- Click on desktop icons to open corresponding windows
-- Use the Start Menu to navigate between different sections
-- Right-click anywhere for the context menu
-- Interact with Clippy for assistance (don't try to delete him!)
-- Play Minesweeper for fun
-- Drag windows to rearrange them
-- Minimize, maximize, or close windows using the window controls
-
-## 📁 Project Structure
-
-```
-portfolioV2/
-├── app/
-│   ├── routes/         # Route components
-│   └── tailwind.css    # Tailwind styles
-├── components/         # React components
-│   ├── windows/        # Window components
-│   ├── StartMenu.tsx   # Start menu component
-│   ├── Navbar.tsx     # Taskbar component
-│   └── ...
-├── data/              # Static data and configurations
-├── public/            # Static assets
-│   ├── audio/         # System sounds
-│   ├── skills/        # Skill icons
-│   └── ...
-└── utils/             # Utility functions
-```
-
-## 🎨 Customization
-
-The website can be customized by modifying:
-
-- `data/windows.ts` - Window configurations and content
-- `data/clippyMessages.ts` - Clippy's messages
-- `public/` - Images and audio files
-- `tailwind.css` - Styling customizations
+A highly interactive, fully responsive Windows XP-themed portfolio website. It replicates the classic Luna XP desktop environment using Remix, Vite, Tailwind CSS, and `xp.css`.
 
 ---
 
+## 🚀 Quick Start
+
+### 1. Prerequisites
+Ensure you have [Bun](https://bun.sh) installed.
+
+### 2. Setup & Installation
+```bash
+# Clone the repository
+git clone https://github.com/Ellipog/portfolioV2.git
+cd portfolioV2
+
+# Install dependencies
+bun install
+```
+
+### 3. Running Locally
+```bash
+# Start the development server
+bun run dev
+```
+Open **[http://localhost:5173](http://localhost:5173)** in your browser.
+
+---
+
+## 🛠️ Build & Verification
+
+Before committing, verify code compilation and production build integrity:
+
+```bash
+# Run TypeScript compilation checks
+bun run typecheck
+
+# Build the optimized production bundle
+bun run build
+```
+
+---
+
+## 📁 Key Directories & Apps
+
+- **`components/Window.tsx`**: The core responsive window container featuring viewport boundary clamping and automatic centering for mobile screens.
+- **`components/windows/`**: Integrated retro application widgets:
+  - 🎨 **`Paint.tsx`**: HTML5 canvas drawer with custom brushes, erasers, and PNG download.
+  - ⚡ **`Winamp.tsx`**: Skinnable audio player featuring dynamic equalizers, volume sliders, and classic system tracks.
+  - 🌐 **`IEBrowser.tsx`**: Retro IE6 browser simulation loaded with project portfolios, search pages, and a glossy 3D Internet Explorer logo.
+  - ⚙️ **`ControlPanel.tsx`**: Display customizer to change active desktop wallpaper dynamically and toggle system sounds.
+  - 📊 **`TaskManager.tsx`**: Process manager showing live memory/CPU activity charts, with "End Process" actions and desktop easter eggs.
+
+---
 <div align="center">
-by Elliot
+Created with nostalgia by Elliot
 </div>
