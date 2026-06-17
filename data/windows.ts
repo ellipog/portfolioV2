@@ -252,6 +252,14 @@ export const projects = {
       languages: ["TypeScript", "NextJS", "TailwindCSS"],
     },
     {
+      name: "Galdr",
+      link: "https://galdr.aaenz.no",
+      image: "galdr.ico",
+      year: "2026",
+      description: `A Tauri desktop app wrapping FFmpeg in a rune-themed, monochrome terminal GUI for converting and manipulating video, audio, and image files. Features batch conversion, quality presets, live command preview, and before/after comparison.`,
+      languages: ["TypeScript", "React", "Rust", "Tauri", "Vite"],
+    },
+    {
       name: "Chat",
       link: "https://chat.aaenz.no",
       image: "chat_icon.png",

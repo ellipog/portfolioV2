@@ -179,6 +179,7 @@ function DesktopIcon({
   onWindowOpen,
 }: DesktopIconProps) {
   const [editedTitle, setEditedTitle] = useState(title);
+  const [isSelected, setIsSelected] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -192,10 +193,27 @@ function DesktopIcon({
     setEditedTitle(title);
   }, [title]);
 
+  // Deselect on any click outside
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest(".app-icon")) {
+        setIsSelected(false);
+      }
+    };
+    window.addEventListener("click", handleGlobalClick);
+    return () => window.removeEventListener("click", handleGlobalClick);
+  }, []);
+
   const handleDoubleClick = () => {
     if (!isEditing) {
       onWindowOpen(title);
     }
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsSelected(true);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -223,9 +241,12 @@ function DesktopIcon({
       grid={[10, 10]}
     >
       <div
-        className={`app-icon z-[2] absolute flex flex-col items-center justify-center w-20 h-24 hover:bg-blue-500/20 active:bg-blue-500/40 rounded transition-colors hover:cursor-pointer ${
-          isEditing ? "pointer-events-none" : ""
-        }`}
+        className={`app-icon z-[2] absolute flex flex-col items-center justify-center w-20 h-24 rounded transition-colors select-none ${
+          isSelected
+            ? "bg-blue-500/30 ring-1 ring-blue-400/60"
+            : "hover:bg-blue-500/20"
+        } ${isEditing ? "pointer-events-none" : "cursor-pointer"}`}
+        onClick={handleClick}
         onDoubleClick={handleDoubleClick}
       >
         <img

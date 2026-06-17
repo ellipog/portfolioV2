@@ -22,6 +22,7 @@ import BlueMarker from "components/BlueMarker";
 import BlueScreen from "components/BlueScreen";
 import { playSound } from "utils/playSound";
 import { useIsMobile } from "utils/isMobile";
+import { errorMessages } from "data/clippyMessages";
 
 export const meta: MetaFunction = () => {
   return [
@@ -95,7 +96,7 @@ export default function Index() {
   const [loading, setLoading] = useState<LoadingState>(LoadingState.Initial);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [errors, setErrors] = useState<
-    Array<{ id: number; title?: string; isOpen: boolean }>
+    Array<{ id: number; title?: string; isOpen: boolean; message?: string }>
   >([]);
   const [nextErrorId, setNextErrorId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -192,6 +193,72 @@ export default function Index() {
     (window as any).setSoundVolume = (level: number) => {
       (window as any).soundVolume = level;
     };
+    (window as any).spawnErrorPopup = (message?: string) => {
+      const msg = message || errorMessages[Math.floor(Math.random() * errorMessages.length)];
+      setErrors((prev) => [
+        ...prev,
+        {
+          id: Date.now() + Math.random(),
+          title: "Windows",
+          isOpen: true,
+          message: msg,
+        },
+      ]);
+    };
+    (window as any).spawnErrorBatch = (count: number) => {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          setErrors((prev) => [
+            ...prev,
+            {
+              id: Date.now() + Math.random(),
+              title: "Windows",
+              isOpen: true,
+              message: errorMessages[Math.floor(Math.random() * errorMessages.length)],
+            },
+          ]);
+        }, i * 50);
+      }
+    };
+    (window as any).toggleMute = (target: "alerts" | "startup" | "all") => {
+      if (target === "all") {
+        (window as any).muteSystemSounds = !(window as any).muteSystemSounds;
+      } else if (target === "alerts") {
+        (window as any).systemAlertsEnabled = (window as any).systemAlertsEnabled === false ? true : false;
+      } else if (target === "startup") {
+        (window as any).startupSoundsEnabled = (window as any).startupSoundsEnabled === false ? true : false;
+      }
+      const status = (window as any).muteSystemSounds ? "muted" : "unmuted";
+      setErrors((prev) => [
+        ...prev,
+        {
+          id: Date.now() + Math.random(),
+          title: "Audio",
+          isOpen: true,
+          message: `System sounds ${status}`,
+        },
+      ]);
+    };
+    (window as any).restartPC = () => {
+      setLoading(LoadingState.Initial);
+      setTimeout(() => {
+        setLoading(LoadingState.BIOS);
+        playSound("startup");
+      }, 500);
+      setTimeout(() => {
+        setLoading(LoadingState.Boot1);
+      }, 2000);
+      setTimeout(() => {
+        setLoading(LoadingState.Boot2);
+      }, 3000);
+      setTimeout(() => {
+        setLoading(LoadingState.Black);
+      }, 4600);
+      setTimeout(() => {
+        setLoading(LoadingState.Desktop);
+        playSound("logon");
+      }, 4900);
+    };
     (window as any).isExplorerKilled = isExplorerKilled;
     (window as any).showAngryClippy = showAngryClippy;
     (window as any).bringWindowToFront = bringWindowToFront;
@@ -206,6 +273,11 @@ export default function Index() {
       delete (window as any).closePortfolioWindow;
       delete (window as any).closeAllPortfolioWindows;
       delete (window as any).setSoundVolume;
+      delete (window as any).spawnErrorPopup;
+      delete (window as any).spawnErrorBatch;
+      delete (window as any).toggleMute;
+      delete (window as any).restartPC;
+      delete (window as any).setWallpaperDirect;
       delete (window as any).navigateIE;
       delete (window as any).isExplorerKilled;
       delete (window as any).showAngryClippy;
@@ -526,6 +598,7 @@ export default function Index() {
               activeWindows={activeWindows}
               setActiveWindows={setActiveWindows}
               bringWindowToFront={bringWindowToFront}
+              windowOrder={windowOrder}
             />
           )}
           {isExplorerKilled && (
@@ -590,8 +663,8 @@ export default function Index() {
               onClose={() => {
                 setErrors((prev) => prev.filter((e) => e.id !== error.id));
               }}
-              title="Windows"
-              message={`Cannot delete '${error.title}'. This action is not allowed in the portfolio demo.`}
+              title={error.title || "Windows"}
+              message={error.message || `Cannot delete '${error.title}'. This action is not allowed in the portfolio demo.`}
               type="error"
             />
           ))}

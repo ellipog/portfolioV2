@@ -185,24 +185,24 @@ export default function RightClick({
         <div className="h-[1px] bg-gray-200 mx-1" />
         <MenuItem text="Refresh" onClick={() => window.location.reload()} />
         <div className="h-[1px] bg-gray-200 mx-1" />
-        <MenuItem
-          text="New Folder"
-          onClick={() => {
-            setFolders((prev) => [
-              ...prev,
-              {
-                title: "New Folder",
-                pos: {
-                  x: Math.round((position.x - 30) / 10) * 10,
-                  y: Math.round((position.y - 30) / 10) * 10,
+<MenuItem
+            text="New Folder"
+            onClick={() => {
+              setFolders((prev) => [
+                ...prev,
+                {
+                  title: "New Folder",
+                  pos: {
+                    x: Math.round((position.x - 30) / 10) * 10,
+                    y: Math.round((position.y - 30) / 10) * 10,
+                  },
+                  icon: "folder.png",
+                  id: Date.now(),
                 },
-                icon: "folder.png",
-                id: position.data?.id || 0,
-              },
-            ]);
-            setShowMenu(false);
-          }}
-        />
+              ]);
+              setShowMenu(false);
+            }}
+          />
         <div className="h-[1px] bg-gray-200 mx-1" />
         <MenuItem text="Properties" disabled />
       </>

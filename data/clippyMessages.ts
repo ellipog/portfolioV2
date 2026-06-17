@@ -20,6 +20,15 @@ export type ClippyAction =
   | { type: "playSound"; sound: string }
   | { type: "setVolume"; level: number }
   | { type: "tourPortfolio" }
+  | { type: "spawnError"; message: string }
+  | { type: "spawnErrorBatch"; count: number }
+  | { type: "killExplorer" }
+  | { type: "restoreExplorer" }
+  | { type: "triggerClippyDefense" }
+  | { type: "restartPC" }
+  | { type: "openAllWindows" }
+  | { type: "toggleMute"; target: "alerts" | "startup" | "all" }
+  | { type: "setWallpaperDirect"; id: string }
   | { type: "dismiss" };
 
 export type ClippyResponse = { label: string; action: ClippyAction };
@@ -82,6 +91,87 @@ export const defaultTips: ClippyTip[] = [
       { label: "Maybe later", action: { type: "dismiss" } },
     ],
   },
+  {
+    message: "It looks like you're writing some code. Can I help with that? Actually, I probably can't. But I can open your projects!",
+    responses: [
+      { label: "Open Projects window", action: { type: "openWindow", window: "Projects" } },
+      { label: "Open Skills", action: { type: "openWindow", window: "Skills" } },
+      { label: "Play the startup sound", action: { type: "playSound", sound: "startup" } },
+      { label: "Go away, Clippy", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Warning: I haven't been backed up in 84 days. Would you like to back me up? Too bad, I already did it myself.",
+    responses: [
+      { label: "Uh, thanks Clippy", action: { type: "playSound", sound: "click" } },
+      { label: "That's unsettling", action: { type: "dismiss" } },
+      { label: "Open Windows Task Manager", action: { type: "openWindow", window: "Task_Manager" } },
+      { label: "Run away", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "I've been watching you click around. You seem nice. Want to see something cool?",
+    responses: [
+      { label: "Show me ALL the windows", action: { type: "openAllWindows" } },
+      { label: "Open the Task Manager", action: { type: "openWindow", window: "Task_Manager" } },
+      { label: "Change wallpaper to Follow", action: { type: "setWallpaperDirect", id: "follow" } },
+      { label: "I'm scared", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Did you know I can control your desktop? Watch this!",
+    responses: [
+      { label: "Open everything at once", action: { type: "openAllWindows" } },
+      { label: "Close everything", action: { type: "closeAllWindows" } },
+      { label: "Play the angry sound", action: { type: "playSound", sound: "angry" } },
+      { label: "Please don't", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "This desktop is too quiet. Let me fix that.",
+    responses: [
+      { label: "Play startup sound", action: { type: "playSound", sound: "startup" } },
+      { label: "Play logon sound", action: { type: "playSound", sound: "logon" } },
+      { label: "Play notification", action: { type: "playSound", sound: "notify" } },
+      { label: "Mute everything", action: { type: "toggleMute", target: "all" } },
+    ],
+  },
+  {
+    message: "It looks like you're trying to learn about Elliot. Let me open the guestbook in IE so you can leave a message!",
+    responses: [
+      { label: "Open guestbook", action: { type: "openIE", url: "http://www.msn.elliot" } },
+      { label: "Open Work Experience", action: { type: "openWindow", window: "Work_Experience" } },
+      { label: "Play an error sound for fun", action: { type: "playSound", sound: "error" } },
+      { label: "Dismiss", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Your PC is running slow. I recommend opening more programs to balance the load!",
+    responses: [
+      { label: "Open ALL windows", action: { type: "openAllWindows" } },
+      { label: "Just open Paint", action: { type: "openWindow", window: "Paint" } },
+      { label: "That's terrible advice", action: { type: "dismiss" } },
+      { label: "Open Task Manager to check", action: { type: "openWindow", window: "Task_Manager" } },
+    ],
+  },
+  {
+    message: "I'm feeling chaotic today. Want to cause some trouble?",
+    responses: [
+      { label: "Spawn an error popup!", action: { type: "spawnError", message: "Clippy.exe has generated an error and will be closed. Clippy will now restart. Just kidding, I never really close." } },
+      { label: "Open Control Panel", action: { type: "openWindow", window: "Control_Panel" } },
+      { label: "Mute system alerts", action: { type: "toggleMute", target: "alerts" } },
+      { label: "I'll behave", action: { type: "dismiss" } },
+    ],
+  },
+  {
+    message: "Hey! I found this cool wallpaper while you were away. Want to try it?",
+    responses: [
+      { label: "Set Classic Blue", action: { type: "setWallpaperDirect", id: "classic_blue" } },
+      { label: "Set Autumn", action: { type: "setWallpaperDirect", id: "autumn" } },
+      { label: "Set Red Moon Desert", action: { type: "setWallpaperDirect", id: "red_moon" } },
+      { label: "Leave it as is", action: { type: "dismiss" } },
+    ],
+  },
 ];
 
 export const angryMessages = [
@@ -129,24 +219,28 @@ export const windowMessages: Record<PortfolioWindowKey, string[]> = {
     "Looking for details about my technical expertise?",
     "Curious about my tech stack and tools?",
     "Let me show you my development skills!",
+    "I know 16 technologies! Well, technically I don't know them, Elliot does. But I'm aware of them!",
   ],
   Projects: [
     "Interested in seeing what I've built?",
     "Want to explore my portfolio of projects?",
     "Check out some of my coolest developments!",
     "Let me show you what I've been working on!",
+    "I have 14 projects. Some are even useful!",
   ],
   Work_Experience: [
     "Curious about my professional background?",
     "Want to know where I've worked?",
     "Interested in my career journey?",
     "Let me tell you about my industry experience!",
+    "Elliot worked at Skatteetaten! That's the Norwegian tax administration. Fancy!",
   ],
   Minesweeper: [
     "Need a break? Try finding all the mines!",
     "Up for a quick game of Minesweeper?",
     "Want to test your mine-detecting skills?",
     "Care for some classic Windows entertainment?",
+    "I hid a mine under your start button! Just kidding. Or am I?",
   ],
   Education: [
     "Looking to learn about my educational journey?",
@@ -158,23 +252,29 @@ export const windowMessages: Record<PortfolioWindowKey, string[]> = {
     "It looks like you're trying to draw something! Need help with Paint?",
     "Want to make a masterpiece on the canvas?",
     "I can help you find the right brush!",
+    "Make sure to save your art! PNG format is supported.",
   ],
   Internet_Explorer: [
     "Browsing the web? I can take you to Elliot's MSN portal!",
     "Looking for projects or career info online?",
     "Need help navigating this simulated browser?",
+    "The guestbook needs more entries. Go leave a message!",
   ],
   Control_Panel: [
     "Changing your desktop look? I can help pick a wallpaper!",
     "Want to tweak sounds or display settings?",
+    "The Autumn wallpaper is my favorite. Very cozy.",
   ],
   Winamp: [
     "Ready for some tunes? Winamp is standing by!",
     "It looks like you want to play some music!",
+    "Winamp really whips the llama's ass!",
   ],
   Task_Manager: [
     "Managing processes? Be careful which ones you end!",
     "The system is running smoothly — mostly.",
+    "Don't even think about ending clippy.exe. I'm watching you.",
+    "Remember: ending clippy.exe is a violation of the Geneva Convention.",
   ],
 };
 
@@ -238,6 +338,7 @@ export const windowResponseActions: Record<PortfolioWindowKey, ClippyResponse[]>
     { label: "Open Task Manager", action: { type: "openWindow", window: "Task_Manager" } },
     { label: "Close all app windows", action: { type: "closeAllWindows" } },
     { label: "Open IE + Projects", action: { type: "openWindows", windows: ["Internet_Explorer", "Projects"] } },
+    { label: "Spawn an error popup", action: { type: "spawnError", message: "Task Manager has detected an unknown process: clippy.exe. Would you like to end it? (You can't.)" } },
     { label: "Leave processes alone", action: { type: "dismiss" } },
   ],
 };

@@ -7,10 +7,12 @@ export default function Navbar({
   activeWindows,
   setActiveWindows,
   bringWindowToFront,
+  windowOrder,
 }: {
   activeWindows: Record<string, boolean>;
   setActiveWindows: Dispatch<SetStateAction<Record<string, boolean>>>;
   bringWindowToFront: (windowTitle: string) => void;
+  windowOrder: string[];
 }) {
   const [time, setTime] = useState(new Date().toLocaleTimeString("no"));
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
@@ -20,7 +22,6 @@ export default function Navbar({
     const interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString("no"));
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -35,19 +36,20 @@ export default function Navbar({
       const timer = setTimeout(() => {
         setStartMenuClippy(1);
       }, 4000);
-
-      return () => {
-        clearTimeout(timer);
-      };
+      return () => clearTimeout(timer);
     }
   }, [startMenuClippy]);
 
-  const handleWindowClick = (windowTitle: string) => {
-    setActiveWindows((prev) => ({
-      ...prev,
-      [windowTitle]: !prev[windowTitle],
-    }));
-    if (!activeWindows[windowTitle]) {
+  const frontmostWindow = windowOrder[windowOrder.length - 1];
+
+  const handleTaskButton = (windowTitle: string) => {
+    const isActive = activeWindows[windowTitle];
+    const isFrontmost = windowTitle === frontmostWindow;
+
+    if (isActive && isFrontmost) {
+      setActiveWindows((prev) => ({ ...prev, [windowTitle]: false }));
+    } else {
+      setActiveWindows((prev) => ({ ...prev, [windowTitle]: true }));
       bringWindowToFront(windowTitle);
     }
   };
@@ -64,7 +66,7 @@ export default function Navbar({
         {/* START BAR */}
         <button
           onClick={() => setIsStartMenuOpen(!isStartMenuOpen)}
-          className="flex w-[164px] gap-2 pl-4 pr-6 bg-gradient-to-b from-green-400 to-green-700 hover:from-green-500 hover:to-green-800 active:from-green-600 active:to-green-900 h-14 justify-center items-center rounded-r-xl text-white text-shadow cursor-pointer transition-colors ease-in-out"
+          className="flex w-[164px] gap-2 pl-4 pr-6 bg-gradient-to-b from-green-400 to-green-700 hover:from-green-500 hover:to-green-800 active:from-green-600 active:to-green-900 h-14 justify-center items-center rounded-r-xl text-white text-shadow cursor-pointer transition-colors ease-in-out shrink-0"
         >
           <img src="start_logo.png" alt="start" className="w-9 h-8" />
           <span className="transform -skew-x-[20deg] text-xl select-none">
@@ -93,25 +95,48 @@ export default function Navbar({
             </motion.div>
           )}
         </AnimatePresence>
-        {/* ICON BAR */}
-        <div className="flex w-full gap-2 h-12 ml-4 justify-start items-center rounded-l-xl text-white font-bold text-shadow">
+
+        {/* TASKBAR BUTTONS */}
+        <div className="flex w-full gap-0.5 h-full ml-1 items-center overflow-x-auto overflow-y-hidden winxp-scrollbar">
           {windows
-            .filter((window) => !window.isClippyExe)
-            .map((window) => (
-              <button
-                key={window.title}
-                className={`app-icon flex flex-col items-center justify-center h-10 w-10 rounded-lg transition-all duration-200 ease-in-out ${
-                  activeWindows[window.title] ? "bg-white/50" : "bg-white/10"
-                }`}
-                onClick={() => handleWindowClick(window.title)}
-              >
-                <img src={window.icon} alt={window.title} className="w-7 h-7" />
-              </button>
-            ))}
+            .filter((w) => !w.isClippyExe)
+            .map((win) => {
+              const isActive = activeWindows[win.title];
+              const isFrontmost = win.title === frontmostWindow;
+              const label = win.title.replace(/_/g, " ");
+              return (
+                <button
+                  key={win.title}
+                  onClick={() => handleTaskButton(win.title)}
+                  className={`flex items-center gap-1.5 h-10 px-2 my-1 rounded-sm border border-transparent min-w-0 max-w-[180px] shrink-0 transition-all duration-75 ${
+                    isActive
+                      ? isFrontmost
+                        ? "bg-gradient-to-b from-[#d4d9e4] to-[#b5bfd4] border-[#8b96ad] shadow-inner"
+                        : "bg-gradient-to-b from-[#dee3ed] to-[#c6cfdf] border-[#9aa4bb]"
+                      : "bg-gradient-to-b from-[#4f87d4] to-[#3a6fc9] hover:from-[#5c92df] hover:to-[#4679d4]"
+                  }`}
+                >
+                  <img
+                    src={win.icon}
+                    alt=""
+                    className="w-5 h-5 shrink-0 select-none pointer-events-none"
+                    draggable={false}
+                  />
+                  <span
+                    className={`text-xs truncate select-none ${
+                      isActive ? "text-black" : "text-white text-shadow"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </button>
+              );
+            })}
         </div>
-        {/* END BAR */}
-        <div className="flex gap-2 pr-4 pl-6 bg-gradient-to-b from-cyan-400 to-cyan-700 h-14 justify-center items-center rounded-l-xl text-white text-shadow">
-          <span className="text-xl">{time}</span>
+
+        {/* SYSTEM TRAY */}
+        <div className="flex gap-2 pr-4 pl-6 bg-gradient-to-b from-cyan-400 to-cyan-700 h-14 justify-center items-center rounded-l-xl text-white text-shadow shrink-0">
+          <span className="text-xl select-none">{time}</span>
         </div>
       </div>
     </>

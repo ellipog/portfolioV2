@@ -29,6 +29,16 @@ declare global {
     navigateIE?: (url: string) => void;
     changeWallpaper?: (id: string, url?: string, color?: string) => void;
     setSoundVolume?: (level: number) => void;
+    killExplorer?: () => void;
+    restoreExplorer?: () => void;
+    triggerClippyDefense?: () => void;
+    spawnErrorPopup?: (message?: string) => void;
+    spawnErrorBatch?: (count: number) => void;
+    muteSystemSounds?: boolean;
+    startupSoundsEnabled?: boolean;
+    systemAlertsEnabled?: boolean;
+    toggleMute?: (target: "alerts" | "startup" | "all") => void;
+    setWallpaperDirect?: (id: string) => void;
   }
 }
 
@@ -48,6 +58,10 @@ function executeClippyAction(action: ClippyAction) {
       if (action.windows.length > 0) {
         window.openPortfolioWindow?.(action.windows[action.windows.length - 1]);
       }
+      break;
+    case "openAllWindows":
+      const allKeys = ["Skills", "Projects", "Work_Experience", "Minesweeper", "Education", "Paint", "Internet_Explorer", "Control_Panel", "Winamp", "Task_Manager"];
+      allKeys.forEach((k) => window.openPortfolioWindow?.(k));
       break;
     case "closeWindow":
       window.closePortfolioWindow?.(action.window);
@@ -71,11 +85,38 @@ function executeClippyAction(action: ClippyAction) {
       }
       break;
     }
+    case "setWallpaperDirect": {
+      const wp = WALLPAPER_MAP[action.id];
+      if (wp) {
+        window.changeWallpaper?.(action.id, wp.url, wp.color);
+      } else {
+        window.changeWallpaper?.(action.id);
+      }
+      break;
+    }
     case "playSound":
       playSound(action.sound);
       break;
     case "setVolume":
       window.setSoundVolume?.(action.level);
+      break;
+    case "spawnError":
+      window.spawnErrorPopup?.(action.message);
+      break;
+    case "spawnErrorBatch":
+      window.spawnErrorBatch?.(action.count);
+      break;
+    case "killExplorer":
+      window.killExplorer?.();
+      break;
+    case "restoreExplorer":
+      window.restoreExplorer?.();
+      break;
+    case "triggerClippyDefense":
+      window.triggerClippyDefense?.();
+      break;
+    case "toggleMute":
+      window.toggleMute?.(action.target);
       break;
     case "tourPortfolio":
       window.openPortfolioWindow?.("Internet_Explorer");
