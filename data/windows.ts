@@ -31,20 +31,20 @@ export const windows: Window[] = [
   {
     title: "Skills",
     icon: "skills.png",
-    defaultSize: { width: 300, height: 400 },
-    defaultPosition: generateRandomPosition(300, 400, 1, existingPositions),
+    defaultSize: { width: 350, height: 450 },
+    defaultPosition: generateRandomPosition(350, 450, 1, existingPositions),
   },
   {
     title: "Projects",
     icon: "projects.png",
-    defaultSize: { width: 600, height: 730 },
-    defaultPosition: generateRandomPosition(600, 730, 2, existingPositions),
+    defaultSize: { width: 700, height: 750 },
+    defaultPosition: generateRandomPosition(700, 750, 2, existingPositions),
   },
   {
     title: "Work_Experience",
     icon: "work_experience.png",
-    defaultSize: { width: 600, height: 400 },
-    defaultPosition: generateRandomPosition(600, 400, 3, existingPositions),
+    defaultSize: { width: 700, height: 450 },
+    defaultPosition: generateRandomPosition(700, 450, 3, existingPositions),
   },
   {
     title: "Minesweeper",
@@ -56,8 +56,8 @@ export const windows: Window[] = [
   {
     title: "Education",
     icon: "education.png",
-    defaultSize: { width: 600, height: 400 },
-    defaultPosition: generateRandomPosition(600, 400, 5, existingPositions),
+    defaultSize: { width: 700, height: 450 },
+    defaultPosition: generateRandomPosition(700, 450, 5, existingPositions),
   },
   {
     title: "Task_Manager",
@@ -220,12 +220,12 @@ export const projects = {
   icon: "projects.png",
   projects: [
     {
-      name: "Portfolio V2",
-      link: "https://github.com/Ellipog/portfolioV2",
-      image: "github.png",
+      name: "Galdr",
+      link: "https://galdr.aaenz.no",
+      image: "galdr.ico",
       year: "2026",
-      description: `Upgraded portfolio. Made to look like Windows XP.`,
-      languages: ["TypeScript", "Remix", "TailwindCSS", "Bun"],
+      description: `A Tauri desktop app wrapping FFmpeg in a rune-themed, monochrome terminal GUI for converting and manipulating video, audio, and image files. Features batch conversion, quality presets, live command preview, and before/after comparison.`,
+      languages: ["TypeScript", "React", "Rust", "Tauri", "Vite"],
     },
     {
       name: "Runen",
@@ -252,12 +252,12 @@ export const projects = {
       languages: ["TypeScript", "NextJS", "TailwindCSS"],
     },
     {
-      name: "Galdr",
-      link: "https://galdr.aaenz.no",
-      image: "galdr.ico",
+      name: "Portfolio V2",
+      link: "https://github.com/Ellipog/portfolioV2",
+      image: "github.png",
       year: "2026",
-      description: `A Tauri desktop app wrapping FFmpeg in a rune-themed, monochrome terminal GUI for converting and manipulating video, audio, and image files. Features batch conversion, quality presets, live command preview, and before/after comparison.`,
-      languages: ["TypeScript", "React", "Rust", "Tauri", "Vite"],
+      description: `Upgraded portfolio. Made to look like Windows XP.`,
+      languages: ["TypeScript", "Remix", "TailwindCSS", "Bun"],
     },
     {
       name: "Chat",

@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import StartMenu from "./StartMenu";
 import { windows } from "data/windows";
 import { AnimatePresence, motion } from "framer-motion";
+import { Volume2, VolumeX, Wifi, Usb } from "lucide-react";
 
 export default function Navbar({
   activeWindows,
@@ -14,13 +15,32 @@ export default function Navbar({
   bringWindowToFront: (windowTitle: string) => void;
   windowOrder: string[];
 }) {
-  const [time, setTime] = useState(new Date().toLocaleTimeString("no"));
+  const [muted, setMuted] = useState(false);
+
+  const handleVolumeClick = () => {
+    // Delegate to the existing window-global mute toggle ("all" system sounds).
+    (window as any).toggleMute?.("all");
+    setMuted(!!(window as any).muteSystemSounds);
+  };
+  const [time, setTime] = useState(
+    new Date().toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    })
+  );
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
   const [startMenuClippy, setStartMenuClippy] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(new Date().toLocaleTimeString("no"));
+      setTime(
+        new Date().toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        })
+      );
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -62,17 +82,66 @@ export default function Navbar({
         setActiveWindows={setActiveWindows}
         bringWindowToFront={bringWindowToFront}
       />
-      <div className="navbar fixed w-full h-14 bottom-0 flex justify-between items-center bg-gradient-to-b from-blue-400 to-blue-700 z-50">
-        {/* START BAR */}
+      <div
+        className="navbar fixed w-full bottom-0 flex justify-between items-stretch z-50"
+        style={{
+          height: "var(--taskbar-height)",
+          background:
+            "linear-gradient(to bottom, #2a77d6 0%, #2a77d6 8%, #2870cc 40%, #245edb 88%, #245edb 93%, #2150b8 95%, #2150b8 100%)",
+          borderTop: "1px solid #1e3f8a",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)",
+        }}
+      >
+        {/* START BUTTON — green pill, right-rounded */}
         <button
           onClick={() => setIsStartMenuOpen(!isStartMenuOpen)}
-          className="flex w-[164px] gap-2 pl-4 pr-6 bg-gradient-to-b from-green-400 to-green-700 hover:from-green-500 hover:to-green-800 active:from-green-600 active:to-green-900 h-14 justify-center items-center rounded-r-xl text-white text-shadow cursor-pointer transition-colors ease-in-out shrink-0"
+          className="relative flex items-center justify-start gap-1.5 pl-2.5 pr-5 text-white cursor-pointer transition-colors ease-in-out shrink-0 overflow-hidden"
+          style={{
+            width: "110px",
+            background:
+              "linear-gradient(to bottom, #5eac56 0%, #4f9a48 40%, #3d8b34 55%, #2d7d28 100%)",
+            borderRadius: "0 12px 12px 0",
+            textShadow: "1px 1px 1px rgba(0,0,0,0.4)",
+          }}
         >
-          <img src="start_logo.png" alt="start" className="w-9 h-8" />
-          <span className="transform -skew-x-[20deg] text-xl select-none">
+          {/* glossy highlight overlay on top ~40% */}
+          <span
+            className="pointer-events-none absolute left-0 right-0 top-0"
+            style={{
+              height: "40%",
+              background:
+                "linear-gradient(to bottom, rgba(255,255,255,0.45), rgba(255,255,255,0))",
+              borderRadius: "0 12px 0 0",
+            }}
+          />
+          <img
+            src="start_logo.png"
+            alt="start"
+            className="relative w-5 h-5 shrink-0"
+              style={{ width: "24px", height: "24px" }}
+          />
+          <span
+            className="relative font-bold italic lowercase select-none"
+            style={{
+              fontSize: "15px",
+              transform: "skewX(-8deg)",
+              transformOrigin: "center",
+            }}
+          >
             start
           </span>
         </button>
+
+        {/* left grip line */}
+        <div
+          className="self-center ml-1 mr-0.5 shrink-0"
+          style={{
+            width: "2px",
+            height: "60%",
+            background: "rgba(255,255,255,0.25)",
+            boxShadow: "-1px 0 0 rgba(0,0,0,0.2)",
+          }}
+        />
 
         <AnimatePresence>
           {startMenuClippy === 1 && (
@@ -80,14 +149,22 @@ export default function Navbar({
               initial={{ x: -100, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -100, opacity: 0 }}
-              className="fixed bottom-16 left-2 z-50 flex flex-col items-start"
+              className="fixed z-50 flex flex-col items-start"
+              style={{ bottom: "calc(var(--taskbar-height) + 8px)", left: "8px" }}
             >
               <img
                 src="clippy.png"
                 alt="Clippy"
                 className="relative w-20 h-20 top-5 scale-x-[-1]"
               />
-              <div className="p-4 bg-white border-2 border-gray-400 rounded-lg shadow-lg">
+              <div
+                className="p-4 border-[var(--xp-shadow)]"
+                style={{
+                  background: "var(--xp-face)",
+                  boxShadow:
+                    "inset 1px 1px 0 var(--xp-3dlight), inset -1px -1px 0 var(--xp-shadow), 2px 2px 4px rgba(0,0,0,0.2)",
+                }}
+              >
                 <p className="text-sm text-black -my-2">
                   ↓ Click the start button
                 </p>
@@ -97,7 +174,7 @@ export default function Navbar({
         </AnimatePresence>
 
         {/* TASKBAR BUTTONS */}
-        <div className="flex w-full gap-0.5 h-full ml-1 items-center overflow-x-auto overflow-y-hidden winxp-scrollbar">
+        <div className="flex w-full gap-0.5 items-center overflow-x-auto overflow-y-hidden winxp-scrollbar px-0.5">
           {windows
             .filter((w) => !w.isClippyExe)
             .map((win) => {
@@ -108,24 +185,33 @@ export default function Navbar({
                 <button
                   key={win.title}
                   onClick={() => handleTaskButton(win.title)}
-                  className={`flex items-center gap-1.5 h-10 px-2 my-1 rounded-sm border border-transparent min-w-0 max-w-[180px] shrink-0 transition-all duration-75 ${
+                  className={`flex items-center gap-1.5 px-2 rounded-sm min-w-0 max-w-[220px] shrink-0 transition-all duration-75 ${
                     isActive
                       ? isFrontmost
-                        ? "bg-gradient-to-b from-[#d4d9e4] to-[#b5bfd4] border-[#8b96ad] shadow-inner"
-                        : "bg-gradient-to-b from-[#dee3ed] to-[#c6cfdf] border-[#9aa4bb]"
-                      : "bg-gradient-to-b from-[#4f87d4] to-[#3a6fc9] hover:from-[#5c92df] hover:to-[#4679d4]"
+                        ? "task-btn-pressed"
+                        : "task-btn-inactive"
+                      : "task-btn-closed"
                   }`}
+                  style={{ height: "28px" }}
                 >
                   <img
                     src={win.icon}
                     alt=""
                     className="w-5 h-5 shrink-0 select-none pointer-events-none"
+                    style={{ width: "20px", height: "20px" }}
                     draggable={false}
                   />
                   <span
-                    className={`text-xs truncate select-none ${
-                      isActive ? "text-black" : "text-white text-shadow"
+                    className={`text-[13px] truncate select-none leading-none ${
+                      isActive && isFrontmost
+                        ? "text-black"
+                        : "text-white"
                     }`}
+                    style={
+                      isActive && isFrontmost
+                        ? undefined
+                        : { textShadow: "1px 1px 1px rgba(0,0,0,0.4)" }
+                    }
                   >
                     {label}
                   </span>
@@ -134,9 +220,42 @@ export default function Navbar({
             })}
         </div>
 
-        {/* SYSTEM TRAY */}
-        <div className="flex gap-2 pr-4 pl-6 bg-gradient-to-b from-cyan-400 to-cyan-700 h-14 justify-center items-center rounded-l-xl text-white text-shadow shrink-0">
-          <span className="text-xl select-none">{time}</span>
+        {/* SYSTEM TRAY — recessed area with inset divider */}
+        <div className="flex items-stretch shrink-0">
+          <div
+            className="flex items-center gap-1.5 px-2"
+            style={{
+              borderLeft: "2px solid #245edb",
+              boxShadow:
+                "inset 1px 1px 0 #808080, inset 1px -1px 0 #fff",
+              background:
+                "linear-gradient(to bottom, #2a77d6 0%, #245edb 90%, #2150b8 100%)",
+            }}
+          >
+            <button
+              onClick={handleVolumeClick}
+              title={muted ? "Unmute" : "Mute"}
+              className="text-white hover:bg-white/20 rounded-sm p-0.5 cursor-pointer"
+              style={{ lineHeight: 0 }}
+            >
+              {muted ? (
+                <VolumeX size={16} strokeWidth={2.5} />
+              ) : (
+                <Volume2 size={16} strokeWidth={2.5} />
+              )}
+            </button>
+            <Wifi size={16} strokeWidth={2.5} className="text-white" />
+            <Usb size={16} strokeWidth={2.5} className="text-white" />
+            <span
+              className="text-white select-none ml-1"
+              style={{
+                fontSize: "13px",
+                textShadow: "1px 1px 1px rgba(0,0,0,0.4)",
+              }}
+            >
+              {time}
+            </span>
+          </div>
         </div>
       </div>
     </>

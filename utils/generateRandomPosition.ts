@@ -1,3 +1,5 @@
+import { TASKBAR_HEIGHT } from "utils/taskbarHeight";
+
 export const generateRandomPosition = (
   width: number,
   height: number,
@@ -5,7 +7,7 @@ export const generateRandomPosition = (
   existingPositions: { x: number; y: number }[] = []
 ) => {
   const padding = 50;
-  const taskbarHeight = 56;
+  const taskbarHeight = TASKBAR_HEIGHT;
   const viewportWidth =
     typeof window !== "undefined" ? window.innerWidth - padding : 1024;
   const viewportHeight =

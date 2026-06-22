@@ -25,9 +25,11 @@ export default function WorkExperience({
       pos={windowConfig?.defaultPosition || { x: 150, y: 150 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
+      showMenuBar
+      statusBar={<span>{workExperience.workExperience.length} entries</span>}
     >
-      <div className="text-black relative max-w-[560px]">
-        <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-blue-800" />
+      <div className="text-black relative max-w-[650px] p-3 border border-[var(--xp-shadow)] bg-[var(--xp-3dlight)]">
+        <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-blue-800" />
 
         <div className="flex flex-col gap-8">
           {workExperience.workExperience.map((work, i) => (
@@ -38,23 +40,23 @@ export default function WorkExperience({
               }`}
             >
               <div
-                className={`absolute left-2 top-3 bg-blue-800 ${
-                  work.isMinor ? "w-4 h-0.5" : "w-8 h-0.5"
+                className={`absolute left-5 top-3 bg-blue-800 ${
+                  work.isMinor ? "w-5 h-0.5" : "w-10 h-0.5"
                 }`}
               />
               <div
-                className={`pl-12 text-start ${
+                className={`pl-16 text-start ${
                   work.isMinor
-                    ? `pl-8 flex flex-row gap-3 items-center h-7 ${
+                    ? `pl-10 flex flex-row gap-3 items-center h-7 ${
                         i !== workExperience.workExperience.length - 1
                           ? "mb-[-1.2rem]"
                           : ""
                       }`
-                    : "pl-12"
+                    : "pl-16"
                 }`}
               >
                 <span
-                  className={`text-xs font-bold text-blue-800 ${
+                  className={`text-sm font-bold text-blue-800 ${
                     work.isMinor ? "opacity-80" : ""
                   }`}
                 >
@@ -62,7 +64,7 @@ export default function WorkExperience({
                 </span>
                 <div
                   className={`${
-                    work.isMinor ? "text-sm text-gray-500" : "text-md font-bold"
+                    work.isMinor ? "text-base text-gray-500" : "text-lg font-bold"
                   }`}
                 >
                   {work.name}
@@ -78,7 +80,7 @@ export default function WorkExperience({
                   )}
                 </div>
                 {work.description && !work.isMinor && (
-                  <div className="text-xs text-gray-600 mt-1 whitespace-pre-line text-start">
+                  <div className="text-sm text-gray-700 mt-1 whitespace-pre-line text-start">
                     {work.description}
                   </div>
                 )}

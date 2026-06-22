@@ -242,9 +242,10 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 100, opacity: 0 }}
-          className={`fixed bottom-16 right-2 z-50 flex flex-col items-end max-w-xs ${
+          className={`fixed right-2 z-50 flex flex-col items-end max-w-xs ${
             !isAngry ? "clippy-normal" : ""
           }`}
+          style={{ bottom: "calc(var(--taskbar-height) + 8px)" }}
         >
           <img
             src={"clippy.png"}
@@ -261,9 +262,19 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
             }
           />
           <div
-            className={`p-4 bg-white border-2 rounded-lg shadow-lg max-w-xs ${
-              isAngry ? "border-red-600 animate-pulse" : "border-gray-400"
+            className={`p-4 max-w-xs ${
+              isAngry
+                ? "border-2 border-red-600 animate-pulse"
+                : "border-[var(--xp-shadow)]"
             }`}
+            style={{
+              background: "var(--xp-face)",
+              fontFamily: "Tahoma, Verdana, sans-serif",
+              fontSize: "13px",
+              boxShadow: isAngry
+                ? "2px 2px 4px rgba(0,0,0,0.3)"
+                : "inset 1px 1px 0 var(--xp-3dlight), inset -1px -1px 0 var(--xp-shadow), 2px 2px 4px rgba(0,0,0,0.2)",
+            }}
           >
             <p
               className={`text-sm mb-4 ${
@@ -284,8 +295,8 @@ export default function Clippy({ isAngry = false }: ClippyProps) {
                   className={`text-left text-sm ${
                     isAngry
                       ? "text-red-600 hover:text-red-800"
-                      : "text-blue-600 hover:text-blue-800"
-                  } hover:underline`}
+                      : "text-[var(--xp-select)] hover:underline"
+                  }`}
                 >
                   {response.label}
                 </button>

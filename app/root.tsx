@@ -9,8 +9,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/png" href="/start_logo.png" />
-        <link rel="stylesheet" href="/font/PixeloidMono.ttf" />
-        <link rel="stylesheet" href="https://unpkg.com/xp.css" />
         <link rel="stylesheet" href={styles} />
         <Meta />
       </head>

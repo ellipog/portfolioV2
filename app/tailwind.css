@@ -1,10 +1,35 @@
+@import "xp.css/dist/XP.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: Pixel;
-  src: url("/font/PixeloidMono.ttf");
+/* ---- Authentic Windows XP (Luna Blue) design tokens ---- */
+:root {
+  --taskbar-height: 40px;
+
+  /* Taskbar */
+  --luna-blue: #245edb;
+
+  /* Title bar (active) */
+  --luna-title-top: #0058ee;
+  --luna-title-bottom: #1e3f9c;
+
+  /* Start button (green pill) */
+  --luna-green-top: #5eac56;
+  --luna-green-bottom: #2d7d28;
+
+  /* 3D UI bevels */
+  --xp-face: #ece9d8;
+  --xp-face-dark: #d4d0c8;
+  --xp-3dlight: #fff;
+  --xp-shadow: #808080;
+  --xp-darkshadow: #404040;
+
+  /* Start menu selection / right column */
+  --xp-select: #2f71cd;
+  --xp-start-right: #d3e5fa;
+  --xp-separator: #c5d9f1;
 }
 
 html,
@@ -24,7 +49,8 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: Pixel;
+  font-family: Tahoma, Verdana, "Trebuchet MS", Geneva, sans-serif;
+  font-size: 13px;
 }
 
 .text-shadow {
@@ -32,7 +58,7 @@ body {
 }
 
 .window-button {
-  font-family: "Segoe UI", system-ui;
+  font-family: "Tahoma", "Segoe UI", system-ui;
   line-height: 1;
   font-size: 14px;
   min-width: 22px;
@@ -45,7 +71,7 @@ body {
   min-height: unset !important;
   width: auto !important;
   height: auto !important;
-  font-family: "Tahoma", "Segoe UI", system-ui, sans-serif;
+  font-family: Tahoma, Verdana, "Trebuchet MS", Geneva, sans-serif;
 }
 
 .paint-tool-btn {
@@ -55,6 +81,7 @@ body {
   height: 24px !important;
   padding: 0 !important;
   box-sizing: border-box;
+  font-family: Tahoma, Verdana, "Trebuchet MS", Geneva, sans-serif;
 }
 
 .minesweeper-cell {
@@ -64,45 +91,95 @@ body {
   height: 20px !important;
   padding: 0 !important;
   box-sizing: border-box;
-  font-family: "Tahoma", "Segoe UI", system-ui, sans-serif;
+  font-family: Tahoma, Verdana, "Trebuchet MS", Geneva, sans-serif;
 }
 
 .paint-app .paint-menu-btn,
 .minesweeper-app button {
-  font-family: "Tahoma", "Segoe UI", system-ui, sans-serif;
+  font-family: Tahoma, Verdana, "Trebuchet MS", Geneva, sans-serif;
 }
 
+/* ---- Taskbar buttons (Luna) ---- */
+/* pressed = frontmost window, sunken 3D inset on light gradient */
+.task-btn-pressed {
+  background: linear-gradient(to bottom, #d6dfe7 0%, #b8c4d4 100%);
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px #808080;
+}
+
+/* inactive = open but not frontmost, light gradient, subtle */
+.task-btn-inactive {
+  background: linear-gradient(to bottom, #dde3ec 0%, #c4cdda 100%);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* closed = app present but window hidden, blue gradient */
+.task-btn-closed {
+  background: linear-gradient(to bottom, #3f7edd 0%, #2f6bcc 100%);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.task-btn-closed:hover {
+  background: linear-gradient(to bottom, #4d8ae6 0%, #3a76d4 100%);
+}
+
+/* ---- Authentic Windows XP 3D-bevel scrollbar ---- */
 .winxp-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #1c66cc #fff;
+  scrollbar-width: auto;
+  scrollbar-color: var(--luna-blue) var(--xp-3dlight);
 }
 
 .winxp-scrollbar::-webkit-scrollbar {
-  width: 16px;
+  width: 17px;
+  height: 17px;
 }
 
 .winxp-scrollbar::-webkit-scrollbar-track {
-  background: #fff;
-  border-left: 1px solid #dee2e6;
+  background: var(--xp-3dlight);
+  background-image: linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%),
+    linear-gradient(45deg, #e0e0e0 25%, #fff 25%, #fff 75%, #e0e0e0 75%);
+  background-size: 2px 2px;
+  background-position: 0 0, 1px 1px;
+  box-shadow: inset 1px 1px 0 var(--xp-shadow);
 }
 
 .winxp-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(to right, #2980ff 0%, #2069e0 100%);
-  border: 1px solid #1c66cc;
-  border-radius: 3px;
-  box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.3);
+  background: var(--xp-face);
+  border: 1px solid var(--xp-shadow);
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 0 var(--xp-3dlight), inset -1px -1px var(--xp-shadow);
 }
 
 .winxp-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to right, #3990ff 0%, #2574e9 100%);
+  background: var(--xp-face-dark);
 }
 
-.winxp-scrollbar::-webkit-scrollbar-button {
+.winxp-scrollbar::-webkit-scrollbar-button:single-button {
   display: block;
-  height: 16px;
-  width: 16px;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  background-position: center;
+  height: 17px;
+  width: 17px;
+  background-color: var(--xp-face);
   background-repeat: no-repeat;
+  background-position: center;
+  background-size: 9px 9px;
+  box-shadow: inset 1px 1px 0 var(--xp-3dlight), inset -1px -1px var(--xp-shadow);
+}
+
+.winxp-scrollbar::-webkit-scrollbar-button:vertical:start {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><polygon points='5,1 9,8 1,8' fill='%23000000'/></svg>");
+}
+
+.winxp-scrollbar::-webkit-scrollbar-button:vertical:end {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><polygon points='5,9 1,2 9,2' fill='%23000000'/></svg>");
+}
+
+.winxp-scrollbar::-webkit-scrollbar-button:horizontal:start {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><polygon points='1,5 8,1 8,9' fill='%23000000'/></svg>");
+}
+
+.winxp-scrollbar::-webkit-scrollbar-button:horizontal:end {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><polygon points='9,5 2,1 2,9' fill='%23000000'/></svg>");
+}
+
+.winxp-scrollbar::-webkit-scrollbar-corner {
+  background: var(--xp-face);
 }

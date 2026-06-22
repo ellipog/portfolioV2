@@ -25,10 +25,12 @@ export default function Projects({
       pos={windowConfig?.defaultPosition || { x: 100, y: 100 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
+      showMenuBar
+      statusBar={<span>{projects.projects.length} objects</span>}
     >
       <div className="relative">
         <div
-          className="text-black flex flex-col gap-4 max-w-[560px] max-h-[730px] overflow-y-scroll p-2 winxp-scrollbar"
+          className="text-black flex flex-col gap-4 max-w-[650px] max-h-[750px] overflow-y-scroll p-2 winxp-scrollbar"
           onScroll={(e) => {
             const target = e.target as HTMLDivElement;
             const isAtBottom =
@@ -49,35 +51,35 @@ export default function Projects({
             }
           }}
         >
-          <div className="fade-effect-top opacity-0 absolute top-0 left-0 right-0 h-16 pointer-events-none bg-gradient-to-t from-transparent via-blue-50/50 to-blue-50 transition-opacity duration-200" />
+          <div className="fade-effect-top opacity-0 absolute top-0 left-0 right-0 h-16 pointer-events-none bg-gradient-to-t from-transparent via-[var(--xp-face)]/50 to-[var(--xp-face)] transition-opacity duration-200" />
           {projects.projects.map((project) => (
             <a
               key={project.name}
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col bg-white p-4 border border-gray-200 hover:border-blue-400 transition-all duration-200"
+              className="flex flex-col bg-white p-4 border border-[var(--xp-shadow)] hover:border-[var(--xp-select)] rounded-sm transition-all duration-200"
             >
               <div className="flex justify-between w-full">
                 <div className="flex gap-2 items-center">
                   <img
                     src={project.image}
                     alt={project.name}
-                    className="w-6 h-6"
+                    className="w-7 h-7"
                   />
-                  <span className="text-lg font-semibold group-hover:text-blue-600 transition-colors">
+                  <span className="text-xl font-semibold group-hover:text-[var(--xp-select)] transition-colors">
                     {project.name}
                   </span>
-                  <span className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-600">
+                  <span className="text-xs px-2 py-1 bg-[var(--xp-face-dark)] text-black border border-[var(--xp-shadow)] rounded-sm">
                     {project.year}
                   </span>
                 </div>
-                <div className="text-blue-500 hover:text-blue-600 transition-colors">
+                <div className="text-[var(--xp-select)] hover:text-blue-700 transition-colors">
                   →
                 </div>
               </div>
 
-              <div className="mt-2 text-sm text-gray-600 whitespace-pre-line text-start">
+              <div className="mt-2 text-base text-gray-700 whitespace-pre-line text-start">
                 {project.description}
               </div>
 
@@ -85,7 +87,7 @@ export default function Projects({
                 {project.languages.map((language) => (
                   <span
                     key={language}
-                    className="text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded-full"
+                    className="text-xs px-2 py-1 bg-[var(--xp-face-dark)] text-[var(--xp-darkshadow)] border border-[var(--xp-shadow)] rounded-sm"
                   >
                     {language}
                   </span>
@@ -98,15 +100,15 @@ export default function Projects({
             href="https://github.com/Ellipog"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+            className="mt-2 flex items-center justify-between p-3 bg-[var(--xp-face-dark)] hover:bg-[var(--xp-face)] border border-[var(--xp-shadow)] rounded-sm transition-colors"
           >
-            <span className="text-sm text-gray-600">More on GitHub</span>
-            <div className="flex items-center gap-2 text-blue-500">
+            <span className="text-sm text-gray-700">More on GitHub</span>
+            <div className="flex items-center gap-2 text-[var(--xp-select)]">
               <img src="github.png" alt="github" className="w-5 h-5" />→
             </div>
           </a>
         </div>
-        <div className="fade-effect-bottom absolute bottom-0 left-0 right-0 h-16 pointer-events-none bg-gradient-to-t from-blue-50 via-blue-50/50 to-transparent transition-opacity duration-200" />
+        <div className="fade-effect-bottom absolute bottom-0 left-0 right-0 h-16 pointer-events-none bg-gradient-to-t from-[var(--xp-face)] via-[var(--xp-face)]/50 to-transparent transition-opacity duration-200" />
       </div>
     </Window>
   );

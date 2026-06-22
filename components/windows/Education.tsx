@@ -25,26 +25,28 @@ export default function Education({
       windowOrder={windowOrder}
       bringToFront={bringToFront}
       pos={windowConfig?.defaultPosition || { x: 200, y: 200 }}
+      showMenuBar
+      statusBar={<span>{education.education.length} entries</span>}
     >
-      <div className="text-black relative max-w-[560px]">
-        <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-blue-800" />
+      <div className="text-black relative max-w-[650px] p-3 border border-[var(--xp-shadow)] bg-[var(--xp-3dlight)]">
+        <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-blue-800" />
 
         <div className="flex flex-col gap-8">
           {education.education.map((edu, i) => (
             <div key={i} className="flex items-start relative">
-              <div className="absolute left-2 top-3 w-8 h-0.5 bg-blue-800" />
-              <div className="pl-12 text-start">
-                <span className="text-xs font-bold text-blue-800">
+              <div className="absolute left-5 top-3 w-10 h-0.5 bg-blue-800" />
+              <div className="pl-16 text-start">
+                <span className="text-sm font-bold text-blue-800">
                   {edu.year}
                 </span>
-                <div className="text-md font-bold">
+                <div className="text-lg font-bold">
                   {edu.name}
                   <span className="text-gray-600 font-normal">
                     {" "}
                     - {edu.school}
                   </span>
                 </div>
-                <div className="text-xs text-gray-600 mt-1 whitespace-pre-line text-start">
+                <div className="text-sm text-gray-700 mt-1 whitespace-pre-line text-start">
                   {edu.description}
                 </div>
               </div>

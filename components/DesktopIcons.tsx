@@ -5,10 +5,10 @@ import ErrorPopup from "./ErrorPopup";
 import Clippy from "./Clippy";
 import BlueScreen from "./BlueScreen";
 
-const ICON_WIDTH = 80;
-const ICON_HEIGHT = 100;
-const GRID_START_X = 20;
-const GRID_START_Y = 20;
+const ICON_WIDTH = 100;
+const ICON_HEIGHT = 120;
+const GRID_START_X = 25;
+const GRID_START_Y = 25;
 const ICONS_PER_COLUMN = 5;
 
 interface DesktopIconsProps {
@@ -241,7 +241,7 @@ function DesktopIcon({
       grid={[10, 10]}
     >
       <div
-        className={`app-icon z-[2] absolute flex flex-col items-center justify-center w-20 h-24 rounded transition-colors select-none ${
+        className={`app-icon z-[2] absolute flex flex-col items-center justify-center w-24 h-[7.5rem] rounded transition-colors select-none ${
           isSelected
             ? "bg-blue-500/30 ring-1 ring-blue-400/60"
             : "hover:bg-blue-500/20"
@@ -252,7 +252,7 @@ function DesktopIcon({
         <img
           src={icon}
           alt={title}
-          className="w-10 h-10 select-none pointer-events-none"
+          className="w-12 h-12 select-none pointer-events-none"
           draggable="false"
         />
         {isEditing ? (
@@ -265,11 +265,11 @@ function DesktopIcon({
             onBlur={() => {
               setIsEditing(false);
             }}
-            className="w-20 text-center bg-white/30 text-black text-sm mt-1 px-1 
+            className="w-24 text-center bg-white/30 text-black text-sm mt-1 px-1 
               outline-none border border-blue-500 pointer-events-auto"
           />
         ) : (
-          <span className="absolute top-[4.5rem] text-xs w-24 text-white text-center mt-1 px-1 text-shadow select-none break-words whitespace-normal overflow-wrap-anywhere">
+          <span className="absolute top-[5rem] text-sm w-28 text-white text-center mt-1 px-1 text-shadow select-none break-words whitespace-normal overflow-wrap-anywhere">
             {title.replace("_", " ")}
           </span>
         )}

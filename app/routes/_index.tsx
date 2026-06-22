@@ -505,7 +505,9 @@ export default function Index() {
             loading !== LoadingState.Desktop
               ? "hidden"
               : `flex p-0 m-0 w-full transition-all duration-300 ${
-                  isExplorerKilled ? "h-screen bg-black" : "h-[calc(100vh-56px)]"
+                  isExplorerKilled
+                    ? "h-screen bg-black"
+                    : "h-[calc(100vh-var(--taskbar-height))]"
                 }`
           }
           style={!isExplorerKilled ? { backgroundColor: desktopBgColor } : undefined}

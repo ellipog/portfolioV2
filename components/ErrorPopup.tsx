@@ -1,5 +1,4 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 import Draggable from "react-draggable";
 import { useEffect, useState } from "react";
 import { playSound } from "utils/playSound";
@@ -25,12 +24,12 @@ export default function ErrorPopup({
     if (isOpen) {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      const popupWidth = 500;
-      const popupHeight = 200;
+      const popupWidth = 420;
+      const popupHeight = 180;
 
       // Generate random position within screen bounds
-      const randomX = Math.random() * (screenWidth - popupWidth);
-      const randomY = Math.random() * (screenHeight - popupHeight);
+      const randomX = Math.random() * Math.max(0, screenWidth - popupWidth);
+      const randomY = Math.random() * Math.max(0, screenHeight - popupHeight);
 
       setPosition({
         x: randomX,
@@ -54,29 +53,64 @@ export default function ErrorPopup({
   return position.x !== 0 && position.y !== 0 ? (
     <AnimatePresence>
       {isOpen && (
-        <Draggable handle=".window-title-bar" defaultPosition={position}>
-          <motion.div className="window z-50 flex flex-col shadow-xl absolute">
-            <div
-              className="window-title-bar flex justify-between items-center bg-gradient-to-b from-blue-500 to-blue-600 text-white rounded-t-lg border-t-4 border-x-4 border-blue-600 hover:cursor-grab active:cursor-grabbing overflow-x-hidden"
-              style={{ width: "500px" }}
-            >
-              <div className="flex gap-1.5 justify-start items-center ml-2 my-1">
-                <img src={icons[type]} alt={type} className="w-6 h-6" />
-                <div className="text-md">{title || "Windows"}</div>
+        <Draggable handle=".title-bar" defaultPosition={position}>
+          <motion.div
+            className="window z-50 flex flex-col absolute"
+            style={{ width: "420px" }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.1 }}
+          >
+            {/* Authentic xp.css title bar */}
+            <div className="title-bar select-none">
+              <div className="title-bar-text flex items-center gap-1.5">
+                <img
+                  src={icons[type]}
+                  alt={type}
+                  className="w-4 h-4 pointer-events-none"
+                  draggable={false}
+                />
+                <span className="font-bold">
+                  {title || "System Error"}
+                </span>
               </div>
-              <button
-                className="window-button bg-red-600 hover:bg-red-700 active:bg-red-800 rounded text-lg mr-1 my-1 border border-white flex items-center justify-center"
-                onClick={onClose}
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="title-bar-controls">
+                <button aria-label="Close" onClick={onClose} />
+              </div>
             </div>
-            <div className="bg-blue-50 border-4 border-blue-600">
-              <div className="p-4 flex gap-4 items-center">
-                <img src={icons[type]} alt={type} className="w-12 h-12" />
-                <p className="text-sm text-black max-w-[390px] overflow-x-hidden">
+
+            {/* Body — tan XP face, error icon + message, centered OK */}
+            <div
+              className="window-body flex flex-col gap-3"
+              style={{ background: "var(--xp-face)" }}
+            >
+              <div className="flex gap-4 items-start p-2">
+                <img
+                  src={icons[type]}
+                  alt={type}
+                  className="shrink-0"
+                  style={{ width: "32px", height: "32px" }}
+                  draggable={false}
+                />
+                <p
+                  className="text-black flex-1"
+                  style={{
+                      fontFamily: "Tahoma, Verdana, sans-serif",
+                    fontSize: "13px",
+                    lineHeight: "17px",
+                  }}
+                >
                   {message}
                 </p>
+              </div>
+              <div className="flex justify-center pb-2">
+                <button
+                  onClick={onClose}
+                  style={{ minWidth: "75px" }}
+                >
+                  OK
+                </button>
               </div>
             </div>
           </motion.div>

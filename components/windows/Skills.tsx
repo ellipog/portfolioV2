@@ -25,26 +25,28 @@ export default function Skills({
       pos={windowConfig?.defaultPosition || { x: 50, y: 50 }}
       windowOrder={windowOrder}
       bringToFront={bringToFront}
+      showMenuBar
+      statusBar={<span>{skills.skills.length} objects</span>}
     >
-      <div className="text-black flex flex-col -m-1">
+      <div className="text-black flex flex-col -m-2 p-1 border border-[var(--xp-shadow)]">
         {skills.skills.map((skill) => (
           <div
             key={skill.name}
-            className="flex gap-3 items-center hover:bg-blue-600 active:bg-blue-700 hover:text-white p-1 px-1.5 transition-colors ease-in-out group "
+            className="flex gap-3 items-center hover:bg-[var(--xp-select)] active:bg-[var(--xp-select)] hover:text-white p-1.5 px-2 transition-colors ease-in-out group "
           >
             <img
               src={`/skills/${skill.icon}`}
               alt={skill.name}
-              className="w-5 h-5"
+              className="w-6 h-6"
             />
             <a
               href={skill.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex justify-between"
+              className="w-full flex justify-between text-sm"
             >
               {skill.name}
-              <span className="text-blue-500 group-hover:text-white transition-colors ease-in-out">
+              <span className="text-[var(--xp-select)] group-hover:text-white transition-colors ease-in-out">
                 →
               </span>
             </a>
